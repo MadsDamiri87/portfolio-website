@@ -16,7 +16,7 @@ import {
   Target,
   UserRound,
 } from "lucide-react";
-import profileImage from "../../assets/images/mads-profile-nobg.png";
+import profileImage from "../../assets/images/mads-profile-nobg.webp";
 import { profile } from "../../data/profile";
 import { tagTone } from "../projects/ProjectCard";
 import { TechPill } from "../ui/TechPill";

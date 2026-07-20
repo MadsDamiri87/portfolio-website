@@ -2,7 +2,9 @@
 
 # Mads Damiri - Portfolio Website
 
-<img width="2560" height="1440" alt="Portfolio website preview" src="src/assets/images/visual-reference-home.png" />
+Live website: [software.madsdamiri.dk](https://software.madsdamiri.dk)
+
+<img width="2560" height="1440" alt="Portfolio website preview" src="src/assets/images/hero-clean-scene-bg-extra-wide.webp" />
 
 This project is my personal portfolio and CV website. It is built to present who I am, what I am learning, the projects I have worked on, and the direction I am moving in as a software engineering student.
 

@@ -448,7 +448,7 @@ img {
   position: absolute;
   z-index: 0;
   inset: 0;
-  background-image: url("../assets/images/hero-clean-scene-bg-extra-wide.png");
+  background-image: url("../assets/images/hero-clean-scene-bg-extra-wide.webp");
   background-position: center;
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -1113,7 +1113,7 @@ img {
   background-image:
     linear-gradient(180deg, rgba(7, 10, 16, 0.02), rgba(7, 10, 16, 0.36) 54%, #070a10 100%),
     linear-gradient(90deg, rgba(7, 10, 16, 0.44), rgba(7, 10, 16, 0.04) 48%, rgba(7, 10, 16, 0.38)),
-    url("../assets/images/projects-system-bg.png");
+    url("../assets/images/projects-system-bg.webp");
   background-position: center top;
   background-size: cover;
   opacity: 0.78;
@@ -1660,7 +1660,7 @@ img {
   background-image:
     linear-gradient(180deg, rgba(7, 10, 16, 0.04), rgba(7, 10, 16, 0.48) 58%, #070a10 100%),
     linear-gradient(90deg, rgba(7, 10, 16, 0.52), rgba(7, 10, 16, 0.12) 46%, rgba(7, 10, 16, 0.56)),
-    url("../assets/images/project-detail-system-map-bg.png");
+    url("../assets/images/project-detail-system-map-bg.webp");
   background-position: center top;
   background-size: cover;
   opacity: 0.72;
@@ -2351,7 +2351,7 @@ img {
   z-index: 0;
   width: min(100%, 1160px);
   height: 650px;
-  background: url("../assets/images/hero-clean-scene-bg-extra-wide.png") center top / cover no-repeat;
+  background: url("../assets/images/hero-clean-scene-bg-extra-wide.webp") center top / cover no-repeat;
   opacity: 0.92;
   mask-image:
     linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.72) 18%, #000 42%, #000 88%, transparent 100%),
@@ -2950,7 +2950,7 @@ img {
   width: var(--about-hero-bg-width);
   background:
     linear-gradient(90deg, rgba(7, 10, 16, 0.18), rgba(7, 10, 16, 0.03) 38%, rgba(7, 10, 16, 0.08)),
-    url("../assets/images/about-hero-bg-warm.png") center var(--about-hero-bg-y) / cover no-repeat;
+    url("../assets/images/about-hero-bg-warm.webp") center var(--about-hero-bg-y) / cover no-repeat;
   mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.72) 8%, #000 18%, #000 82%, rgba(0, 0, 0, 0.72) 92%, transparent 100%);
   -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.72) 8%, #000 18%, #000 82%, rgba(0, 0, 0, 0.72) 92%, transparent 100%);
   pointer-events: none;
@@ -3748,7 +3748,7 @@ img {
   left: 50%;
   width: var(--cv-hero-bg-width);
   height: 100%;
-  background-image: url("../assets/images/cv-hero-bg.png");
+  background-image: url("../assets/images/cv-hero-bg.webp");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 100% 100%;

@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Project } from "../../types";
-import { tagTone } from "../projects/ProjectCard";
+import { tagTone, techProjectHref } from "../projects/ProjectCard";
 import { TechPill } from "../ui/TechPill";
 
 type ProjectDetailPageProps = {
@@ -489,7 +489,7 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
 
             <div className="project-detail-tags">
               {project.tags.map((tag) => (
-                <TechPill key={tag} tone={tagTone(tag)}>
+                <TechPill href={techProjectHref(tag)} key={tag} tone={tagTone(tag)}>
                   {tag}
                 </TechPill>
               ))}

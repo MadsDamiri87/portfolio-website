@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Download, FileText, FolderKanban, GitBranch, Home, Mail, Menu, Network, UserRound, X } from "lucide-react";
-import mdLogo from "../../assets/images/md-logo.png";
+import mdLogo from "../../assets/images/md-logo.webp";
 import { navigation } from "../../data/navigation";
 import { profile } from "../../data/profile";
 

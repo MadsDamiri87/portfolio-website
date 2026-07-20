@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import profileImage from "../../assets/images/mads-profile-nobg.png";
+import profileImage from "../../assets/images/mads-profile-nobg.webp";
 import { profile } from "../../data/profile";
 import { ButtonLink } from "../ui/ButtonLink";
 import { LaptopScene } from "../ui/LaptopScene";
