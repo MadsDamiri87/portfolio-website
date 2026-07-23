@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { SiteShell } from "./components/layout/SiteShell";
-import { AboutPage } from "./components/pages/AboutPage";
-import { ContactPage } from "./components/pages/ContactPage";
-import { CvPage } from "./components/pages/CvPage";
-import { ProjectDetailPage } from "./components/pages/ProjectDetailPage";
-import { ProjectsPage } from "./components/pages/ProjectsPage";
+import { NotFoundPage } from "./components/pages/NotFoundPage";
 import { AboutSection } from "./components/sections/AboutSection";
 import { CvSection } from "./components/sections/CvSection";
 import { FeatureStrip } from "./components/sections/FeatureStrip";
@@ -12,50 +8,77 @@ import { HeroSection } from "./components/sections/HeroSection";
 import { ProjectsSection } from "./components/sections/ProjectsSection";
 import { projects } from "./data/projects";
 
-function getRoute() {
+// The home page ships in the main bundle; the sub-pages are fetched on first visit.
+const AboutPage = lazy(() =>
+  import("./components/pages/AboutPage").then((m) => ({ default: m.AboutPage })),
+);
+const ContactPage = lazy(() =>
+  import("./components/pages/ContactPage").then((m) => ({ default: m.ContactPage })),
+);
+const CvPage = lazy(() => import("./components/pages/CvPage").then((m) => ({ default: m.CvPage })));
+const ProjectDetailPage = lazy(() =>
+  import("./components/pages/ProjectDetailPage").then((m) => ({ default: m.ProjectDetailPage })),
+);
+const ProjectsPage = lazy(() =>
+  import("./components/pages/ProjectsPage").then((m) => ({ default: m.ProjectsPage })),
+);
+
+type Route =
+  | { page: "home" }
+  | { page: "about" }
+  | { page: "contact" }
+  | { page: "cv" }
+  | { page: "projects" }
+  | { page: "project-detail"; projectSlug: string }
+  | { page: "not-found" };
+
+function getRoute(): Route {
   const hash = window.location.hash;
 
-  if (hash === "#/about") {
-    return { page: "about" as const };
+  // Anything that is not "#/..." is a plain anchor on the home page (#home, #projects, ...).
+  if (!hash.startsWith("#/")) {
+    return { page: "home" };
   }
 
-  if (hash === "#/contact") {
-    return { page: "contact" as const };
-  }
+  // Drop any query string ("?tech=React") and trailing slashes before matching.
+  const path = hash.split("?")[0].replace(/\/+$/, "");
 
-  if (hash === "#/cv") {
-    return { page: "cv" as const };
-  }
+  if (path === "#") return { page: "home" };
+  if (path === "#/about") return { page: "about" };
+  if (path === "#/contact") return { page: "contact" };
+  if (path === "#/cv") return { page: "cv" };
+  if (path === "#/projects") return { page: "projects" };
 
-  if (!hash.startsWith("#/projects")) {
-    return { page: "home" as const };
-  }
-
-  const projectSlug = hash.match(/^#\/projects\/([^?]+)/)?.[1];
+  const projectSlug = path.match(/^#\/projects\/(.+)$/)?.[1];
 
   if (projectSlug) {
-    return { page: "project-detail" as const, projectSlug: decodeURIComponent(projectSlug) };
+    return { page: "project-detail", projectSlug: decodeURIComponent(projectSlug) };
   }
 
-  return { page: "projects" as const };
+  return { page: "not-found" };
+}
+
+function getActivePage(route: Route) {
+  switch (route.page) {
+    case "project-detail":
+      return "projects" as const;
+    case "not-found":
+      return "home" as const;
+    default:
+      return route.page;
+  }
 }
 
 export default function App() {
   const [route, setRoute] = useState(getRoute);
-  const activePage =
-    route.page === "projects" || route.page === "project-detail"
-      ? "projects"
-      : route.page === "about"
-        ? "about"
-        : route.page === "contact"
-          ? "contact"
-          : route.page === "cv"
-            ? "cv"
-            : "home";
+  const activePage = getActivePage(route);
   const activeProject =
     route.page === "project-detail"
       ? projects.find((project) => project.slug.toLowerCase() === route.projectSlug.toLowerCase())
       : undefined;
+
+  // Changing project without leaving the detail page still has to reset the scroll position.
+  const routeKey = route.page === "project-detail" ? `project-detail/${route.projectSlug}` : route.page;
 
   useEffect(() => {
     const handleHashChange = () => setRoute(getRoute());
@@ -78,29 +101,39 @@ export default function App() {
     requestAnimationFrame(() => {
       document.getElementById(targetId)?.scrollIntoView({ block: "start" });
     });
-  }, [route.page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routeKey]);
+
+  const renderPage = () => {
+    switch (route.page) {
+      case "project-detail":
+        return activeProject ? <ProjectDetailPage project={activeProject} /> : <NotFoundPage variant="project" />;
+      case "about":
+        return <AboutPage />;
+      case "contact":
+        return <ContactPage />;
+      case "cv":
+        return <CvPage />;
+      case "projects":
+        return <ProjectsPage />;
+      case "not-found":
+        return <NotFoundPage variant="page" />;
+      default:
+        return (
+          <>
+            <HeroSection />
+            <FeatureStrip />
+            <ProjectsSection />
+            <AboutSection />
+            <CvSection />
+          </>
+        );
+    }
+  };
 
   return (
     <SiteShell activePage={activePage}>
-      {route.page === "project-detail" && activeProject ? (
-        <ProjectDetailPage project={activeProject} />
-      ) : route.page === "about" ? (
-        <AboutPage />
-      ) : route.page === "contact" ? (
-        <ContactPage />
-      ) : route.page === "cv" ? (
-        <CvPage />
-      ) : route.page === "projects" ? (
-        <ProjectsPage />
-      ) : (
-        <>
-          <HeroSection />
-          <FeatureStrip />
-          <ProjectsSection />
-          <AboutSection />
-          <CvSection />
-        </>
-      )}
+      <Suspense fallback={<div className="route-fallback" aria-busy="true" />}>{renderPage()}</Suspense>
     </SiteShell>
   );
 }

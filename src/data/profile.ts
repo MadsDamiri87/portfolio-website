@@ -6,11 +6,16 @@ export const profile = {
   status: "Currently preparing for 3rd semester",
   headline: "Learning while doing",
   intro:
-    "Im currently focused on developing my skills as a coming software engineer." +
-      " This Page is therefor also a learning-project for me.",
+    "I'm currently focused on developing my skills as a coming software engineer." +
+      " This page is therefore also a learning project for me.",
   location: "Denmark",
   email: "mads@madsdamiri.dk",
   phone: "+45 40 47 55 05",
+};
+
+export const socialProfiles = {
+  github: "https://github.com/MadsDamiri87",
+  linkedin: "https://www.linkedin.com/in/mads-damiri-1a2a94123/",
 };
 
 export const features: Feature[] = [

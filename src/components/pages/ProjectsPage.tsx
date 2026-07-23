@@ -1,4 +1,4 @@
-import { BarChart3, Boxes, Filter, GitBranch, Grid2X2, Layers, Search } from "lucide-react";
+import { BarChart3, Filter, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import projectsHeroImage from "../../assets/images/projects-system-bg.webp";
 import { projects } from "../../data/projects";

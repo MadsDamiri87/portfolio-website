@@ -3,7 +3,6 @@ import {
   BookOpen,
   BriefcaseBusiness,
   Code2,
-  Download,
   FileText,
   GitBranch,
   GraduationCap,
@@ -14,11 +13,10 @@ import {
   ShieldCheck,
   Sparkles,
   Target,
-  UserRound,
 } from "lucide-react";
 import cvHeroImage from "../../assets/images/cv-hero-bg.webp";
 import profileImage from "../../assets/images/mads-profile-nobg.webp";
-import { profile } from "../../data/profile";
+import { profile, socialProfiles } from "../../data/profile";
 import { tagTone } from "../projects/ProjectCard";
 import { TechPill } from "../ui/TechPill";
 
@@ -123,9 +121,9 @@ const maturity = [
 ];
 
 const documents = [
-  { label: "Curriculum Vitae", detail: "Education, projects and experience" },
-  { label: "Trainee Profile", detail: "How I can contribute next to the study" },
-  { label: "Project Archive", detail: "Selected technical work and case notes" },
+  { label: "Curriculum Vitae", detail: "Education, projects and experience", href: "#/contact" },
+  { label: "Trainee Profile", detail: "How I can contribute next to the study", href: "#/contact" },
+  { label: "Project Archive", detail: "Selected technical work and case notes", href: "#/projects" },
 ];
 
 function DotLevel({ level }: { level: number }) {
@@ -273,7 +271,7 @@ export function CvPage() {
                   </div>
                 ))}
               </div>
-              <a className="cv-inline-link" href="https://github.com/MadsDamiri87">
+              <a className="cv-inline-link" href={socialProfiles.github} target="_blank" rel="noreferrer">
                 <GitBranch size={16} strokeWidth={1.8} />
                 <span>More on GitHub</span>
                 <ArrowRight size={16} strokeWidth={1.8} />
@@ -302,7 +300,7 @@ export function CvPage() {
               </div>
               <div className="cv-document-list">
                 {documents.map((document) => (
-                  <a href="#/contact" key={document.label}>
+                  <a href={document.href} key={document.label}>
                     <span>
                       <BookOpen size={18} strokeWidth={1.8} />
                     </span>
@@ -310,7 +308,7 @@ export function CvPage() {
                       <strong>{document.label}</strong>
                       <small>{document.detail}</small>
                     </span>
-                    <Download size={16} strokeWidth={1.8} />
+                    <ArrowRight size={16} strokeWidth={1.8} />
                   </a>
                 ))}
               </div>

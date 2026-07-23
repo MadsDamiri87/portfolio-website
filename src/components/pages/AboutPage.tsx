@@ -1,8 +1,3 @@
-import {
-  BookOpen,
-  Boxes,
-  Code2,
-} from "lucide-react";
 import aboutHeroImage from "../../assets/images/about-hero-bg-warm.webp";
 
 const journeyItems = [
@@ -111,7 +106,7 @@ function EnergyOverlay() {
 
 export function AboutPage() {
   return (
-    <main className="about-page">
+    <div className="about-page">
       <section className="about-hero-page">
         <img className="about-hero-page__image" src={aboutHeroImage} alt="" aria-hidden="true" />
         <EnergyOverlay />
@@ -134,10 +129,7 @@ export function AboutPage() {
             <p>Working with people gives me a sense of purpose, while working with software gives
               me the satisfaction of building something meaningful. I enjoy the process of solving
               problems, creating solutions, and becoming completely immersed in the work.</p>
-            <div className="about-hero-page__tags" aria-label="Profile highlights">
-            </div>
           </div>
-
         </div>
       </section>
 
@@ -178,6 +170,6 @@ export function AboutPage() {
           </aside>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

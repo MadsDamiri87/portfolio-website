@@ -3,16 +3,17 @@ import {
   Calendar,
   ChevronLeft,
   ChevronRight,
-  Code2,
+  CircleCheck,
   ExternalLink,
-  FileText,
   Layers,
   Monitor,
   Network,
+  UserRound,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import projectDetailBackground from "../../assets/images/project-detail-system-map-bg.webp";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { Project } from "../../types";
 import { tagTone, techProjectHref } from "../projects/ProjectCard";
 import { TechPill } from "../ui/TechPill";
@@ -63,7 +64,7 @@ function DiagramPreview({ image }: { image?: string }) {
   return (
     <div className="detail-diagram-preview" aria-hidden="true">
       {image ? (
-        <img src={image} alt="" />
+        <img src={image} alt="" loading="lazy" decoding="async" />
       ) : (
         <>
           <span />
@@ -86,7 +87,10 @@ function GithubMark() {
 }
 
 export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const documentationRef = useRef<HTMLDivElement>(null);
+  const lightboxPanelRef = useRef<HTMLDivElement>(null);
+  const lastFocusedElementRef = useRef<HTMLElement | null>(null);
   const technicalChoiceRef = useRef<HTMLDivElement>(null);
   const isPointerOverDocumentationRef = useRef(false);
   const isPointerOverTechnicalChoiceRef = useRef(false);
@@ -113,7 +117,10 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
   });
   const detail = project.detail;
   const title = detail?.displayTitle ?? project.title;
-  const screenshots = useMemo(() => project.screenshots?.length ? project.screenshots : [project.image], [project]);
+  const screenshots = useMemo(
+    () => (project.screenshots?.length ? project.screenshots : [project.image]),
+    [project.screenshots, project.image],
+  );
   const activeScreenshotIndex = activeScreenshot ? screenshots.indexOf(activeScreenshot) : -1;
   const heroScreenshots = screenshots.slice(0, 3);
   const documentationItems = useMemo(() => detail?.documentation ?? [], [detail?.documentation]);
@@ -207,6 +214,11 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
   }, [documentationItems.length]);
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      documentationRef.current?.classList.remove("is-auto-scrolling");
+      return;
+    }
+
     let frame = 0;
 
     const tick = (time: number) => {
@@ -219,7 +231,8 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
           documentationItems.length > 1 &&
           maxScroll > documentationFadeThreshold &&
           time >= documentationPauseUntilRef.current &&
-          !isPointerOverDocumentationRef.current
+          !isPointerOverDocumentationRef.current &&
+          !document.hidden
         ) {
           strip.classList.add("is-auto-scrolling");
 
@@ -247,7 +260,7 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     frame = requestAnimationFrame(tick);
 
     return () => cancelAnimationFrame(frame);
-  }, [documentationItems.length]);
+  }, [documentationItems.length, prefersReducedMotion]);
 
   const scrollDocumentationToDot = (dotIndex: number) => {
     const strip = documentationRef.current;
@@ -376,6 +389,11 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
   }, []);
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      technicalChoiceRef.current?.classList.remove("is-auto-scrolling");
+      return;
+    }
+
     let frame = 0;
     let loopResetTimeout = 0;
 
@@ -398,7 +416,8 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
           technicalChoiceSlides.length > 1 &&
           maxScroll > technicalChoiceFadeThreshold &&
           time >= technicalChoicePauseUntilRef.current &&
-          !isPointerOverTechnicalChoiceRef.current
+          !isPointerOverTechnicalChoiceRef.current &&
+          !document.hidden
         ) {
           strip.classList.add("is-auto-scrolling");
 
@@ -444,7 +463,7 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
       cancelAnimationFrame(frame);
       window.clearTimeout(loopResetTimeout);
     };
-  }, [technicalChoiceSlides.length]);
+  }, [technicalChoiceSlides.length, prefersReducedMotion]);
 
   const scrollTechnicalChoiceToDot = (dotIndex: number) => {
     const strip = technicalChoiceRef.current;
@@ -460,6 +479,17 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     strip.scrollTo({ left: target, behavior: "smooth" });
   };
 
+  const openLightbox = (event: { currentTarget: HTMLElement }) => {
+    lastFocusedElementRef.current = event.currentTarget;
+    setIsGalleryOpen(true);
+  };
+
+  const closeLightbox = useCallback(() => {
+    setIsGalleryOpen(false);
+    setActiveScreenshot(null);
+    setActiveDocument(null);
+  }, []);
+
   const showPreviousScreenshot = () => {
     if (activeScreenshotIndex <= 0) return;
 
@@ -472,13 +502,52 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     setActiveScreenshot(screenshots[activeScreenshotIndex + 1]);
   };
 
+  // Read through refs so the keyboard listener below is attached once per open, not once per render.
+  const showPreviousScreenshotRef = useRef(showPreviousScreenshot);
+  const showNextScreenshotRef = useRef(showNextScreenshot);
+  showPreviousScreenshotRef.current = showPreviousScreenshot;
+  showNextScreenshotRef.current = showNextScreenshot;
+
+  // Escape closes the lightbox, the page behind it stays put, and focus returns where it came from.
+  useEffect(() => {
+    if (!isGalleryOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeLightbox();
+        return;
+      }
+
+      if (event.key === "ArrowLeft") showPreviousScreenshotRef.current();
+      if (event.key === "ArrowRight") showNextScreenshotRef.current();
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    const restoreFocusTo = lastFocusedElementRef.current;
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", handleKeyDown);
+
+    const focusTimer = window.setTimeout(() => {
+      lightboxPanelRef.current?.querySelector<HTMLElement>("button, a")?.focus();
+    }, 0);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+      window.clearTimeout(focusTimer);
+      restoreFocusTo?.focus();
+    };
+  }, [isGalleryOpen, closeLightbox]);
+
+  // Keep this at six entries — `.project-facts-strip` is a fixed six-column grid.
   const facts = [
     { label: "Completed", value: detail?.timeline ?? project.year ?? "In progress", icon: Calendar },
     { label: "Development Time", value: detail?.duration ?? "Project period", icon: Monitor },
-    { label: "Code Size", value: detail?.codeSize ?? project.type ?? project.category, icon: Code2 },
+    { label: "Role", value: detail?.role ?? "Developer", icon: UserRound },
     { label: "Type", value: project.type ?? project.category, icon: Layers },
     { label: "Team Size", value: detail?.teamSize ?? "Project team", icon: Network },
-    { label: "Status", value: project.status ?? "Completed", icon: ExternalLink },
+    { label: "Status", value: project.status ?? "Completed", icon: CircleCheck },
   ];
 
   return (
@@ -524,14 +593,19 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
               <button
                 className={`project-detail-hero__screen project-detail-hero__screen--${index + 1}`}
                 key={screenshot}
-                onClick={() => {
+                onClick={(event) => {
                   setActiveDocument(null);
                   setActiveScreenshot(screenshot);
-                  setIsGalleryOpen(true);
+                  openLightbox(event);
                 }}
                 type="button"
               >
-                <img src={screenshot} alt={`${title} screenshot ${index + 1}`} />
+                <img
+                  src={screenshot}
+                  alt={`${title} screenshot ${index + 1}`}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
               </button>
             ))}
           </div>
@@ -592,8 +666,8 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                         <span>{slide.category}</span>
                       </div>
                       <div className="technical-choice-grid">
-                        {slide.choices.map((choice) => (
-                          <article className="technical-choice" key={`${slide.category}-${choice.title}`}>
+                        {slide.choices.map((choice, choiceIndex) => (
+                          <article className="technical-choice" key={`${choice.title}-${choiceIndex}`}>
                             <h3>{choice.title}</h3>
                             <p>{choice.description}</p>
                           </article>
@@ -620,20 +694,20 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
           ) : null}
 
           <section className="project-detail-section project-gallery-panel">
-            <div className="project-detail-section__header">
-            </div>
             <div className="project-screenshot-stack">
               {screenshots.slice(0, 5).map((screenshot, index) => (
                 <button
+                  aria-label={`Open ${title} gallery`}
                   className={`project-screenshot-stack__item project-screenshot-stack__item--${index + 1}`}
                   key={screenshot}
-                  onClick={() => {
+                  onClick={(event) => {
                     setActiveScreenshot(null);
-                    setIsGalleryOpen(true);
+                    setActiveDocument(null);
+                    openLightbox(event);
                   }}
                   type="button"
                 >
-                  <img src={screenshot} alt={`${title} gallery preview ${index + 1}`} />
+                  <img src={screenshot} alt="" loading="lazy" decoding="async" />
                 </button>
               ))}
             </div>
@@ -670,14 +744,10 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                   <button
                     className="documentation-card"
                     key={`${item.title}-${index}`}
-                    onClick={() => {
-                      if (item.image) {
-                        setActiveDocument({ image: item.image, title: item.title });
-                        setIsGalleryOpen(true);
-                        return;
-                      }
-
-                      setIsGalleryOpen(true);
+                    onClick={(event) => {
+                      setActiveScreenshot(null);
+                      setActiveDocument(item.image ? { image: item.image, title: item.title } : null);
+                      openLightbox(event);
                     }}
                     type="button"
                   >
@@ -711,15 +781,14 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
           <div className="project-lightbox" role="dialog" aria-modal="true" aria-label={`${title} gallery`}>
             <button
               className="project-lightbox__backdrop"
-              onClick={() => {
-                setIsGalleryOpen(false);
-                setActiveScreenshot(null);
-                setActiveDocument(null);
-              }}
+              onClick={closeLightbox}
               type="button"
               aria-label="Close gallery"
             />
-            <div className={activeScreenshot || activeDocument ? "project-lightbox__panel is-viewing-image" : "project-lightbox__panel"}>
+            <div
+              className={activeScreenshot || activeDocument ? "project-lightbox__panel is-viewing-image" : "project-lightbox__panel"}
+              ref={lightboxPanelRef}
+            >
               <button
                 className="project-lightbox__close"
                 onClick={() => {
@@ -728,13 +797,7 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                     return;
                   }
 
-                  if (activeDocument) {
-                    setActiveDocument(null);
-                    setIsGalleryOpen(false);
-                    return;
-                  }
-
-                  setIsGalleryOpen(false);
+                  closeLightbox();
                 }}
                 type="button"
                 aria-label={activeScreenshot ? "Back to gallery" : "Close overlay"}
@@ -796,7 +859,12 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                   <div className="project-lightbox__grid">
                     {screenshots.map((screenshot, index) => (
                       <button key={screenshot} onClick={() => setActiveScreenshot(screenshot)} type="button">
-                        <img src={screenshot} alt={`${title} screenshot ${index + 1}`} />
+                        <img
+                          src={screenshot}
+                          alt={`${title} screenshot ${index + 1}`}
+                          loading="lazy"
+                          decoding="async"
+                        />
                       </button>
                     ))}
                   </div>

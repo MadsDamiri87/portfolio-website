@@ -21,7 +21,6 @@ export type Project = {
   status?: "Featured" | "In progress" | "Learning lab";
   type?: string;
   year?: string;
-  progress?: number;
   source?: string;
   semester?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
 };
@@ -34,12 +33,7 @@ export type ProjectDetail = {
   timeline?: string;
   duration?: string;
   role?: string;
-  codeSize?: string;
   teamSize?: string;
-  facts?: Array<{
-    label: string;
-    value: string;
-  }>;
   about: string[];
   technicalChoices?: Array<{
     category?: string;

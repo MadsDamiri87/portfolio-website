@@ -19,10 +19,12 @@ export function ContactPage() {
     subject: "",
     message: "",
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const updateField =
     (field: keyof typeof formValues) =>
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setIsSubmitted(false);
       setFormValues((current) => ({ ...current, [field]: event.target.value }));
     };
 
@@ -39,7 +41,11 @@ export function ContactPage() {
       .filter(Boolean)
       .join("\n");
 
+    // There is no backend behind this site, so the form hands the message to the
+    // visitor's own mail client. The notice below explains that, since a mailto:
+    // handoff fails silently when no client is configured.
     window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setIsSubmitted(true);
   };
 
   return (
@@ -104,6 +110,7 @@ export function ContactPage() {
                   autoComplete="name"
                   onChange={updateField("name")}
                   placeholder="Your name"
+                  required
                   type="text"
                   value={formValues.name}
                 />
@@ -115,6 +122,7 @@ export function ContactPage() {
                   autoComplete="email"
                   onChange={updateField("email")}
                   placeholder="Your email"
+                  required
                   type="email"
                   value={formValues.email}
                 />
@@ -136,6 +144,7 @@ export function ContactPage() {
                 <textarea
                   onChange={updateField("message")}
                   placeholder="Your message"
+                  required
                   value={formValues.message}
                 />
               </label>
@@ -145,6 +154,18 @@ export function ContactPage() {
               <MessageSquare aria-hidden="true" size={18} strokeWidth={2.1} />
               <span>Send Message</span>
             </button>
+
+            <p aria-live="polite" className="contact-form-panel__status">
+              {isSubmitted ? (
+                <>
+                  Your mail app should have opened with the message ready to send. If nothing
+                  happened, write to{" "}
+                  <a href={`mailto:${profile.email}`}>{profile.email}</a> directly.
+                </>
+              ) : (
+                <>This form opens your own mail app — nothing is sent or stored by this site.</>
+              )}
+            </p>
           </form>
 
           <aside className="contact-profile-panel" aria-label="Profile and phone">

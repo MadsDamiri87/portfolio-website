@@ -5415,3 +5415,118 @@ h3,
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   Skip link, 404 page and contact form status
+   ========================================================================== */
+
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  z-index: 60;
+  padding: 10px 20px;
+  transform: translate(-50%, -140%);
+  border: 1px solid rgba(222, 197, 174, 0.28);
+  border-radius: 0 0 8px 8px;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 650;
+  background: var(--surface-strong);
+  backdrop-filter: blur(18px);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus-visible {
+  transform: translate(-50%, 0);
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+main:focus {
+  outline: none;
+}
+
+.not-found-page {
+  display: grid;
+  place-items: center;
+  min-height: min(72vh, 640px);
+  padding: 80px 0;
+}
+
+.not-found-page__inner {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  max-width: 540px;
+  text-align: center;
+}
+
+.not-found-page__mark {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border: 1px solid rgba(222, 197, 174, 0.18);
+  border-radius: 50%;
+  color: var(--amber);
+  background: var(--home-glass);
+  box-shadow: var(--home-glow);
+}
+
+.not-found-page__code {
+  margin: 6px 0 0;
+  color: #ca896b;
+  font-size: 0.86rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.not-found-page h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  line-height: 1.1;
+}
+
+.not-found-page p:not(.not-found-page__code) {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.not-found-page .button {
+  margin-top: 10px;
+}
+
+.contact-form-panel__status {
+  margin: 14px 0 0;
+  color: var(--soft);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.contact-form-panel__status a {
+  color: var(--amber);
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.route-fallback {
+  min-height: 70vh;
+}

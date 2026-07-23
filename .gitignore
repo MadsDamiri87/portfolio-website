@@ -1,7 +1,26 @@
+# Dependencies
 node_modules
 npm-cache
+
+# Build output
 dist
+dist-ssr
+
+# Environment
 .env
 .env.local
+.env.*.local
+
+# Editor / OS
 .DS_Store
+.idea
+.vscode
 *.log
+
+# Local rollback snapshots and scratch work (never commit these)
+_rollback-*
+_temporary-review-*
+tmp/
+
+# Source material that is not part of the site
+PNG'er/

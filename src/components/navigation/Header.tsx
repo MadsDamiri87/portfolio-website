@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Download, FileText, FolderKanban, GitBranch, Home, Mail, Menu, Network, UserRound, X } from "lucide-react";
+import { FileText, FolderKanban, GitBranch, Home, Mail, Menu, Network, UserRound, X } from "lucide-react";
 import mdLogo from "../../assets/images/md-logo.webp";
 import { navigation } from "../../data/navigation";
-import { profile } from "../../data/profile";
+import { profile, socialProfiles } from "../../data/profile";
 
 const socialLinks = [
-  { label: "GitHub", href: "https://github.com/MadsDamiri87", icon: GitBranch },
-  { label: "LinkedIn", href: "https://www.linkedin.com/", icon: Network },
+  { label: "GitHub", href: socialProfiles.github, icon: GitBranch },
+  { label: "LinkedIn", href: socialProfiles.linkedin, icon: Network },
   { label: "Email", href: `mailto:${profile.email}`, icon: Mail },
 ];
 
@@ -88,16 +88,26 @@ export function Header({ activePage }: HeaderProps) {
 
         <div className="header__actions">
           <div className="socials" aria-label="Social links">
-            {socialLinks.map(({ label, href, icon: Icon }) => (
-              <a key={label} href={href} aria-label={label}>
-                <Icon size={18} strokeWidth={1.8} />
-              </a>
-            ))}
+            {socialLinks.map(({ label, href, icon: Icon }) => {
+              const isExternal = href.startsWith("http");
+
+              return (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  rel={isExternal ? "noreferrer" : undefined}
+                  target={isExternal ? "_blank" : undefined}
+                >
+                  <Icon size={18} strokeWidth={1.8} />
+                </a>
+              );
+            })}
           </div>
 
           <a className="button button--primary button--compact" href="#/cv">
-            <span>Download CV</span>
-            <Download size={16} strokeWidth={1.9} />
+            <span>View CV</span>
+            <FileText size={16} strokeWidth={1.9} />
           </a>
 
           <button

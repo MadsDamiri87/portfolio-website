@@ -57,7 +57,10 @@ The site does not use a large UI framework. Most layout, interaction styling and
 
 ```text
 software-madsdamiri-dk/
-|-- public/                         # Static public files
+|-- .github/workflows/              # CI: typecheck and build on every push
+|-- docs/
+|   `-- diagrams/                   # Original SVG source diagrams (not bundled)
+|-- public/                         # Static files served as-is: icons, brochures, robots, sitemap
 |-- src/
 |   |-- assets/
 |   |   |-- images/                 # Shared page backgrounds, logo and profile images
@@ -65,11 +68,12 @@ software-madsdamiri-dk/
 |   |-- components/
 |   |   |-- layout/                 # Site shell and footer
 |   |   |-- navigation/             # Header and navigation
-|   |   |-- pages/                  # About, Projects, CV, Contact and project detail pages
+|   |   |-- pages/                  # About, Projects, CV, Contact, project detail and 404
 |   |   |-- projects/               # Project card components
 |   |   |-- sections/               # Homepage sections
 |   |   `-- ui/                     # Reusable UI components
 |   |-- data/                       # Navigation, profile and project content
+|   |-- hooks/                      # Shared React hooks
 |   |-- styles/
 |   |   `-- global.css              # Global styling for the full site
 |   |-- types/                      # Shared TypeScript types
@@ -78,10 +82,16 @@ software-madsdamiri-dk/
 |   `-- main.tsx                    # React application entry point
 |-- index.html
 |-- package.json
+|-- package-lock.json
 |-- tsconfig.json
 |-- vite.config.ts
 `-- README.md
 ```
+
+The `docs/diagrams` folder holds the original vector versions of the UML and ER
+diagrams. The site itself renders the smaller WebP exports under
+`src/assets/ProjectImages`, so the SVG sources are kept as reference material
+and are never bundled.
 
 ## Pages
 
@@ -151,7 +161,7 @@ The visual design is currently handled in one global stylesheet:
 src/styles/global.css
 ```
 
-This keeps the project simple, but the file has grown large. A future improvement would be to split the CSS into smaller files, for example:
+This keeps the project simple, but the file has grown past 5,000 lines. A future improvement would be to split the CSS into smaller files, for example:
 
 ```text
 styles/
@@ -172,10 +182,15 @@ Example routes:
 #home
 #/about
 #/projects
+#/projects?tech=React
 #/projects/project-slug
 #/cv
 #/contact
 ```
+
+Anything that does not match a known route renders a 404 page instead of
+silently falling back to the home page. Each sub-page is code-split with
+`React.lazy`, so the first visit only downloads the home page.
 
 ## How to Run the Project
 
@@ -203,6 +218,16 @@ Preview the production build:
 npm run preview
 ```
 
+Run the typecheck on its own:
+
+```bash
+npm run typecheck
+```
+
+Dependency versions are pinned and `package-lock.json` is committed, so
+`npm ci` reproduces the exact same build. GitHub Actions runs the typecheck and
+the build on every push to `main`.
+
 ## Current Study Status
 
 I am studying Software Engineering at VIA University College.
@@ -214,21 +239,25 @@ Current status:
 - focused on fullstack development, software design, databases and maintainable systems
 - interested in trainee and student developer opportunities
 
+## Accessibility and Performance Notes
+
+- a skip link moves keyboard focus straight to the main content
+- the image lightbox traps and restores focus, closes on `Escape`, supports
+  arrow-key navigation and locks background scrolling while open
+- all JavaScript-driven carousels stop when the visitor has reduced motion
+  enabled, and pause while the browser tab is hidden
+- below-the-fold images are lazy-loaded and decoded asynchronously
+- React is split into its own chunk so app changes do not invalidate it
+
 ## Future Improvements
 
 Possible future improvements include:
 
-- final mobile layout polish across all pages
-- splitting `global.css` into page-specific and component-specific styles
+- splitting `global.css` into page-specific and component-specific styles, on a
+  shared breakpoint scale rather than the current ad-hoc widths
+- extracting the three auto-scrolling carousels into one shared hook
 - moving larger page-specific text/data into dedicated files under `src/data`
-- adding final downloadable CV and trainee material
-- optimizing large images and SVG documentation assets
+- unit tests for the pure functions (`getRoute`, `projectMatches`, `tagTone`)
+- adding a real downloadable CV and trainee material
+- replacing the generated hero artwork with photos of my own setup and work
 - adding more project detail pages as new projects are completed
-
-## Notes
-
-- This is a personal portfolio project.
-- The visual identity is custom-made for the site.
-- The project is designed to be hosted as a static website.
-- The folder intended for GitHub is `software-madsdamiri-dk`.
-- Generated/local folders such as `node_modules`, `dist` and rollback folders should not be committed.

@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { projects } from "../../data/projects";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import { ProjectCard } from "../projects/ProjectCard";
 import { SectionHeading } from "../ui/SectionHeading";
 
@@ -10,6 +11,7 @@ const stripAutoResumeDelay = 1500;
 const stripAutoScrollSpeed = 0.1;
 
 export function ProjectsSection() {
+  const prefersReducedMotion = usePrefersReducedMotion();
   const stripRef = useRef<HTMLDivElement>(null);
   const isPointerOverStripRef = useRef(false);
   const lastAutoFrameRef = useRef<number | null>(null);
@@ -103,6 +105,11 @@ export function ProjectsSection() {
   }, []);
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      stripRef.current?.classList.remove("is-auto-scrolling");
+      return;
+    }
+
     let frame = 0;
 
     const tick = (time: number) => {
@@ -111,7 +118,12 @@ export function ProjectsSection() {
       if (strip) {
         const maxScroll = Math.max(0, strip.scrollWidth - strip.clientWidth);
 
-        if (maxScroll > stripFadeThreshold && time >= pauseUntilRef.current && !isPointerOverStripRef.current) {
+        if (
+          maxScroll > stripFadeThreshold &&
+          time >= pauseUntilRef.current &&
+          !isPointerOverStripRef.current &&
+          !document.hidden
+        ) {
           strip.classList.add("is-auto-scrolling");
           strip.style.scrollSnapType = "none";
 
@@ -140,7 +152,7 @@ export function ProjectsSection() {
     frame = requestAnimationFrame(tick);
 
     return () => cancelAnimationFrame(frame);
-  }, []);
+  }, [prefersReducedMotion]);
 
   const scrollToDot = (dotIndex: number) => {
     const strip = stripRef.current;

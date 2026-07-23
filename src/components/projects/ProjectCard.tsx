@@ -1,5 +1,5 @@
 import { ExternalLink } from "lucide-react";
-import type { KeyboardEvent, MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import type { Project } from "../../types";
 import { TechPill } from "../ui/TechPill";
 
@@ -33,34 +33,28 @@ export function projectDetailHref(project: Project) {
 export function ProjectCard({ project }: ProjectCardProps) {
   const detailHref = projectDetailHref(project);
 
-  const openProject = () => {
-    window.location.hash = detailHref;
-  };
-
+  // Mouse-only convenience: clicking the card padding opens the project.
+  // Keyboard and screen-reader users are served by the real links below, so the
+  // card itself is deliberately not focusable.
   const handleCardClick = (event: MouseEvent<HTMLElement>) => {
     if ((event.target as HTMLElement).closest("a, button")) return;
 
-    openProject();
-  };
-
-  const handleCardKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.key !== "Enter") return;
-    if ((event.target as HTMLElement).closest("a, button")) return;
-
-    openProject();
+    window.location.hash = detailHref;
   };
 
   return (
-    <article
-      className={`project-card project-card--${project.accent}`}
-      onClick={handleCardClick}
-      onKeyDown={handleCardKeyDown}
-    >
-      <a className="project-card__open" href={detailHref} aria-label={`Open ${project.title}`}>
+    <article className={`project-card project-card--${project.accent}`} onClick={handleCardClick}>
+      <a className="project-card__open" href={detailHref} aria-label={`Open ${project.title}`} tabIndex={-1}>
         <ExternalLink size={17} strokeWidth={1.9} />
       </a>
-      <a className="project-preview" href={detailHref} aria-label={`Open ${project.title}`}>
-          <img className="project-preview__image" src={project.image} alt={project.title} />
+      <a className="project-preview" href={detailHref} aria-hidden="true" tabIndex={-1}>
+        <img
+          className="project-preview__image"
+          src={project.image}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
       </a>
       <div className="project-card__body">
         <p>{project.category}</p>

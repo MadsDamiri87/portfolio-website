@@ -1,4 +1,4 @@
-import { ArrowRight, HeartHandshake } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { skills } from "../../data/projects";
 import { techProjectHref } from "../projects/ProjectCard";
 import { TechPill } from "../ui/TechPill";
@@ -11,22 +11,21 @@ export function AboutSection() {
           <h2>Technical and general background</h2>
           <p>
             I am currently studying software engineering at VIA University College, while
-            practising building different kinds of practical projects to help strengthen and improving my
+            building different kinds of practical projects to help strengthen and improve my
             skills.
           </p>
-          <p>I've always been fond of computers, technology,
-            programming, making homepages and more. I have even used this skill
-            on multiple occasions on school projects before I came to the
-            realization and afterwards the conclusion, that i wanted to to be a programmer.
-            I just had too much fun with it, and therefor I didn't think
-            of it as work or something i could do as a profession.
+          <p>
+            I've always been fond of computers, technology, programming, making homepages and
+            more. I have even used this skill on multiple occasions on school projects before I
+            came to the realization, and afterwards the conclusion, that I wanted to be a
+            programmer. I just had too much fun with it, and therefore I didn't think of it as
+            work or as something I could do as a profession.
           </p>
           <p>
-            Before starting my road towards becoming a software engineer,
-            I spent a lot of years working closely with people in different ways.
-            The knowledge and experience i've been able to extract from that,
-            has shaped the way i interact with people in almost every way.
-            And most importantly. It has taught me a better way to listen and understand
+            Before starting my road towards becoming a software engineer, I spent a lot of years
+            working closely with people in different ways. The knowledge and experience I've been
+            able to extract from that has shaped the way I interact with people in almost every
+            way. And most importantly, it has taught me a better way to listen to and understand
             people as well as concepts.
           </p>
           <p>
@@ -40,9 +39,9 @@ export function AboutSection() {
         <aside className="background-panel background-panel--centered">
           <h3>Practical, calm and curious</h3>
           <p>
-            I like writing code, and even though AI most likely will put an end to that at
-            some point in a not so distant future, i still like the puzzle that a complex code
-            contains of.
+            I like writing code, and even though AI will most likely change that at some point in
+            a not so distant future, I still enjoy the puzzle that a complex piece of code
+            presents.
           </p>
           <div className="skill-cloud">
             {skills.map((skill, index) => (
