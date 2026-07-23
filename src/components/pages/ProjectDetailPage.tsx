@@ -822,26 +822,36 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                 </>
               ) : activeScreenshot ? (
                 <>
-                  <div className="project-lightbox__image-stage">
-                    <button
-                      aria-label="Previous screenshot"
-                      className="project-lightbox__nav project-lightbox__nav--previous"
-                      disabled={activeScreenshotIndex <= 0}
-                      onClick={showPreviousScreenshot}
-                      type="button"
-                    >
-                      <ChevronLeft size={24} strokeWidth={1.9} />
-                    </button>
+                  <div
+                    className={
+                      screenshots.length > 1
+                        ? "project-lightbox__image-stage project-lightbox__image-stage--has-nav"
+                        : "project-lightbox__image-stage"
+                    }
+                  >
+                    {screenshots.length > 1 ? (
+                      <button
+                        aria-label="Previous screenshot"
+                        className="project-lightbox__nav project-lightbox__nav--previous"
+                        disabled={activeScreenshotIndex <= 0}
+                        onClick={showPreviousScreenshot}
+                        type="button"
+                      >
+                        <ChevronLeft size={24} strokeWidth={1.9} />
+                      </button>
+                    ) : null}
                     <img className="project-lightbox__image" src={activeScreenshot} alt={`${title} selected screenshot`} />
-                    <button
-                      aria-label="Next screenshot"
-                      className="project-lightbox__nav project-lightbox__nav--next"
-                      disabled={activeScreenshotIndex >= screenshots.length - 1}
-                      onClick={showNextScreenshot}
-                      type="button"
-                    >
-                      <ChevronRight size={24} strokeWidth={1.9} />
-                    </button>
+                    {screenshots.length > 1 ? (
+                      <button
+                        aria-label="Next screenshot"
+                        className="project-lightbox__nav project-lightbox__nav--next"
+                        disabled={activeScreenshotIndex >= screenshots.length - 1}
+                        onClick={showNextScreenshot}
+                        type="button"
+                      >
+                        <ChevronRight size={24} strokeWidth={1.9} />
+                      </button>
+                    ) : null}
                   </div>
                   <div className="project-lightbox__actions">
                     <a className="button button--secondary button--compact" href={activeScreenshot} target="_blank" rel="noreferrer">

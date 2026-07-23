@@ -118,7 +118,7 @@ h3,
 }
 
 .header__inner {
-  min-height: 80px;
+  min-height: 55px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -198,7 +198,7 @@ h3,
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -32px;
+  bottom: -21px;
   width: 66px;
   height: 2px;
   border-radius: 999px;
@@ -318,7 +318,7 @@ h3,
 }
 
 .button--compact {
-  min-height: 42px;
+  min-height: 31px;
   padding-inline: 20px;
 }
 
@@ -2832,14 +2832,34 @@ h3,
   z-index: 50;
   display: grid;
   place-items: center;
-  padding: 28px;
+  padding: var(--lightbox-gutter);
+  padding-top: calc(var(--lightbox-header-offset) + var(--lightbox-gutter));
+
+  --lightbox-gutter: 28px;
+  /* The site header is sticky, so the panel starts below it instead of behind it.
+     Matches .header__inner min-height (55px) plus its 1px bottom border. */
+  --lightbox-header-offset: 56px;
+  --lightbox-available: calc(
+    100vh - var(--lightbox-header-offset) - (var(--lightbox-gutter) * 2)
+  );
+}
+
+/* Mobile browsers report 100vh as the height with the URL bar hidden, so a panel
+   sized against it hangs below the visible area while the bar is showing.
+   dvh is the actually visible height. */
+@supports (height: 100dvh) {
+  .project-lightbox {
+    --lightbox-available: calc(
+      100dvh - var(--lightbox-header-offset) - (var(--lightbox-gutter) * 2)
+    );
+  }
 }
 
 .project-lightbox__backdrop {
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgba(3, 6, 11, 0.76);
+  background: rgba(9, 8, 7, 0.78);
   backdrop-filter: blur(16px);
   cursor: pointer;
 }
@@ -2848,20 +2868,21 @@ h3,
   position: relative;
   z-index: 1;
   width: min(100%, 1120px);
-  max-height: min(820px, calc(100vh - 56px));
+  max-height: min(820px, var(--lightbox-available));
   padding: 22px;
   overflow: auto;
-  border: 1px solid rgba(222, 197, 174, 0.18);
+  border: 1px solid var(--line);
   border-radius: 8px;
+  /* Warm charcoal, same hue family as --home-glass / --surface-strong. */
   background:
-    linear-gradient(180deg, rgba(17, 25, 38, 0.96), rgba(7, 11, 18, 0.96)),
-    #151310;
+    linear-gradient(180deg, rgba(36, 32, 28, 0.96), rgba(16, 14, 12, 0.96)),
+    var(--bg);
   box-shadow: 0 30px 120px rgba(0, 0, 0, 0.62);
 }
 
 .project-lightbox__panel.is-viewing-image {
   width: min(100%, 1280px);
-  height: min(860px, calc(100vh - 56px));
+  height: min(860px, var(--lightbox-available));
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -2938,6 +2959,19 @@ h3,
   min-height: 0;
   flex: 1 1 0;
   overflow: hidden;
+
+  --lightbox-nav-size: 42px;
+  --lightbox-nav-gutter: 0px;
+}
+
+/* Only reserve room for the arrows when they are actually on screen, so a
+   document image is not needlessly narrowed. */
+.project-lightbox__image-stage--has-nav {
+  --lightbox-nav-gutter: calc((var(--lightbox-nav-size) + 10px) * 2);
+}
+
+.project-lightbox__image-stage--has-nav .project-lightbox__image {
+  max-width: calc(100% - var(--lightbox-nav-gutter));
 }
 
 .project-lightbox__image {
@@ -2947,7 +2981,7 @@ h3,
   width: auto;
   height: auto;
   margin: auto;
-  max-width: calc(100% - clamp(44px, 6vw, 84px));
+  max-width: 100%;
   max-height: calc(100% - 2px);
   box-sizing: border-box;
   border: 1px solid rgba(222, 197, 174, 0.16);
@@ -2963,8 +2997,8 @@ h3,
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: var(--lightbox-nav-size);
+  height: var(--lightbox-nav-size);
   border: 1px solid rgba(222, 197, 174, 0.2);
   border-radius: 8px;
   color: #ffffff;
@@ -4979,6 +5013,11 @@ h3,
     min-height: 70px;
   }
 
+  /* Keep the lightbox offset in step with the taller header at this breakpoint. */
+  .project-lightbox {
+    --lightbox-header-offset: 71px;
+  }
+
   .brand__text span,
   .socials,
   .header .button {
@@ -5335,11 +5374,15 @@ h3,
   }
 
   .project-lightbox {
-    padding: 14px;
+    --lightbox-gutter: 14px;
   }
 
   .project-lightbox__panel {
     padding: 16px;
+  }
+
+  .project-lightbox__image-stage {
+    --lightbox-nav-size: 34px;
   }
 
   .projects-intro-card,

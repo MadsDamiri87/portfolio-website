@@ -195,16 +195,6 @@ export function CvPage() {
                 {profile.email}
               </span>
             </div>
-
-            <div className="cv-strengths">
-              <p>Core strengths</p>
-              {["Communication", "Problem solving", "Ownership", "Continuous learning"].map((item) => (
-                <span key={item}>
-                  <ShieldCheck size={15} strokeWidth={1.8} />
-                  {item}
-                </span>
-              ))}
-            </div>
           </aside>
 
           <div className="cv-journey-map" aria-label="Journey timeline">
@@ -276,21 +266,6 @@ export function CvPage() {
                 <span>More on GitHub</span>
                 <ArrowRight size={16} strokeWidth={1.8} />
               </a>
-            </div>
-
-            <div className="cv-side-panel glass-panel">
-              <div className="cv-side-panel__heading">
-                <h2>Work Maturity</h2>
-                <BriefcaseBusiness size={20} strokeWidth={1.8} />
-              </div>
-              <div className="cv-maturity-list">
-                {maturity.map((item) => (
-                  <div className="cv-maturity-row" key={item.label}>
-                    <span>{item.label}</span>
-                    <DotLevel level={item.level} />
-                  </div>
-                ))}
-              </div>
             </div>
 
             <div className="cv-side-panel glass-panel">
