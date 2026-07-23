@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import projectDetailBackground from "../../assets/images/project-detail-system-map-bg.webp";
 import type { Project } from "../../types";
 import { tagTone, techProjectHref } from "../projects/ProjectCard";
 import { TechPill } from "../ui/TechPill";
@@ -58,14 +59,20 @@ function buildTechnicalChoiceSlides(choices: TechnicalChoice[]) {
   return slides;
 }
 
-function DiagramPreview() {
+function DiagramPreview({ image }: { image?: string }) {
   return (
     <div className="detail-diagram-preview" aria-hidden="true">
-      <span />
-      <span />
-      <span />
-      <span />
-      <span />
+      {image ? (
+        <img src={image} alt="" />
+      ) : (
+        <>
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+        </>
+      )}
     </div>
   );
 }
@@ -476,6 +483,7 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
 
   return (
     <section className="project-detail-page">
+      <img className="project-detail-page__background" src={projectDetailBackground} alt="" aria-hidden="true" />
       <div className="container project-detail-page__inner">
         <div className="project-detail-hero">
           <div className="project-detail-hero__copy">
@@ -586,7 +594,6 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                       <div className="technical-choice-grid">
                         {slide.choices.map((choice) => (
                           <article className="technical-choice" key={`${slide.category}-${choice.title}`}>
-                            <Code2 size={23} strokeWidth={1.85} />
                             <h3>{choice.title}</h3>
                             <p>{choice.description}</p>
                           </article>
@@ -674,13 +681,12 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                     }}
                     type="button"
                   >
-                    <DiagramPreview />
+                    <DiagramPreview image={item.image} />
                     <div>
                       <span>{item.type ?? "Document"}</span>
                       <h3>{item.title}</h3>
                       <p>{item.description}</p>
                     </div>
-                    <FileText size={17} strokeWidth={1.9} />
                   </button>
                 ))}
               </div>

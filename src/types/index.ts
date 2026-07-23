@@ -1,5 +1,3 @@
-import type { LucideIcon } from "lucide-react";
-
 export type NavItem = {
   label: string;
   href: string;
@@ -8,8 +6,6 @@ export type NavItem = {
 export type Feature = {
   title: string;
   description: string;
-  icon: LucideIcon;
-  tone: "blue" | "violet" | "cyan";
 };
 
 export type Project = {
@@ -60,7 +56,6 @@ export type ProjectDetail = {
 };
 
 export type ExperienceItem = {
-  period: string;
   title: string;
   detail: string;
 };

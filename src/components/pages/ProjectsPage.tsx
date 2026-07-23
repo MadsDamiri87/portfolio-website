@@ -1,5 +1,6 @@
-import { BarChart3, Boxes, Code2, Filter, GitBranch, Grid2X2, Layers, Search, Sparkles } from "lucide-react";
+import { BarChart3, Boxes, Filter, GitBranch, Grid2X2, Layers, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import projectsHeroImage from "../../assets/images/projects-system-bg.webp";
 import { projects } from "../../data/projects";
 import type { Project } from "../../types";
 import { ProjectCard, tagTone } from "../projects/ProjectCard";
@@ -36,28 +37,6 @@ function projectMatches(project: Project, query: string, tech: string, status: s
   );
 }
 
-function StatusColumn({ status, items }: { status: NonNullable<Project["status"]>; items: Project[] }) {
-  const iconMap = {
-    Featured: Sparkles,
-    "In progress": Code2,
-    "Learning lab": Layers,
-  };
-  const Icon = iconMap[status];
-
-  return (
-    <section className={`project-lane project-lane--${status.toLowerCase().replace(/\s+/g, "-")}`}>
-      <div className="project-lane__header">
-        <span>
-          <Icon size={19} strokeWidth={1.9} />
-          {status}
-        </span>
-        <strong>{items.length}</strong>
-      </div>
-      <div className="project-lane__bar" />
-    </section>
-  );
-}
-
 export function ProjectsPage() {
   const [query, setQuery] = useState("");
   const [selectedTech, setSelectedTech] = useState(getTechFromHash);
@@ -80,17 +59,6 @@ export function ProjectsPage() {
         semester,
         items: projects.filter((project) => project.semester === semester),
       })),
-    [],
-  );
-
-  const statusGroups = useMemo(
-    () =>
-      statusFilters
-        .filter((status) => status !== "All")
-        .map((status) => ({
-          status,
-          items: projects.filter((project) => project.status === status),
-        })),
     [],
   );
 
@@ -122,10 +90,10 @@ export function ProjectsPage() {
 
   return (
     <section className="projects-page">
+      <img className="projects-page__background" src={projectsHeroImage} alt="" aria-hidden="true" />
       <div className="container projects-page__inner">
         <header className="projects-page__header">
           <div>
-            <p>Project archive</p>
             <h1>Projects</h1>
             <span>Systems, school projects and experiments collected in one searchable overview.</span>
           </div>
@@ -135,11 +103,24 @@ export function ProjectsPage() {
           </div>
         </header>
 
-        <div className="project-status-grid" aria-label="Project categories">
-          {statusGroups.map(({ status, items }) => (
-            <StatusColumn key={status} status={status} items={items} />
-          ))}
-        </div>
+        <section className="projects-intro-card" aria-label="How to use the project archive">
+          <div>
+            <h2>A practical overview of what I have built</h2>
+            <p>
+              This page collects my school projects, experiments and fullstack work in one place.
+              It is meant to show how I think through systems, turn requirements into working
+              software and keep track of the technologies I have used along the way.
+            </p>
+          </div>
+          <div>
+            <h3>How to navigate</h3>
+            <p>
+              Search by project, technology or concept, filter by semester or status, and use the
+              technology tags to compare related projects. Open a project card to see the details,
+              screenshots, technical decisions and documentation.
+            </p>
+          </div>
+        </section>
 
         <div className="projects-page__layout">
           <div className="projects-page__main" id="project-results">
@@ -250,28 +231,24 @@ export function ProjectsPage() {
                 Overview
               </h2>
               <div className="overview-stat">
-                <Grid2X2 size={21} strokeWidth={1.9} />
                 <span>
                   <strong>{projects.length}</strong>
                   Projects
                 </span>
               </div>
               <div className="overview-stat">
-                <Boxes size={21} strokeWidth={1.9} />
                 <span>
                   <strong>{totalTechnologies}</strong>
                   Technologies
                 </span>
               </div>
               <div className="overview-stat">
-                <GitBranch size={21} strokeWidth={1.9} />
                 <span>
                   <strong>100%</strong>
                   Built by me
                 </span>
               </div>
               <div className="overview-stat">
-                <Layers size={21} strokeWidth={1.9} />
                 <span>
                   <strong>{selectedSemester === "All" ? "1-7" : selectedSemester}</strong>
                   Semester view

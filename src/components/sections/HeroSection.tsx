@@ -12,10 +12,6 @@ export function HeroSection() {
 
       <div className="container hero__inner">
         <div className="hero__content">
-          <div className="status-pill">
-            <span />
-            {profile.status}
-          </div>
           <h1>{profile.name}</h1>
           <p className="hero__role" aria-label={profile.role}>
             <span>Software Engineering Student</span>
@@ -33,7 +29,7 @@ export function HeroSection() {
         </div>
 
         <aside className="profile-card" aria-label={`${profile.name} profile image`}>
-          <img src={profileImage} alt="Mads Damiri" />
+          <img src={profileImage} alt="Profile Picture of Mads Damiri" />
           <div className="profile-card__shade" />
         </aside>
       </div>

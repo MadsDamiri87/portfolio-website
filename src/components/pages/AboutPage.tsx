@@ -3,6 +3,7 @@ import {
   Boxes,
   Code2,
 } from "lucide-react";
+import aboutHeroImage from "../../assets/images/about-hero-bg-warm.webp";
 
 const journeyItems = [
   {
@@ -33,7 +34,7 @@ const aboutTextPanels = {
     paragraphs: [
       "I study Software Engineering while working full time and running a psychotherapy practice on the side.",
       "That combination has shaped how I work: structured, curious and used to balancing many moving parts without losing sight of people.",
-      "I like understanding systems deeply, whether the system is software, a team, a workflow or a person trying to make sense of complexity.",
+      "I like understanding systems deeply, whether the system is software, a team, a workflow or a person trying to make sense of the world.",
     ],
   },
   right: {
@@ -112,6 +113,7 @@ export function AboutPage() {
   return (
     <main className="about-page">
       <section className="about-hero-page">
+        <img className="about-hero-page__image" src={aboutHeroImage} alt="" aria-hidden="true" />
         <EnergyOverlay />
         <div className="about-water-glimmer" aria-hidden="true">
           <span />
@@ -120,28 +122,19 @@ export function AboutPage() {
         </div>
         <div className="container about-hero-page__inner">
           <div className="about-hero-page__content">
-            <p className="eyebrow">About</p>
             <h1>
-              I build systems with <span>intent</span>, <span>clarity</span>, and context.
+              Why software engineering?
             </h1>
             <p>
-              I'm a developer and builder focused on creating software that solves real problems and scales with
-              purpose.
+              In contrast to my work as a therapist, there are specific and concrete solutions to
+              problems in software. I enjoy finding or creating solutions to problems, and to be
+              able to measure the success of these solutions. This is possible in this logical themed
+              kind of work, opposed to working with people, where measuring success is more abstract and complex.
             </p>
-            <p>I care about structure, simplicity, and the long-term impact of what we ship.</p>
+            <p>Working with people gives me a sense of purpose, while working with software gives
+              me the satisfaction of building something meaningful. I enjoy the process of solving
+              problems, creating solutions, and becoming completely immersed in the work.</p>
             <div className="about-hero-page__tags" aria-label="Profile highlights">
-              <span>
-                <Code2 size={16} strokeWidth={1.9} />
-                Full-Stack Engineer
-              </span>
-              <span>
-                <Boxes size={16} strokeWidth={1.9} />
-                System Thinker
-              </span>
-              <span>
-                <BookOpen size={16} strokeWidth={1.9} />
-                Lifelong Learner
-              </span>
             </div>
           </div>
 
@@ -152,7 +145,6 @@ export function AboutPage() {
         <div className="container about-story-board__inner">
           <aside className="about-side-panel about-side-panel--reading">
             <div className="about-panel-heading">
-              <BookOpen size={20} strokeWidth={1.8} />
               <h2>{aboutTextPanels.left.title}</h2>
             </div>
             <div className="about-text-box">
@@ -176,7 +168,6 @@ export function AboutPage() {
 
           <aside className="about-side-panel about-side-panel--focus">
             <div className="about-panel-heading">
-              <Code2 size={20} strokeWidth={1.8} />
               <h2>{aboutTextPanels.right.title}</h2>
             </div>
             <div className="about-text-box">

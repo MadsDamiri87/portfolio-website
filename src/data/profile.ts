@@ -1,13 +1,13 @@
 import type { ExperienceItem, Feature } from "../types";
-import { Brain, Code2, Lightbulb } from "lucide-react";
 
 export const profile = {
   name: "Mads Damiri",
   role: "Software Engineering Student",
   status: "Currently preparing for 3rd semester",
-  headline: "Building fullstack software.",
+  headline: "Learning while doing",
   intro:
-    "I build fullstack solutions with a focus on clean code, solid architecture and meaningful user experiences.",
+    "Im currently focused on developing my skills as a coming software engineer." +
+      " This Page is therefor also a learning-project for me.",
   location: "Denmark",
   email: "mads@madsdamiri.dk",
   phone: "+45 40 47 55 05",
@@ -15,43 +15,36 @@ export const profile = {
 
 export const features: Feature[] = [
   {
-    title: "Clear systems",
+    title: "Site purpose",
     description:
-      "I value simplicity, structure and maintainable code that solves real problems.",
-    icon: Code2,
-    tone: "blue",
+      "This site is meant to showcase my projects and to make it easier for companies" +
+        " to reach me",
   },
   {
-    title: "Software design",
+    title: "Site consists of",
     description:
-      "I prefer shaping flows, data models and interfaces before writing the first line of code.",
-    icon: Brain,
-    tone: "violet",
+      "My project-portfolio so far, CV and relevant information about me in general",
   },
   {
-    title: "Always learning",
+    title: "Nice to know",
     description:
-      "Curious by nature, I enjoy learning new technologies and creating working solutions.",
-    icon: Lightbulb,
-    tone: "cyan",
+      "I'm curious by nature, and like to learn in general which means," +
+        " my tech-stack will keep on growing",
   },
 ];
 
 export const experience: ExperienceItem[] = [
   {
-    period: "Now",
     title: "Software Engineering Student",
     detail:
       "Preparing for 3rd semester with focus on fullstack development, architecture and clean implementation.",
   },
   {
-    period: "Current focus",
     title: "React, TypeScript and databases",
     detail:
       "Building stronger foundations across frontend, backend, SQL, NoSQL and testing.",
   },
   {
-    period: "Before software",
     title: "Practical communication background",
     detail:
       "Years of close collaboration with people shaped a calm, responsible way of working in teams.",

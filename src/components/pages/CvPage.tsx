@@ -16,6 +16,7 @@ import {
   Target,
   UserRound,
 } from "lucide-react";
+import cvHeroImage from "../../assets/images/cv-hero-bg.webp";
 import profileImage from "../../assets/images/mads-profile-nobg.webp";
 import { profile } from "../../data/profile";
 import { tagTone } from "../projects/ProjectCard";
@@ -141,10 +142,10 @@ export function CvPage() {
   return (
     <div className="cv-page">
       <section className="cv-hero-page" id="cv">
+        <img className="cv-hero-page__image" src={cvHeroImage} alt="" aria-hidden="true" />
         <div className="container cv-hero-page__inner">
           <div className="cv-hero-page__content">
-            <p className="eyebrow">Curriculum Vitae</p>
-            <h1>Software trainee with a fullstack foundation.</h1>
+            <h1>Software trainee</h1>
             <p>
               I connect people, ideas and technology. My path into software is driven by
               curiosity, responsibility and a strong interest in building systems that are clear,

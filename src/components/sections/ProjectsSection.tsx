@@ -42,12 +42,13 @@ export function ProjectsSection() {
     const loopWidth = getLoopWidth();
     const loopScroll = loopWidth > 0 ? scrollLeft % loopWidth : scrollLeft;
     const progress = loopWidth > 0 ? loopScroll / loopWidth : maxScroll > 0 ? scrollLeft / maxScroll : 0;
+    const canScroll = maxScroll > stripFadeThreshold;
 
     setScrollState((current) => {
       const next = {
         activeDot: Math.min(stripDotCount - 1, Math.floor(progress * stripDotCount)),
-        canScrollLeft: loopScroll > stripFadeThreshold,
-        canScrollRight: maxScroll - scrollLeft > stripFadeThreshold,
+        canScrollLeft: canScroll,
+        canScrollRight: canScroll,
       };
 
       if (
