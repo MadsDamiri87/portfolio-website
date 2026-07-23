@@ -40,8 +40,8 @@ export function AboutSection() {
           <h3>Practical, calm and curious</h3>
           <p>
             I like writing code, and even though AI will most likely change that at some point in
-            a not so distant future, I still enjoy the puzzle that a complex piece of code
-            presents.
+            a not so distant future, I still enjoy the puzzle that a complex code can
+            present.
           </p>
           <div className="skill-cloud">
             {skills.map((skill, index) => (

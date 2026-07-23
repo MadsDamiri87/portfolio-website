@@ -22,9 +22,6 @@ export function HeroSection() {
             <ButtonLink href="#/projects" variant="primary" icon={ArrowRight}>
               Explore Projects
             </ButtonLink>
-            <ButtonLink href="#/cv" icon={ArrowRight}>
-              Open CV
-            </ButtonLink>
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-import aboutHeroImage from "../../assets/images/about-hero-bg-warm.webp";
+import aboutHeroImage from "../../assets/images/about-hero-desk.webp";
 
 const journeyItems = [
   {
@@ -42,79 +42,16 @@ const aboutTextPanels = {
   },
 };
 
-function EnergyOverlay() {
-  const paths = [
-    { direction: "code-to-books", d: "M 682 286 C 838 276, 1008 294, 1168 372 C 1264 420, 1392 312, 1542 252" },
-    { direction: "code-to-books", d: "M 686 342 C 842 326, 1006 326, 1178 398 C 1284 448, 1404 382, 1558 346" },
-    { direction: "code-to-books", d: "M 682 322 C 856 312, 1010 336, 1190 410 C 1308 458, 1418 456, 1578 492" },
-    { direction: "code-to-books", d: "M 704 392 C 878 366, 1036 354, 1204 418 C 1332 466, 1438 524, 1610 594" },
-    { direction: "code-to-books", d: "M 718 504 C 904 452, 1068 404, 1214 424 C 1352 442, 1458 640, 1662 690" },
-    { direction: "books-to-code", d: "M 1588 252 C 1440 282, 1332 356, 1202 412 C 1046 480, 874 382, 688 286" },
-    { direction: "books-to-code", d: "M 1640 604 C 1472 550, 1350 474, 1212 428 C 1038 370, 902 506, 704 548" },
-  ];
-
-  return (
-    <svg
-      className="about-energy-overlay"
-      viewBox="0 0 1773 887"
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id="aboutEnergyGradient" x1="100%" x2="0%" y1="0%" y2="0%">
-          <stop offset="0%" stopColor="#20c7e7" stopOpacity="0.78" />
-          <stop offset="42%" stopColor="#dfefff" stopOpacity="0.96" />
-          <stop offset="100%" stopColor="#7f52ff" stopOpacity="0.78" />
-        </linearGradient>
-        <filter id="aboutEnergyGlow">
-          <feGaussianBlur stdDeviation="5" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-
-      {paths.map(({ d, direction }, index) => (
-        <path
-          className={`about-energy-path about-energy-path--${direction}`}
-          d={d}
-          id={`about-energy-path-${index + 1}`}
-          key={d}
-        />
-      ))}
-
-      {paths.map(({ d, direction }, index) => (
-        <circle
-          className={`about-energy-signal about-energy-signal--${direction}`}
-          key={`${d}-signal`}
-          r={direction === "books-to-code" ? 4.2 : 3.2}
-        >
-          <animateMotion
-            begin={`${index * 0.78}s`}
-            dur={`${direction === "books-to-code" ? 5.2 + index * 0.28 : 8.4 + index * 0.42}s`}
-            repeatCount="indefinite"
-            rotate="auto"
-          >
-            <mpath href={`#about-energy-path-${index + 1}`} />
-          </animateMotion>
-        </circle>
-      ))}
-    </svg>
-  );
-}
-
 export function AboutPage() {
   return (
     <div className="about-page">
       <section className="about-hero-page">
-        <img className="about-hero-page__image" src={aboutHeroImage} alt="" aria-hidden="true" />
-        <EnergyOverlay />
-        <div className="about-water-glimmer" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
+        <img
+          className="about-hero-page__image"
+          src={aboutHeroImage}
+          alt="My desk: two monitors running code and this portfolio, a laptop, and a whiteboard of system sketches behind it"
+          decoding="async"
+        />
         <div className="container about-hero-page__inner">
           <div className="about-hero-page__content">
             <h1>

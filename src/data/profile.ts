@@ -42,7 +42,7 @@ export const experience: ExperienceItem[] = [
   {
     title: "Software Engineering Student",
     detail:
-      "Preparing for 3rd semester with focus on fullstack development, architecture and clean implementation.",
+      "Preparing for 3rd semester with focus on backend-development, architecture and simplicity.",
   },
   {
     title: "React, TypeScript and databases",
@@ -52,6 +52,7 @@ export const experience: ExperienceItem[] = [
   {
     title: "Practical communication background",
     detail:
-      "Years of close collaboration with people shaped a calm, responsible way of working in teams.",
+      "Years of close collaboration with people shaped an understanding, responsible way of working with people and" +
+        " in teams.",
   },
 ];

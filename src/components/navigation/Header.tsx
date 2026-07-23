@@ -105,7 +105,8 @@ export function Header({ activePage }: HeaderProps) {
             })}
           </div>
 
-          <a className="button button--primary button--compact" href="#/cv">
+          {/* Lands on the CV page and opens the CV overlay there. */}
+          <a className="button button--primary button--compact" href="#/cv?view=cv">
             <span>View CV</span>
             <FileText size={16} strokeWidth={1.9} />
           </a>

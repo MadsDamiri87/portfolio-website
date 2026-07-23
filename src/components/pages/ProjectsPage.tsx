@@ -6,7 +6,7 @@ import type { Project } from "../../types";
 import { ProjectCard, tagTone } from "../projects/ProjectCard";
 import { TechPill } from "../ui/TechPill";
 
-const statusFilters = ["All", "Featured", "In progress", "Learning lab"] as const;
+const statusFilters = ["All", "Featured", "In progress"] as const;
 const semesterFilters = [1, 2, 3, 4, 5, 6, 7] as const;
 type SemesterFilter = "All" | (typeof semesterFilters)[number];
 
@@ -107,16 +107,16 @@ export function ProjectsPage() {
           <div>
             <h2>A practical overview of what I have built</h2>
             <p>
-              This page collects my school projects, experiments and fullstack work in one place.
-              It is meant to show how I think through systems, turn requirements into working
-              software and keep track of the technologies I have used along the way.
+              This page collects my school projects, experiments and my overall work in one place.
+              It is meant to showcase my projects, and documentation of each project to the degree that
+              was required for each assignment.
             </p>
           </div>
           <div>
-            <h3>How to navigate</h3>
+            <h2>How to navigate</h2>
             <p>
               Search by project, technology or concept, filter by semester or status, and use the
-              technology tags to compare related projects. Open a project card to see the details,
+              technology tags to find related projects. Open a project card to see the details,
               screenshots, technical decisions and documentation.
             </p>
           </div>
@@ -227,7 +227,6 @@ export function ProjectsPage() {
           <aside className="projects-overview" aria-label="Project overview">
             <div className="projects-overview__block">
               <h2>
-                <BarChart3 size={18} strokeWidth={1.9} />
                 Overview
               </h2>
               <div className="overview-stat">

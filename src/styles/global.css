@@ -1,13 +1,56 @@
 :root {
   color-scheme: dark;
-  font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: var(--font-body);
   color: #f5eee7;
   background: #11100e;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+
+  /* ---- Typography -------------------------------------------------------
+     Self-hosted via @fontsource (imported in main.tsx). Source Serif 4 carries
+     the headings, IBM Plex Sans the running text and IBM Plex Mono anything
+     that reads as data: code, e-mail, phone. Plex Sans and Plex Mono are drawn
+     as one family, so the UI and the technical bits stay related.
+     Every size and weight below is used across all pages — change it here,
+     not in the page rules. */
+  --font-heading: "Source Serif 4 Variable", Georgia, Cambria, "Times New Roman", serif;
+  --font-body:
+    "IBM Plex Sans Variable", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  /* Display is the home hero only; h1 is every other page title. */
+  --text-display: clamp(2.9rem, 5.4vw, 4.4rem);
+  --text-h1: clamp(2.2rem, 4vw, 3.1rem);
+  --text-h2: clamp(1.55rem, 2.5vw, 2.15rem);
+  /* h3 titles content blocks the reader acts on (project cards, form panels);
+     panel-title is for supporting sidebar and card labels. */
+  --text-h3: 1.16rem;
+  --text-panel-title: 1.02rem;
+  /* lead is the hero sub-line, intro the paragraph under a page title. */
+  --text-lead: clamp(1.4rem, 2.6vw, 1.95rem);
+  --text-intro: clamp(1rem, 1.15vw, 1.12rem);
+  --text-body: 1rem;
+  --text-small: 0.9rem;
+  --text-eyebrow: 0.8rem;
+
+  --weight-heading: 500;
+  --weight-body: 400;
+  --weight-medium: 550;
+  --weight-strong: 650;
+
+  --leading-display: 1.02;
+  --leading-heading: 1.1;
+  --leading-body: 1.6;
+
+  /* Every page title starts this far below its hero's top edge. The value is
+     what the home hero already resolved to (10px padding + 34px margin), so the
+     front page is the reference and the other pages line up with it. Heroes that
+     used to centre their copy are pinned to the top instead — centring made the
+     heading drift as soon as the type scale grew with the viewport. */
+  --hero-heading-top: 44px;
+
   --bg: #11100e;
   --surface: rgba(29, 27, 24, 0.78);
   --surface-strong: rgba(34, 31, 27, 0.92);
@@ -80,8 +123,8 @@ h3,
 .projects-page__header h1,
 .about-page h1,
 .contact-page h1 {
-  font-family: Georgia, Cambria, "Times New Roman", serif;
-  font-weight: 500;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
 }
 
 .sr-only {
@@ -156,7 +199,7 @@ h3,
 }
 
 .brand__text strong {
-  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 1.06rem;
   font-weight: 600;
   line-height: 1.1;
@@ -179,7 +222,7 @@ h3,
   position: relative;
   color: rgba(219, 208, 198, 0.72);
   font-size: 0.98rem;
-  font-weight: 560;
+  font-weight: 500;
   line-height: 1;
   transition: color 180ms ease;
 }
@@ -383,7 +426,8 @@ h3,
   grid-template-columns: minmax(0, 1fr) minmax(285px, 484px);
   align-items: start;
   gap: clamp(58px, 8vw, 132px);
-  padding-block: 10px 126px;
+  /* h1 adds its own 34px margin on top of this. */
+  padding-block: calc(var(--hero-heading-top) - 34px) 126px;
 }
 
 .status-pill {
@@ -409,16 +453,16 @@ h3,
 
 .hero h1 {
   margin: 34px 0 2px;
-  font-size: clamp(3.5rem, 7vw, 3.2rem);
-  line-height: 0.96;
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
 }
 
 .hero__role {
   margin: 0;
   max-width: 620px;
-  font-size: 1.95rem;
-  line-height: 1.05;
-  font-weight: 500;
+  font-size: var(--text-lead);
+  line-height: var(--leading-heading);
+  font-weight: var(--weight-heading);
   color: #c98261;
 }
 
@@ -427,18 +471,18 @@ h3,
 }
 
 .hero__headline {
-  margin: 29px 0 0;
+  margin: 5px 0 0;
   color: #d8cbc0;
   font-size: clamp(1.25rem, 2vw, 1.62rem);
-  font-weight: 670;
+  font-weight: var(--weight-strong);
 }
 
 .hero__intro {
   margin: 14px 0 0;
   max-width: 575px;
   color: var(--muted);
-  font-size: 1.08rem;
-  line-height: 1.62;
+  font-size: var(--text-intro);
+  line-height: var(--leading-body);
 }
 
 .hero__actions {
@@ -615,7 +659,7 @@ h3,
   display: grid;
   align-content: start;
   gap: clamp(3px, 0.42vw, 7px);
-  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 7.18px;
   line-height: 1.12;
   transform:
@@ -750,8 +794,15 @@ h3,
   margin: 0;
 }
 
+/* These two had no size of their own and fell back to the browser default
+   1.17em, which is the one heading size left outside the scale. */
+.background-panel h3,
+.timeline h3 {
+  font-size: var(--text-h3);
+}
+
 .feature-card h2 {
-  font-size: 1.05rem;
+  font-size: var(--text-panel-title);
 }
 
 .feature-card p,
@@ -776,7 +827,7 @@ h3,
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding-top: 97px;
+  padding-top: 80px;
   padding-bottom: 64px;
   background:
     linear-gradient(180deg, rgba(60, 55, 41, 0.78) 0%, rgba(63, 63, 63, 0.86) 18%, rgba(50, 47, 42, 0.92) 78%, rgba(28, 24, 21, 0.96) 100%),
@@ -824,8 +875,8 @@ h3,
 .eyebrow {
   margin: 0 0 10px;
   color: #ca896b;
-  font-size: 0.86rem;
-  font-weight: 750;
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-strong);
   text-transform: uppercase;
 }
 
@@ -833,8 +884,8 @@ h3,
 .about-copy h2,
 .contact-section h2 {
   margin: 0;
-  font-size: clamp(2rem, 3.6vw, 3.3rem);
-  line-height: 1.08;
+  font-size: var(--text-h2);
+  line-height: var(--leading-heading);
 }
 
 .text-link {
@@ -1058,7 +1109,7 @@ h3,
 }
 
 .project-card__body h3 {
-  font-size: 1.25rem;
+  font-size: var(--text-h3);
 }
 
 .project-card__body span {
@@ -1173,7 +1224,8 @@ h3,
 .projects-page {
   position: relative;
   min-height: calc(100vh - 80px);
-  padding: 42px 0 68px;
+  /* 38 + the header's own 6px top padding == --hero-heading-top */
+  padding: calc(var(--hero-heading-top) - 6px) 0 68px;
   overflow: hidden;
   isolation: isolate;
 }
@@ -1216,13 +1268,20 @@ h3,
 .projects-page::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Fixed height with pixel-anchored stops. Previously this used inset: 0 with
+     percentage positions, so filtering (which changes the page height) moved
+     the glows and the fade. Anchoring to a fixed band keeps them still; the
+     values match what the percentages resolved to in the default full view. */
+  height: 1200px;
   z-index: 1;
   background:
-    radial-gradient(circle at 78% 6%, rgba(210, 148, 109, 0.1), transparent 25rem),
-    radial-gradient(circle at 22% 16%, rgba(199, 116, 82, 0.13), transparent 30rem),
-    radial-gradient(circle at 66% 34%, rgba(169, 88, 67, 0.1), transparent 26rem),
-    linear-gradient(180deg, rgba(17, 16, 14, 0), #11100e 76%);
+    radial-gradient(circle at 78% 126px, rgba(210, 148, 109, 0.1), transparent 25rem),
+    radial-gradient(circle at 22% 337px, rgba(199, 116, 82, 0.13), transparent 30rem),
+    radial-gradient(circle at 66% 716px, rgba(169, 88, 67, 0.1), transparent 26rem),
+    linear-gradient(180deg, rgba(17, 16, 14, 0) 0%, #11100e 1600px);
   pointer-events: none;
 }
 
@@ -1253,8 +1312,8 @@ h3,
 .projects-page__header h1 {
   margin: 0;
   color: var(--text);
-  font-size: clamp(2.5rem, 5vw, 4.75rem);
-  line-height: 0.96;
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
 }
 
 .projects-page__header span {
@@ -1304,17 +1363,6 @@ h3,
   box-shadow: var(--home-glow);
   overflow: hidden;
 }
-
-.projects-intro-card::before {
-  content: "";
-  position: absolute;
-  inset: 16px auto 16px 0;
-  width: 2px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, var(--blue), rgba(169, 88, 67, 0.42));
-  opacity: 0.75;
-}
-
 .projects-intro-card > div + div {
   padding-left: 22px;
   border-left: 1px solid rgba(222, 197, 174, 0.1);
@@ -1329,14 +1377,14 @@ h3,
 .projects-intro-card h2 {
   max-width: 560px;
   color: #f5eee7;
-  font-size: clamp(1.16rem, 1.6vw, 1.42rem);
-  line-height: 1.2;
+  font-size: var(--text-h3);
+  line-height: var(--leading-heading);
 }
 
 .projects-intro-card h3 {
   color: #f5eee7;
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-strong);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -1597,6 +1645,9 @@ h3,
   gap: 16px;
   color: var(--soft);
   font-size: 0.88rem;
+  margin-top: 40px;
+  padding: 0px 15px 0px 15px;
+
 }
 
 .projects-result-bar strong {
@@ -1662,7 +1713,7 @@ h3,
   align-items: center;
   gap: 9px;
   margin: 0 0 16px;
-  font-size: 0.98rem;
+  font-size: var(--text-panel-title);
 }
 
 .overview-stat {
@@ -1775,7 +1826,9 @@ h3,
   display: grid;
   grid-template-columns: minmax(350px, 0.78fr) minmax(420px, 1fr);
   gap: clamp(28px, 5vw, 76px);
-  align-items: center;
+  align-items: start;
+  /* The back link sits above the title, so the copy column starts high enough
+     that the h1 still lands on --hero-heading-top. */
   padding: 28px 0 37px;
 }
 
@@ -1811,16 +1864,16 @@ h3,
 .project-detail-hero h1 {
   margin: 24px 0 0;
   color: var(--text);
-  font-size: clamp(2.2rem, 6.5vw, 3rem);
-  line-height: 0.94;
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
 }
 
 .project-detail-hero h2 {
   max-width: 620px;
   margin: 18px 0 0;
   color: #c98261;
-  font-size: clamp(1.25rem, 2.4vw, 0.7rem);
-  line-height: 1.22;
+  font-size: var(--text-h3);
+  line-height: 1.35;
 }
 
 .project-detail-hero p:not(.project-detail-route) {
@@ -1850,6 +1903,9 @@ h3,
   position: relative;
   min-height: 310px;
   perspective: 1100px;
+  /* The grid is top-aligned so the title lands on the shared level; the
+     screenshots keep their centred composition. */
+  align-self: center;
 }
 
 .project-detail-hero__screen,
@@ -1969,8 +2025,8 @@ h3,
 
 .project-detail-section h2 {
   margin: 0;
-  font-size: 1.18rem;
-  line-height: 1.18;
+  font-size: var(--text-h3);
+  line-height: var(--leading-heading);
 }
 
 .project-detail-section__header {
@@ -2150,7 +2206,7 @@ h3,
 .technical-choice h3,
 .documentation-card h3 {
   margin: 12px 0 0;
-  font-size: 0.98rem;
+  font-size: var(--text-panel-title);
 }
 
 .technical-choice p,
@@ -2476,7 +2532,7 @@ h3,
   z-index: 1;
   display: grid;
   gap: 36px;
-  padding-block: 74px 72px;
+  padding-block: var(--hero-heading-top) 72px;
 }
 
 .contact-page__hero {
@@ -2491,17 +2547,17 @@ h3,
 
 .contact-page__hero h1 {
   margin: 0;
-  font-size: clamp(3.2rem, 5.5vw, 4.6rem);
-  line-height: 1.02;
-  font-weight: 500;
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
+  font-weight: var(--weight-heading);
 }
 
 .contact-page__hero p:not(.eyebrow) {
   max-width: 480px;
   margin: 30px 0 0;
   color: rgba(221, 211, 202, 0.82);
-  font-size: 1.34rem;
-  line-height: 1.5;
+  font-size: var(--text-intro);
+  line-height: var(--leading-body);
 }
 
 .contact-page__mail {
@@ -2536,7 +2592,7 @@ h3,
 
 .contact-info-card h2 {
   margin: 0;
-  font-size: 1.22rem;
+  font-size: var(--text-h3);
 }
 
 .contact-info-card ul {
@@ -2593,8 +2649,8 @@ h3,
 
 .contact-form-panel__header h2 {
   margin: 0;
-  font-size: 1.28rem;
-  line-height: 1.2;
+  font-size: var(--text-h3);
+  line-height: var(--leading-heading);
 }
 
 .contact-form-panel__header p {
@@ -2641,11 +2697,7 @@ h3,
   outline: 0;
   color: var(--text);
   background: transparent;
-  font:
-    0.94rem / 1.5 "JetBrains Mono",
-    "SFMono-Regular",
-    Consolas,
-    monospace;
+  font: 0.94rem / 1.5 var(--font-mono);
 }
 
 .contact-field input::placeholder,
@@ -2743,11 +2795,7 @@ h3,
   min-width: 0;
   overflow: hidden;
   color: var(--text);
-  font:
-    0.92rem / 1.35 "JetBrains Mono",
-    "SFMono-Regular",
-    Consolas,
-    monospace;
+  font: 0.92rem / 1.35 var(--font-mono);
   font-weight: 650;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3080,8 +3128,7 @@ h3,
 }
 
 .about-hero-page,
-.about-story-board,
-.about-water-glimmer {
+.about-story-board {
   position: relative;
   z-index: 2;
 }
@@ -3093,9 +3140,15 @@ h3,
   overflow: hidden;
   background: #11100e;
   border-bottom: 1px solid rgba(222, 197, 174, 0.1);
-  --about-hero-bg-width: clamp(1120px, 88vw, 1130px);
-  --about-hero-bg-shift: 190px;
-  --about-hero-bg-y: 41%;
+  /* The hero holds a photo of the desk (3:2), cropped towards the top so the
+     monitors and whiteboard stay in frame while the desk foreground falls away.
+     Same treatment as the background images on the projects, project detail and
+     CV pages: centred and capped at 1500px. Past that width the photo stops
+     growing instead of being zoomed further in and upscaled beyond its native
+     1536px, and it stays centred rather than drifting off the right edge. */
+  --about-hero-bg-width: min(100%, 1500px);
+  --about-hero-bg-shift: 350px;
+  --about-hero-bg-y: -220px;
 }
 
 .about-hero-page__image {
@@ -3108,8 +3161,32 @@ h3,
   height: 100%;
   object-fit: cover;
   object-position: center var(--about-hero-bg-y);
-  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.72) 8%, #000 18%, #000 82%, rgba(0, 0, 0, 0.72) 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.72) 8%, #000 18%, #000 82%, rgba(0, 0, 0, 0.72) 92%, transparent 100%);
+  /* The photo is a lit office shot; damp it down so it sits in the dark theme
+     instead of glaring against it. */
+  filter: brightness(0.72) contrast(1.02) saturate(0.86);
+  /* The box is as wide as the 1500px band but nudged right by the shift, so it
+     always overhangs the band's right edge by exactly that shift. Fading the
+     mask out at `100% - shift` lands the soft edge on the band edge instead of
+     letting the photo run on and get cut off by the viewport. Placement, scale
+     and object-position are untouched. */
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 10%,
+    #000 26%,
+    #000 calc(100% - var(--about-hero-bg-shift) - 190px),
+    rgba(0, 0, 0, 0.62) calc(100% - var(--about-hero-bg-shift) - 60px),
+    transparent calc(100% - var(--about-hero-bg-shift))
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 10%,
+    #000 26%,
+    #000 calc(100% - var(--about-hero-bg-shift) - 190px),
+    rgba(0, 0, 0, 0.62) calc(100% - var(--about-hero-bg-shift) - 60px),
+    transparent calc(100% - var(--about-hero-bg-shift))
+  );
   pointer-events: none;
   transform: translateX(-50%);
 }
@@ -3122,9 +3199,26 @@ h3,
   bottom: 0;
   z-index: 1;
   width: var(--about-hero-bg-width);
-  background: linear-gradient(90deg, rgba(17, 16, 14, 0.18), rgba(17, 16, 14, 0.03) 38%, rgba(17, 16, 14, 0.08));
-  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.72) 8%, #000 18%, #000 82%, rgba(0, 0, 0, 0.72) 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.72) 8%, #000 18%, #000 82%, rgba(0, 0, 0, 0.72) 92%, transparent 100%);
+  background: linear-gradient(90deg, rgba(17, 16, 14, 0.34), rgba(17, 16, 14, 0.05) 46%, rgba(17, 16, 14, 0.16));
+  /* Ends on the same band edge as the photo it tints. */
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.72) 8%,
+    #000 18%,
+    #000 calc(100% - var(--about-hero-bg-shift) - 190px),
+    rgba(0, 0, 0, 0.72) calc(100% - var(--about-hero-bg-shift) - 60px),
+    transparent calc(100% - var(--about-hero-bg-shift))
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.72) 8%,
+    #000 18%,
+    #000 calc(100% - var(--about-hero-bg-shift) - 190px),
+    rgba(0, 0, 0, 0.72) calc(100% - var(--about-hero-bg-shift) - 60px),
+    transparent calc(100% - var(--about-hero-bg-shift))
+  );
   pointer-events: none;
   transform: translateX(-50%);
 }
@@ -3134,10 +3228,12 @@ h3,
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* Warm scrim: keeps the heading legible over the busy left side of the photo
+     and blends the bottom edge into the story board below. */
   background:
-    linear-gradient(118deg, rgba(3, 5, 9, 0.92) 0%, rgba(5, 8, 14, 0.77) 26%, rgba(17, 16, 14, 0.24) 45%, transparent 64%),
-    radial-gradient(ellipse at 0% 0%, rgba(0, 0, 0, 0.89) 0%, rgba(3, 5, 9, 0.55) 34%, transparent 62%),
-    linear-gradient(180deg, rgba(4, 7, 12, 0.28), rgba(4, 7, 12, 0.06) 48%, rgba(4, 7, 12, 0.18));
+    linear-gradient(104deg, rgba(12, 11, 9, 0.93) 0%, rgba(14, 13, 11, 0.86) 28%, rgba(17, 16, 14, 0.46) 48%, transparent 70%),
+    radial-gradient(ellipse at 0% 0%, rgba(9, 8, 7, 0.76) 0%, rgba(12, 11, 9, 0.5) 36%, transparent 64%),
+    linear-gradient(180deg, rgba(12, 11, 9, 0.34), rgba(12, 11, 9, 0.05) 44%, rgba(17, 16, 14, 0.68));
   pointer-events: none;
 }
 
@@ -3153,10 +3249,10 @@ h3,
 
 .about-hero-page__content {
   position: absolute;
-  top: 52px;
+  top: var(--hero-heading-top);
   left: 0;
   z-index: 4;
-  width: 560px;
+  width: 650px;
 }
 
 .about-hero-page__content .eyebrow {
@@ -3166,9 +3262,9 @@ h3,
 .about-hero-page h1 {
   max-width: 560px;
   margin: 0;
-  font-size: clamp(2.28rem, 2.32vw, 2.45rem);
-  line-height: 1.08;
-  font-weight: 520;
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
+  font-weight: var(--weight-heading);
   letter-spacing: 0;
 }
 
@@ -3177,11 +3273,11 @@ h3,
 }
 
 .about-hero-page__content p:not(.eyebrow) {
-  max-width: 520px;
+  max-width: 650px;
   margin: 22px 0 0;
   color: rgba(221, 211, 202, 0.84);
-  font-size: 0.98rem;
-  line-height: 1.55;
+  font-size: var(--text-intro);
+  line-height: var(--leading-body);
 }
 
 .about-hero-page__content p + p:not(.eyebrow) {
@@ -3209,136 +3305,6 @@ h3,
   filter:
     drop-shadow(0 0 10px rgba(194, 111, 78, 0.34))
     drop-shadow(0 0 16px rgba(169, 88, 67, 0.18));
-}
-
-.about-energy-overlay {
-  position: absolute;
-  left: calc(50% + var(--about-hero-bg-shift));
-  top: var(--about-hero-bg-y);
-  z-index: 2;
-  width: var(--about-hero-bg-width);
-  height: auto;
-  aspect-ratio: 1773 / 887;
-  mix-blend-mode: screen;
-  opacity: 0.84;
-  pointer-events: none;
-  transform: translate(-50%, -54%);
-}
-
-.about-energy-path {
-  fill: none;
-  stroke: url("#aboutEnergyGradient");
-  stroke-linecap: round;
-  stroke-width: 1.05;
-  stroke-dasharray: 10 58;
-  opacity: 0.24;
-  filter: url("#aboutEnergyGlow");
-  animation: aboutEnergyTrace 8.4s linear infinite;
-}
-
-.about-energy-path--code-to-books {
-  opacity: 0.18;
-  stroke-dasharray: 8 68;
-  animation-duration: 12s;
-}
-
-.about-energy-signal {
-  fill: #dfb896;
-  opacity: 0.72;
-  filter: drop-shadow(0 0 10px rgba(210, 148, 109, 0.72));
-}
-
-.about-energy-signal--code-to-books {
-  fill: #d3a27c;
-  opacity: 0.42;
-  filter: drop-shadow(0 0 9px rgba(199, 116, 82, 0.68));
-}
-
-.about-water-glimmer {
-  display: none;
-  position: absolute;
-  top: auto;
-  bottom: -18px;
-  left: calc(50% + 28px);
-  z-index: 3;
-  width: min(820px, 58vw);
-  height: 230px;
-  overflow: hidden;
-  mix-blend-mode: screen;
-  opacity: 0.68;
-  background:
-    radial-gradient(ellipse at 52% 14%, rgba(255, 238, 205, 0.14), rgba(204, 125, 88, 0.08) 34%, transparent 66%);
-  mask-image:
-    linear-gradient(180deg, transparent 0%, #000 20%, #000 78%, transparent 100%),
-    radial-gradient(ellipse at 50% 42%, #000 0 42%, transparent 78%);
-  -webkit-mask-image:
-    linear-gradient(180deg, transparent 0%, #000 20%, #000 78%, transparent 100%),
-    radial-gradient(ellipse at 50% 42%, #000 0 42%, transparent 78%);
-  pointer-events: none;
-  perspective: 460px;
-  transform: translateX(-50%) rotateX(58deg);
-  transform-origin: 50% 100%;
-}
-
-.about-water-glimmer::before,
-.about-water-glimmer::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 34px;
-  width: 78%;
-  height: 120px;
-  border-radius: 50%;
-  background:
-    radial-gradient(ellipse at 50% 18%, rgba(235, 248, 255, 0.34), rgba(213, 143, 101, 0.16) 34%, transparent 68%),
-    linear-gradient(90deg, transparent, rgba(235, 216, 199, 0.18) 48%, rgba(235, 216, 199, 0.2) 52%, transparent);
-  filter: blur(5px);
-  opacity: 0.38;
-  transform: translateX(-50%) scaleX(0.48) translateY(-26px);
-  animation: aboutWaterWake 6.8s ease-out infinite;
-}
-
-.about-water-glimmer::after {
-  top: 58px;
-  width: 66%;
-  opacity: 0.26;
-  animation-delay: -3.2s;
-  animation-duration: 8.4s;
-}
-
-.about-water-glimmer span {
-  position: absolute;
-  left: 50%;
-  width: 16%;
-  height: 2px;
-  border-radius: 999px;
-  background: radial-gradient(ellipse at 50% 50%, rgba(235, 246, 255, 0.78), rgba(204, 127, 88, 0.24) 45%, transparent 76%);
-  box-shadow:
-    0 0 14px rgba(210, 136, 96, 0.42),
-    0 0 30px rgba(199, 116, 82, 0.18);
-  filter: blur(1.8px);
-  transform: translate3d(-50%, -30px, 0) scaleX(0.34);
-  animation: aboutWaterGlimmer 5.6s cubic-bezier(0.28, 0, 0.2, 1) infinite;
-}
-
-.about-water-glimmer span:nth-child(1) {
-  top: 40px;
-}
-
-.about-water-glimmer span:nth-child(2) {
-  top: 70px;
-  width: 18%;
-  opacity: 0.78;
-  animation-delay: -1.8s;
-  animation-duration: 6.4s;
-}
-
-.about-water-glimmer span:nth-child(3) {
-  top: 104px;
-  width: 14%;
-  opacity: 0.66;
-  animation-delay: -3.5s;
-  animation-duration: 7.2s;
 }
 
 .about-story-board {
@@ -3428,9 +3394,12 @@ h3,
 
 .about-panel-heading h2 {
   margin: 0;
-  color: #c98261;
-  font-size: 0.92rem;
-  font-weight: 750;
+  /* White, in the body sans — matches the site's other small uppercase labels
+     (.eyebrow) instead of the amber serif these used to inherit. */
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: var(--weight-strong);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -3596,8 +3565,8 @@ h3,
 .about-journey-card h2 {
   margin: 0;
   color: #f0e5da;
-  font-size: 0.98rem;
-  font-weight: 720;
+  font-size: var(--text-small);
+  font-weight: var(--weight-strong);
 }
 
 .about-journey-card p {
@@ -3641,7 +3610,7 @@ h3,
 .about-focus-list h3 {
   margin: 0;
   color: rgba(239, 229, 219, 0.9);
-  font-size: 0.94rem;
+  font-size: var(--text-panel-title);
 }
 
 .about-focus-list p {
@@ -3651,63 +3620,7 @@ h3,
   line-height: 1.42;
 }
 
-@keyframes aboutEnergyTrace {
-  to {
-    stroke-dashoffset: 260;
-  }
-}
 
-@keyframes aboutWaterGlimmer {
-  0% {
-    opacity: 0;
-    transform: translate3d(-50%, -42px, 0) scaleX(0.22);
-  }
-
-  34% {
-    opacity: 0.74;
-    transform: translate3d(-50%, 38px, 0) scaleX(0.82);
-  }
-
-  72% {
-    opacity: 0.42;
-    transform: translate3d(-50%, 104px, 0) scaleX(1.38);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate3d(-50%, 150px, 0) scaleX(1.9);
-  }
-}
-
-@keyframes aboutWaterWake {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%) scaleX(0.35) translateY(-30px);
-  }
-
-  38% {
-    opacity: 0.34;
-    transform: translateX(-50%) scaleX(0.76) translateY(22px);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateX(-50%) scaleX(1.34) translateY(112px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .about-energy-path,
-  .about-water-glimmer span,
-  .about-water-glimmer::before,
-  .about-water-glimmer::after {
-    animation: none;
-  }
-
-  .about-energy-signal {
-    display: none;
-  }
-}
 
 @media (max-width: 1300px) {
   .about-page {
@@ -3716,8 +3629,9 @@ h3,
   }
 
   .about-hero-page {
-    --about-hero-bg-width: clamp(1180px, 100vw, 1130px);
-    --about-hero-bg-shift: 0px;
+    --about-hero-bg-width: 100%;
+    --about-hero-bg-shift: 290px;
+    --about-hero-bg-y: 60%;
   }
 
   .about-hero-page,
@@ -3729,7 +3643,7 @@ h3,
   .about-hero-page__inner {
     display: grid;
     grid-template-columns: 1fr;
-    padding-block: 46px 86px;
+    padding-block: var(--hero-heading-top) 86px;
   }
 
   .about-hero-page__content {
@@ -3742,14 +3656,11 @@ h3,
 
   .about-hero-page h1 {
     max-width: 440px;
-    font-size: clamp(1.95rem, 3.15vw, 2.2rem);
-    line-height: 1.08;
   }
 
   .about-hero-page__content p:not(.eyebrow) {
     max-width: 420px;
     margin-top: 18px;
-    font-size: 0.94rem;
   }
 
   .about-hero-page__tags {
@@ -3791,23 +3702,47 @@ h3,
 }
 
 @media (max-width: 860px) {
+  /* Same rule as on desktop, just tighter on a phone. */
+  :root {
+    --hero-heading-top: 40px;
+  }
+
   .about-page {
     --about-reference-width: min(100% - 32px, 720px);
     --about-story-width: min(100% - 32px, 720px);
   }
 
-  .about-water-glimmer {
-    bottom: -12px;
-    width: min(760px, 128vw);
-    opacity: 0.36;
-  }
-
   .about-hero-page__inner {
-    padding-block: 34px 66px;
+    padding-block: var(--hero-heading-top) 66px;
   }
 
   .about-hero-page__content {
     max-width: min(100%, 560px);
+  }
+
+  /* The copy spans the full width here, so the scrim has to work top-down
+     instead of left-to-right. Heaviest behind the heading, then easing off so
+     the desk still reads instead of being crushed to a flat dark panel. */
+  .about-hero-page::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(12, 11, 9, 0.9) 0%,
+        rgba(12, 11, 9, 0.86) 50%,
+        rgba(17, 16, 14, 0.72) 100%
+      );
+  }
+
+  /* No room to offset the photo on a phone: a 290px shift on a ~375px hero
+     leaves a sliver of image against a mostly empty band. Full bleed instead,
+     and no edge mask — the vertical scrim above already carries the text. */
+  .about-hero-page {
+    --about-hero-bg-shift: 0px;
+  }
+
+  .about-hero-page__image {
+    mask-image: none;
+    -webkit-mask-image: none;
   }
 
   .about-story-board {
@@ -3836,6 +3771,9 @@ h3,
   .about-journey-card:nth-of-type(2n) {
     margin: 0;
     padding-left: 68px;
+    /* Reset the desktop zig-zag offset; stacked single-column it just pushed
+       even cards down onto the next one. */
+    transform: none;
   }
 
   .about-journey-card:nth-of-type(odd) .about-journey-card__node,
@@ -3848,13 +3786,10 @@ h3,
 @media (max-width: 620px) {
   .about-hero-page h1 {
     max-width: 100%;
-    font-size: clamp(2.05rem, 10vw, 2.55rem);
-    line-height: 1.05;
   }
 
   .about-hero-page__content p:not(.eyebrow) {
     max-width: 100%;
-    font-size: 0.92rem;
   }
 
   .about-hero-page__tags {
@@ -3898,7 +3833,7 @@ h3,
   --cv-hero-bg-shift-y: 0px;
   --cv-hero-bg-opacity: 1;
   position: relative;
-  min-height: 495px;
+  min-height: 480px;
   overflow: hidden;
   border-bottom: 1px solid rgba(222, 197, 174, 0.12);
   background: #100f0d;
@@ -3925,9 +3860,12 @@ h3,
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* Warm scrim, matched to the home hero. The image stays on the right; this
+     only warms the backdrop that used to be cold blue-black (rgba(5,8,14)),
+     which read as AI-generated against the rest of the site. */
   background:
-    radial-gradient(ellipse 660px 360px at 4% 3%, rgba(0, 0, 0, 0.86), transparent 70%),
-    linear-gradient(112deg, rgba(5, 8, 14, 0.94) 0%, rgba(5, 8, 14, 0.88) 25%, rgba(5, 8, 14, 0.34) 45%, rgba(5, 8, 14, 0.04) 70%),
+    radial-gradient(ellipse 660px 360px at 4% 3%, rgba(9, 8, 7, 0.82), transparent 70%),
+    linear-gradient(112deg, rgba(17, 16, 14, 0.94) 0%, rgba(17, 16, 14, 0.86) 25%, rgba(17, 16, 14, 0.34) 45%, rgba(17, 16, 14, 0.04) 70%),
     linear-gradient(180deg, rgba(17, 16, 14, 0.02) 0%, rgba(17, 16, 14, 0.16) 70%, #11100e 100%);
   pointer-events: none;
 }
@@ -3935,29 +3873,29 @@ h3,
 .cv-hero-page__inner {
   position: relative;
   z-index: 2;
-  min-height: 548px;
+  min-height: 400px;
   display: flex;
-  align-items: center;
+  align-items: start;
 }
 
 .cv-hero-page__content {
   width: min(100%, 570px);
-  padding-block: 72px 96px;
+  padding-block: var(--hero-heading-top) 96px;
 }
 
 .cv-hero-page h1 {
-  margin: 16px 0 0;
+  margin: 0;
   max-width: 560px;
-  font-size: 3.5rem;
-  line-height: 0.97;
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
 }
 
 .cv-hero-page__content p:not(.eyebrow) {
   max-width: 560px;
   margin: 24px 0 0;
   color: rgba(218, 207, 196, 0.78);
-  font-size: 1.08rem;
-  line-height: 1.72;
+  font-size: var(--text-intro);
+  line-height: var(--leading-body);
 }
 
 .cv-hero-page__actions {
@@ -3990,11 +3928,7 @@ h3,
   position: relative;
   padding: 42px 0 84px;
   border-top: 1px solid rgba(211, 153, 116, 0.12);
-  background:
-    radial-gradient(ellipse 880px 420px at 2% 0%, rgba(199, 116, 82, 0.16), transparent 68%),
-    radial-gradient(circle at 56% 14%, rgba(210, 148, 109, 0.08), transparent 26rem),
-    radial-gradient(circle at 76% 12%, rgba(169, 88, 67, 0.1), transparent 24rem),
-    linear-gradient(112deg, #181410 0%, #15110e 34%, #11100e 78%);
+  background: #29252580;
 }
 
 .cv-journey-page::before {
@@ -4078,7 +4012,7 @@ h3,
 .cv-profile-panel h2 {
   margin: 16px 0 0;
   color: #f5eee7;
-  font-size: 1.35rem;
+  font-size: var(--text-h3);
   text-align: center;
 }
 
@@ -4098,6 +4032,12 @@ h3,
   margin-top: 22px;
   padding-top: 20px;
   border-top: 1px solid rgba(222, 197, 174, 0.11);
+}
+
+.cv-profile-panel__cta {
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .cv-profile-facts span,
@@ -4135,8 +4075,8 @@ h3,
   margin: 10px 0 0;
   max-width: 660px;
   color: var(--text);
-  font-size: clamp(2.05rem, 3vw, 3.25rem);
-  line-height: 1.02;
+  font-size: var(--text-h2);
+  line-height: var(--leading-heading);
 }
 
 .cv-timeline {
@@ -4233,8 +4173,6 @@ h3,
 
 .cv-timeline-card__title {
   display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 14px;
   align-items: center;
   margin-top: 12px;
 }
@@ -4263,7 +4201,7 @@ h3,
 .cv-timeline-card h3 {
   margin: 0;
   color: #f5eee7;
-  font-size: 1.08rem;
+  font-size: var(--text-h3);
 }
 
 .cv-timeline-card small {
@@ -4330,8 +4268,8 @@ h3,
 .cv-side-panel__heading h2 {
   margin: 0;
   color: rgba(245, 238, 231, 0.9);
-  font-size: 0.86rem;
-  font-weight: 780;
+  font-size: var(--text-eyebrow);
+  font-weight: var(--weight-strong);
   text-transform: uppercase;
 }
 
@@ -4490,7 +4428,6 @@ h3,
 
   .cv-hero-page h1 {
     max-width: 500px;
-    font-size: clamp(2.85rem, 3vw, 4.6rem);
   }
 
   .cv-journey-page__inner {
@@ -4512,7 +4449,7 @@ h3,
 
   .cv-hero-page::after {
     background:
-      linear-gradient(90deg, rgba(5, 8, 14, 0.94) 0%, rgba(5, 8, 14, 0.72) 44%, rgba(5, 8, 14, 0.22) 100%),
+      linear-gradient(90deg, rgba(17, 16, 14, 0.94) 0%, rgba(17, 16, 14, 0.72) 44%, rgba(17, 16, 14, 0.22) 100%),
       linear-gradient(180deg, rgba(17, 16, 14, 0.02) 0%, #11100e 100%);
   }
 
@@ -4542,15 +4479,7 @@ h3,
   }
 
   .cv-hero-page__content {
-    padding-block: 54px 76px;
-  }
-
-  .cv-hero-page h1 {
-    font-size: clamp(2.35rem, 12vw, 2.6rem);
-  }
-
-  .cv-hero-page__content p:not(.eyebrow) {
-    font-size: 1rem;
+    padding-block: var(--hero-heading-top) 76px;
   }
 
   .cv-timeline {
@@ -4816,11 +4745,7 @@ h3,
   justify-content: center;
   gap: 10px 18px;
   color: rgba(221, 211, 202, 0.72);
-  font:
-    0.82rem / 1.35 "JetBrains Mono",
-    "SFMono-Regular",
-    Consolas,
-    monospace;
+  font: 0.82rem / 1.35 var(--font-mono);
 }
 
 .footer__contact a {
@@ -4951,14 +4876,6 @@ h3,
     transform: translateY(41%);
   }
 
-  .hero h1 {
-    font-size: clamp(3.15rem, 5vw, 4.75rem);
-  }
-
-  .hero__role {
-    font-size: 1.9rem;
-  }
-
   .feature-strip__grid {
     grid-template-columns: 1fr;
   }
@@ -4996,6 +4913,10 @@ h3,
 
   .project-fact:nth-child(3n + 1) {
     border-left: 0;
+  }
+
+  .feature-card {
+    min-height: 24mm;
   }
 
 }
@@ -5063,7 +4984,7 @@ h3,
   }
 
   .contact-page__inner {
-    padding-block: 56px 54px;
+    padding-block: var(--hero-heading-top) 54px;
   }
 
   .contact-page__hero {
@@ -5123,7 +5044,7 @@ h3,
   }
 
   .projects-page {
-    padding-top: 32px;
+    padding-top: calc(var(--hero-heading-top) - 6px);
   }
 
   .projects-page__header,
@@ -5134,8 +5055,30 @@ h3,
     flex-direction: column;
   }
 
+  /* The 167px bottom padding is tuned to clear the hero artwork on desktop.
+     Stacked on a phone it just leaves half a screen of dead space. */
+  .projects-page__header {
+    padding-bottom: 32px;
+  }
+
+  /* Stretched full width the box holds two short lines against a lot of
+     nothing, so it becomes a compact chip: count and label side by side. */
   .projects-page__meta {
-    width: 100%;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    width: fit-content;
+    min-width: 0;
+    padding: 12px 18px;
+  }
+
+  .projects-page__meta strong {
+    font-size: 1.55rem;
+  }
+
+  .projects-page__meta span {
+    max-width: none;
+    margin-top: 0;
   }
 
   .projects-filter-group {
@@ -5238,7 +5181,7 @@ h3,
     min-height: auto;
     grid-template-columns: 1fr;
     align-items: start;
-    padding-block: 56px 118px;
+    padding-block: calc(var(--hero-heading-top) - 34px) 118px;
   }
 
   .hero__content {
@@ -5246,13 +5189,8 @@ h3,
     max-width: 100%;
   }
 
-  .hero h1 {
-    font-size: clamp(2rem, 8vw, 4.6rem);
-  }
-
   .hero__role {
     max-width: 100%;
-    font-size: clamp(1.35rem, 7vw, 1.7rem);
   }
 
   .profile-card {
@@ -5322,16 +5260,8 @@ h3,
     font-size: 0.78rem;
   }
 
-  .project-card__body h3 {
-    font-size: 1.05rem;
-  }
-
   .project-card__body span {
     font-size: 0.84rem;
-  }
-
-  .project-detail-hero h1 {
-    font-size: clamp(2.8rem, 7vw, 4.2rem);
   }
 
   .project-detail-hero__screens {
@@ -5421,18 +5351,12 @@ h3,
 
   .contact-page__inner {
     gap: 22px;
-    padding-block: 42px 42px;
-  }
-
-  .contact-page__hero h1 {
-    font-size: clamp(2.25rem, 10vw, 2.85rem);
-    line-height: 1.05;
+    padding-block: var(--hero-heading-top) 42px;
   }
 
   .contact-page__hero p:not(.eyebrow) {
     max-width: 100%;
     margin-top: 22px;
-    font-size: 1.05rem;
   }
 
   .contact-page__mail {
@@ -5528,8 +5452,8 @@ main:focus {
 
 .not-found-page h1 {
   margin: 0;
-  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
-  line-height: 1.1;
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
 }
 
 .not-found-page p:not(.not-found-page__code) {
@@ -5572,4 +5496,127 @@ main:focus {
 
 .route-fallback {
   min-height: 70vh;
+}
+
+/* ==========================================================================
+   PDF overlay (CV)
+   ========================================================================== */
+
+.pdf-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: var(--pdf-gutter);
+  padding-top: calc(var(--pdf-header-offset) + var(--pdf-gutter));
+
+  --pdf-gutter: 24px;
+  /* Sits below the sticky header, like the project lightbox. */
+  --pdf-header-offset: 56px;
+  --pdf-available: calc(100vh - var(--pdf-header-offset) - (var(--pdf-gutter) * 2));
+}
+
+@supports (height: 100dvh) {
+  .pdf-overlay {
+    --pdf-available: calc(100dvh - var(--pdf-header-offset) - (var(--pdf-gutter) * 2));
+  }
+}
+
+.pdf-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(9, 8, 7, 0.78);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+}
+
+.pdf-overlay__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 1000px);
+  height: min(960px, var(--pdf-available));
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(36, 32, 28, 0.96), rgba(16, 14, 12, 0.96)),
+    var(--bg);
+  box-shadow: 0 30px 120px rgba(0, 0, 0, 0.62);
+}
+
+.pdf-overlay__bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pdf-overlay__bar h2 {
+  margin: 0;
+  font-size: var(--text-h3);
+  line-height: 1.2;
+}
+
+.pdf-overlay__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdf-overlay__close {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(222, 197, 174, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  background: rgba(21, 19, 16, 0.74);
+  cursor: pointer;
+}
+
+.pdf-overlay__close:hover,
+.pdf-overlay__close:focus-visible {
+  border-color: rgba(211, 153, 116, 0.46);
+  background: rgba(32, 25, 21, 0.88);
+}
+
+.pdf-overlay__stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #1c1a17;
+}
+
+.pdf-overlay__stage iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+@media (max-width: 860px) {
+  .pdf-overlay {
+    --pdf-gutter: 12px;
+    --pdf-header-offset: 71px;
+  }
+
+  .pdf-overlay__bar {
+    flex-wrap: wrap;
+  }
+
+  .pdf-overlay__bar h2 {
+    font-size: var(--text-panel-title);
+  }
+
+  .pdf-overlay__actions {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
 }

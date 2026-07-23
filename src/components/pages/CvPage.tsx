@@ -14,10 +14,15 @@ import {
   Sparkles,
   Target,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+// The PDF lives in docs/, which is not served as-is — importing it lets Vite
+// emit it as a build asset and hand back the URL it ends up on.
+import cvPdfUrl from "../../../docs/Mads Damiri - CV - software trainee 01-07-2026.pdf";
 import cvHeroImage from "../../assets/images/cv-hero-bg.webp";
 import profileImage from "../../assets/images/mads-profile-nobg.webp";
 import { profile, socialProfiles } from "../../data/profile";
 import { tagTone } from "../projects/ProjectCard";
+import { PdfOverlay } from "../ui/PdfOverlay";
 import { TechPill } from "../ui/TechPill";
 
 const journeySteps = [
@@ -25,7 +30,6 @@ const journeySteps = [
     number: "01",
     period: "Before software",
     title: "People, responsibility and structure",
-    subtitle: "Communication first",
     icon: HeartHandshake,
     tone: "cyan",
     points: [
@@ -39,7 +43,6 @@ const journeySteps = [
     number: "02",
     period: "2025 - 2026",
     title: "Software foundation",
-    subtitle: "Learning the craft",
     icon: GraduationCap,
     tone: "blue",
     points: [
@@ -53,7 +56,6 @@ const journeySteps = [
     number: "03",
     period: "Projects",
     title: "From theory to practice",
-    subtitle: "Building real systems",
     icon: Rocket,
     tone: "violet",
     points: [
@@ -67,7 +69,6 @@ const journeySteps = [
     number: "04",
     period: "Now",
     title: "Trainee direction",
-    subtitle: "Growing with purpose",
     icon: Target,
     tone: "blue",
     points: [
@@ -81,7 +82,6 @@ const journeySteps = [
     number: "05",
     period: "Next step",
     title: "Impact as a software engineer",
-    subtitle: "Design, code and improve",
     icon: Sparkles,
     tone: "amber",
     points: [
@@ -120,11 +120,20 @@ const maturity = [
   { label: "Learning agility", level: 9 },
 ];
 
+// Anything that should open the CV overlay links here; the query survives the
+// route match in App.tsx, which strips it before comparing paths.
+export const cvOverlayHref = "#/cv?view=cv";
+
 const documents = [
-  { label: "Curriculum Vitae", detail: "Education, projects and experience", href: "#/contact" },
+  { label: "Curriculum Vitae", detail: "Education, projects and experience", href: cvOverlayHref },
   { label: "Trainee Profile", detail: "How I can contribute next to the study", href: "#/contact" },
   { label: "Project Archive", detail: "Selected technical work and case notes", href: "#/projects" },
 ];
+
+function hashRequestsCv() {
+  const [, query = ""] = window.location.hash.split("?");
+  return new URLSearchParams(query).get("view") === "cv";
+}
 
 function DotLevel({ level }: { level: number }) {
   return (
@@ -137,6 +146,34 @@ function DotLevel({ level }: { level: number }) {
 }
 
 export function CvPage() {
+  // Opens on mount when the header sent us here with ?view=cv, and on later
+  // hash changes so the header button works while already on this page.
+  const [isCvOpen, setIsCvOpen] = useState(hashRequestsCv);
+
+  useEffect(() => {
+    const syncFromHash = () => {
+      if (hashRequestsCv()) setIsCvOpen(true);
+    };
+
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, []);
+
+  const closeCv = () => {
+    setIsCvOpen(false);
+
+    // Drop the query so a reload does not reopen it. replaceState does not fire
+    // hashchange, so the route stays put.
+    if (hashRequestsCv()) {
+      window.history.replaceState(null, "", "#/cv");
+    }
+  };
+
+  const openCv = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setIsCvOpen(true);
+  };
+
   return (
     <div className="cv-page">
       <section className="cv-hero-page" id="cv">
@@ -149,20 +186,17 @@ export function CvPage() {
               curiosity, responsibility and a strong interest in building systems that are clear,
               useful and maintainable.
             </p>
-            <div className="cv-hero-page__actions">
-              <a className="button button--primary" href="#cv-journey">
-                <span>View Journey</span>
-                <ArrowRight size={18} strokeWidth={1.9} />
-              </a>
-              <a className="button button--secondary" href="#/contact">
-                <span>Contact Me</span>
-                <Mail size={18} strokeWidth={1.9} />
-              </a>
-            </div>
+
             <div className="cv-hero-page__tags" aria-label="CV highlights">
               <span>VIA Software Engineering</span>
               <span>Open to trainee roles</span>
               <span>Aarhus, Denmark</span>
+            </div>
+            <div className="cv-hero-page__actions">
+              <a className="button button--secondary" href="#/contact">
+                <span>Contact Me</span>
+                <Mail size={18} strokeWidth={1.9} />
+              </a>
             </div>
           </div>
         </div>
@@ -175,11 +209,10 @@ export function CvPage() {
               <img src={profileImage} alt="Mads Damiri" />
             </div>
             <span className="cv-status">
-              <span />
-              Open to trainee opportunities
+             Open to trainee opportunities
             </span>
             <h2>{profile.name}</h2>
-            <p>Software engineering student with a people-first background and a practical fullstack direction.</p>
+            <p>Software engineering student with a people-focused background and a practical direction.</p>
 
             <div className="cv-profile-facts">
               <span>
@@ -195,6 +228,11 @@ export function CvPage() {
                 {profile.email}
               </span>
             </div>
+
+            <a className="button button--primary cv-profile-panel__cta" href={cvOverlayHref} onClick={openCv}>
+              <FileText aria-hidden="true" size={17} strokeWidth={1.9} />
+              <span>View CV</span>
+            </a>
           </aside>
 
           <div className="cv-journey-map" aria-label="Journey timeline">
@@ -216,12 +254,8 @@ export function CvPage() {
                     <div className="cv-timeline-card__period">{step.period}</div>
                     <div className="cv-timeline-card__body">
                       <div className="cv-timeline-card__title">
-                        <span>
-                          <Icon size={22} strokeWidth={1.8} />
-                        </span>
                         <div>
                           <h3>{step.title}</h3>
-                          <small>{step.subtitle}</small>
                         </div>
                       </div>
                       <ul>
@@ -245,7 +279,6 @@ export function CvPage() {
             <div className="cv-side-panel glass-panel">
               <div className="cv-side-panel__heading">
                 <h2>Technical Stack</h2>
-                <Code2 size={20} strokeWidth={1.8} />
               </div>
               <div className="cv-tech-list">
                 {techGroups.map((group) => (
@@ -261,17 +294,11 @@ export function CvPage() {
                   </div>
                 ))}
               </div>
-              <a className="cv-inline-link" href={socialProfiles.github} target="_blank" rel="noreferrer">
-                <GitBranch size={16} strokeWidth={1.8} />
-                <span>More on GitHub</span>
-                <ArrowRight size={16} strokeWidth={1.8} />
-              </a>
             </div>
 
             <div className="cv-side-panel glass-panel">
               <div className="cv-side-panel__heading">
                 <h2>Documents</h2>
-                <FileText size={20} strokeWidth={1.8} />
               </div>
               <div className="cv-document-list">
                 {documents.map((document) => (
@@ -283,7 +310,6 @@ export function CvPage() {
                       <strong>{document.label}</strong>
                       <small>{document.detail}</small>
                     </span>
-                    <ArrowRight size={16} strokeWidth={1.8} />
                   </a>
                 ))}
               </div>
@@ -291,6 +317,15 @@ export function CvPage() {
           </aside>
         </div>
       </section>
+
+      {isCvOpen ? (
+        <PdfOverlay
+          src={cvPdfUrl}
+          title="Curriculum Vitae"
+          downloadName="Mads Damiri - CV.pdf"
+          onClose={closeCv}
+        />
+      ) : null}
     </div>
   );
 }
