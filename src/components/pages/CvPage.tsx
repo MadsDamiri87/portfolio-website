@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 // The PDF lives in docs/, which is not served as-is — importing it lets Vite
 // emit it as a build asset and hand back the URL it ends up on.
 import cvPdfUrl from "../../../docs/Mads Damiri - CV - software trainee 01-07-2026.pdf";
-import cvHeroImage from "../../assets/images/cv-hero-bg.webp";
+import cvHeroImage from "../../assets/images/cv-hero-me-working.webp";
 import profileImage from "../../assets/images/mads-profile-nobg.webp";
 import { profile, socialProfiles } from "../../data/profile";
 import { tagTone } from "../projects/ProjectCard";

@@ -1,6 +1,6 @@
 import { BarChart3, Filter, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import projectsHeroImage from "../../assets/images/projects-system-bg.webp";
+import projectsHeroImage from "../../assets/images/project-hero-background.webp";
 import { projects } from "../../data/projects";
 import type { Project } from "../../types";
 import { ProjectCard, tagTone } from "../projects/ProjectCard";
@@ -115,8 +115,8 @@ export function ProjectsPage() {
           <div>
             <h2>How to navigate</h2>
             <p>
-              Search by project, technology or concept, filter by semester or status, and use the
-              technology tags to find related projects. Open a project card to see the details,
+              Filter and/or use the technology tags to find related projects.
+              Open a project card to see the details,
               screenshots, technical decisions and documentation.
             </p>
           </div>

@@ -6,6 +6,13 @@ import firstHomePageImage4 from "../assets/ProjectImages/FirstHomePage/4-MyCV.we
 import firstHomePageImage5 from "../assets/ProjectImages/FirstHomePage/5-Portfolio.webp";
 import kloeverlyImage from "../assets/ProjectImages/FirstSemesterProject/Skærmbillede 2026-07-17 165848.webp";
 import kloeverlyImage2 from "../assets/ProjectImages/FirstSemesterProject/Skærmbillede 2026-07-17 165859.webp";
+import kloeverlyDomainModel from "../assets/ProjectImages/FirstSemesterProject/documentation&Analysis/Domain Model.webp";
+import kloeverlyClassDiagram from "../assets/ProjectImages/FirstSemesterProject/documentation&Analysis/Class Diagram.webp";
+import kloeverlyActivityDiagram from "../assets/ProjectImages/FirstSemesterProject/documentation&Analysis/Activity Diagram0.webp";
+import kloeverlyActivityUc5 from "../assets/ProjectImages/FirstSemesterProject/documentation&Analysis/Activity Diagram (UC-5).webp";
+import kloeverlyActivityUc10 from "../assets/ProjectImages/FirstSemesterProject/documentation&Analysis/Activity Diagram (UC-10).webp";
+import kloeverlyHappyPath from "../assets/ProjectImages/FirstSemesterProject/documentation&Analysis/A - Happy Path.webp";
+import kloeverlyFailurePath from "../assets/ProjectImages/FirstSemesterProject/documentation&Analysis/B - Failure Path.webp";
 import lmsImage1 from "../assets/ProjectImages/LMS/lms1.webp";
 import lmsImage from "../assets/ProjectImages/LMS/lms2.webp";
 import lmsImage3 from "../assets/ProjectImages/LMS/lms3.webp";
@@ -444,6 +451,50 @@ export const projects: Project[] = [
         {
           title: "Serialization",
           description: "Local data was stored and loaded through serialized application state.",
+        },
+      ],
+      documentation: [
+        {
+          title: "Domain Model",
+          description: "Core domain concepts and relationships behind the Kloeverly application.",
+          type: "Domain",
+          image: kloeverlyDomainModel,
+        },
+        {
+          title: "Class Diagram",
+          description: "Classes and responsibilities used across screens, controllers and data.",
+          type: "UML",
+          image: kloeverlyClassDiagram,
+        },
+        {
+          title: "Activity Diagram",
+          description: "Overall activity flow for the main resident and task handling.",
+          type: "Activity",
+          image: kloeverlyActivityDiagram,
+        },
+        {
+          title: "Activity Diagram (UC-5)",
+          description: "Activity flow for the use case behind managing residents.",
+          type: "Activity",
+          image: kloeverlyActivityUc5,
+        },
+        {
+          title: "Activity Diagram (UC-10)",
+          description: "Activity flow for the use case behind handling tasks.",
+          type: "Activity",
+          image: kloeverlyActivityUc10,
+        },
+        {
+          title: "Happy Path",
+          description: "Successful end-to-end flow through the main application scenario.",
+          type: "Flow",
+          image: kloeverlyHappyPath,
+        },
+        {
+          title: "Failure Path",
+          description: "Alternative flow showing how the application handles a failing scenario.",
+          type: "Flow",
+          image: kloeverlyFailurePath,
         },
       ],
     },

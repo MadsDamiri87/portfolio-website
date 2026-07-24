@@ -27,7 +27,7 @@ const aboutTextPanels = {
   left: {
     title: "Background",
     paragraphs: [
-      "I study Software Engineering while working full time and running a psychotherapy practice on the side.",
+      "I study Software Engineering full time while working full time at  and running a psychotherapy practice on the side.",
       "That combination has shaped how I work: structured, curious and used to balancing many moving parts without losing sight of people.",
       "I like understanding systems deeply, whether the system is software, a team, a workflow or a person trying to make sense of the world.",
     ],
@@ -64,7 +64,7 @@ export function AboutPage() {
               kind of work, opposed to working with people, where measuring success is more abstract and complex.
             </p>
             <p>Working with people gives me a sense of purpose, while working with software gives
-              me the satisfaction of building something meaningful. I enjoy the process of solving
+              me the satisfaction of building something measurable and useful. I enjoy the process of solving
               problems, creating solutions, and becoming completely immersed in the work.</p>
           </div>
         </div>
