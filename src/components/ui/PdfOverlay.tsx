@@ -1,5 +1,5 @@
-import { Download, ExternalLink, X } from "lucide-react";
-import { useCallback, useEffect, useRef } from "react";
+import { Download, ExternalLink, FileText, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type PdfOverlayProps = {
   src: string;
@@ -11,6 +11,20 @@ type PdfOverlayProps = {
 export function PdfOverlay({ src, title, downloadName, onClose }: PdfOverlayProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
+
+  // Touch devices (phones/tablets) cannot scroll a PDF embedded in an iframe:
+  // iOS Safari renders only the first page, Android usually shows nothing. On
+  // those we skip the embed and send people to the native viewer instead.
+  const [canEmbed, setCanEmbed] = useState(true);
+
+  useEffect(() => {
+    const query = window.matchMedia("(hover: none) and (pointer: coarse)");
+    const update = () => setCanEmbed(!query.matches);
+
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
 
   const close = useCallback(() => onClose(), [onClose]);
 
@@ -62,9 +76,27 @@ export function PdfOverlay({ src, title, downloadName, onClose }: PdfOverlayProp
         </div>
 
         <div className="pdf-overlay__stage">
-          {/* Mobile Safari renders only the first page of an embedded PDF, so the
-              actions above stay visible as the way out of that. */}
-          <iframe src={`${src}#view=FitH`} title={title} />
+          {canEmbed ? (
+            <iframe src={`${src}#view=FitH`} title={title} />
+          ) : (
+            <div className="pdf-overlay__fallback">
+              <FileText size={40} strokeWidth={1.6} />
+              <p>
+                Inline preview is not supported on mobile browsers. Open the PDF in your
+                viewer to read and scroll through every page.
+              </p>
+              <div className="pdf-overlay__fallback-actions">
+                <a className="button button--primary" href={src} target="_blank" rel="noreferrer">
+                  Open PDF
+                  <ExternalLink size={17} strokeWidth={1.9} />
+                </a>
+                <a className="button button--secondary" href={src} download={downloadName}>
+                  Download
+                  <Download size={17} strokeWidth={1.9} />
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
