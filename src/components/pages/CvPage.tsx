@@ -19,15 +19,16 @@ import { useEffect, useState } from "react";
 // emit it as a build asset and hand back the URL it ends up on.
 import cvPdfUrl from "../../../docs/Mads Damiri - CV - software trainee 01-07-2026.pdf";
 import cvHeroImage from "../../assets/images/cv-hero-me-working.webp";
+import cvBgImage from "../../assets/images/cv-bg.webp";
 import profileImage from "../../assets/images/mads-profile-nobg.webp";
 import { profile, socialProfiles } from "../../data/profile";
-import { tagTone } from "../projects/ProjectCard";
+import { tagTone, techProjectHref } from "../projects/ProjectCard";
 import { PdfOverlay } from "../ui/PdfOverlay";
 import { TechPill } from "../ui/TechPill";
 
 const journeySteps = [
   {
-    number: "01",
+    number: "2024",
     period: "Before software",
     title: "People, responsibility and structure",
     icon: HeartHandshake,
@@ -40,7 +41,7 @@ const journeySteps = [
     outcome: "Human perspective, ownership and patience under pressure.",
   },
   {
-    number: "02",
+    number: "2025 - 2026",
     period: "2025 - 2026",
     title: "Software foundation",
     icon: GraduationCap,
@@ -53,7 +54,7 @@ const journeySteps = [
     outcome: "A solid technical base and a growing design vocabulary.",
   },
   {
-    number: "03",
+    number: "2026",
     period: "Projects",
     title: "From theory to practice",
     icon: Rocket,
@@ -66,7 +67,7 @@ const journeySteps = [
     outcome: "Projects that connect architecture, implementation and user value.",
   },
   {
-    number: "04",
+    number: "Now",
     period: "Now",
     title: "Trainee direction",
     icon: Target,
@@ -79,7 +80,7 @@ const journeySteps = [
     outcome: "Ready to contribute, learn fast and become useful in a team.",
   },
   {
-    number: "05",
+    number: "Next",
     period: "Next step",
     title: "Impact as a software engineer",
     icon: Sparkles,
@@ -126,8 +127,16 @@ export const cvOverlayHref = "#/cv?view=cv";
 
 const documents = [
   { label: "Curriculum Vitae", detail: "Education, projects and experience", href: cvOverlayHref },
-  { label: "Trainee Profile", detail: "How I can contribute next to the study", href: "#/contact" },
-  { label: "Project Archive", detail: "Selected technical work and case notes", href: "#/projects" },
+  {
+    label: "VIA's Brochure",
+    detail: "VIA's explanation of a trainee",
+    href: "/brochurer/Ingeni%C3%B8rtrainee%20folder%20-%20virksomhed.pdf",
+  },
+  {
+    label: "MD's Brochure",
+    detail: "MD's explanation of a trainee",
+    href: "/brochurer/softwareingenioertrainee-brochure-done.pdf",
+  },
 ];
 
 function hashRequestsCv() {
@@ -202,7 +211,11 @@ export function CvPage() {
         </div>
       </section>
 
-      <section className="cv-journey-page" id="cv-journey">
+      <section
+        className="cv-journey-page"
+        id="cv-journey"
+        style={{ "--cv-bg": `url(${cvBgImage})` } as React.CSSProperties}
+      >
         <div className="container cv-journey-page__inner">
           <aside className="cv-profile-panel glass-panel" aria-label="CV profile">
             <div className="cv-profile-panel__image">
@@ -237,19 +250,20 @@ export function CvPage() {
 
           <div className="cv-journey-map" aria-label="Journey timeline">
             <div className="cv-journey-map__header">
-              <p className="eyebrow">Journey Timeline</p>
-              <h2>From human insight to software craft.</h2>
+              <h2>From human design to software design</h2>
             </div>
 
             <div className="cv-timeline">
               <span className="cv-timeline__beam" aria-hidden="true" />
-              {journeySteps.map((step, index) => {
+              {journeySteps.map((step) => {
                 const Icon = step.icon;
 
                 return (
-                  <article className={`cv-timeline-card cv-timeline-card--${step.tone}`} key={step.number}>
+                  <article className={`cv-timeline-card cv-timeline-card--${step.tone}`} key={step.title}>
                     <div className="cv-timeline-card__node" aria-hidden="true">
-                      {step.number}
+                      {step.number.split(/\s*[-–]\s*/).map((line, lineIndex) => (
+                        <span key={lineIndex}>{line}</span>
+                      ))}
                     </div>
                     <div className="cv-timeline-card__period">{step.period}</div>
                     <div className="cv-timeline-card__body">
@@ -268,7 +282,7 @@ export function CvPage() {
                         <p>{step.outcome}</p>
                       </div>
                     </div>
-                    {index < journeySteps.length - 1 ? <span className="cv-timeline-card__connector" /> : null}
+                    <span className="cv-timeline-card__connector" />
                   </article>
                 );
               })}
@@ -285,11 +299,20 @@ export function CvPage() {
                   <div className="cv-tech-group" key={group.label}>
                     <p>{group.label}</p>
                     <div>
-                      {group.items.map((item) => (
-                        <TechPill key={item} tone={cvTechTone(item)}>
-                          {item}
-                        </TechPill>
-                      ))}
+                      {group.items.map((item) => {
+                        const isProcess = group.label === "Process";
+
+                        return (
+                          <TechPill
+                            key={item}
+                            href={isProcess ? undefined : techProjectHref(item)}
+                            plain={isProcess}
+                            tone={cvTechTone(item)}
+                          >
+                            {item}
+                          </TechPill>
+                        );
+                      })}
                     </div>
                   </div>
                 ))}

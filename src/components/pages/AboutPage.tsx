@@ -3,15 +3,15 @@ import aboutHeroImage from "../../assets/images/about-hero-desk.webp";
 const journeyItems = [
   {
     title: "Curiosity",
-    description: "I ask better questions to uncover real problems and meaningful constraints.",
+    description: "I try to ask good questions to uncover hidden problems and constraints.",
   },
   {
     title: "People",
-    description: "I work with thoughtful people and build relationships grounded in trust.",
+    description: "I work with people by building relations grounded in authenticity and respect.",
   },
   {
     title: "Systems",
-    description: "I design for clarity and scale, favoring simple models and strong boundaries.",
+    description: "I build for simplicity and always aim to minimize technical debt",
   },
   {
     title: "Responsibility",
@@ -19,7 +19,8 @@ const journeyItems = [
   },
   {
     title: "Growth",
-    description: "I stay curious, keep learning and iterate on myself as much as my work.",
+    description: "It's impossible for me not to be curious. So I keep learning, " +
+        "improving and iterating — both on my work and on myself",
   },
 ];
 
@@ -27,17 +28,30 @@ const aboutTextPanels = {
   left: {
     title: "Background",
     paragraphs: [
-      "I study Software Engineering full time while working full time at  and running a psychotherapy practice on the side.",
-      "That combination has shaped how I work: structured, curious and used to balancing many moving parts without losing sight of people.",
+      "I study Software Engineering full time while working 30 hours a week at a residential care facility." +
+      "I also run a psychotherapy practice on the side where i have about 8 to 12 clients a week.",
+      "I've always enjoyed / preferred to have a lot on my plate, because I have a lot of different " +
+      "interests and hobbies.",
+      "This trait has shaped how I work: structured, curious, intentional and used to balancing many " +
+      "moving parts without losing sight of what's important.",
       "I like understanding systems deeply, whether the system is software, a team, a workflow or a person trying to make sense of the world.",
     ],
   },
   right: {
     title: "Perspective",
     paragraphs: [
-      "My psychotherapy background has trained me to listen carefully, ask sharper questions and understand context before jumping to solutions.",
-      "In software, that translates into clear boundaries, readable code and systems that are easier to explain, maintain and improve over time.",
+      "My psychotherapy background has taught me to be aware of where i'm listening from. " +
+      "- If i'm listening to reply or listening to understand." +
+      " It has helped me to ask sharper questions and understand context before jumping to conclusions or solutions.",
+      "In software, that translates into an ability to navigating disagreements and conflicts more constructively." +
+      "Better understanding of clients-demands and what they're actually trying to say." +
+      "I believe it improves code reviews og technical discussions, because .",
       "I read widely across software, psychology and psychotherapy because I like finding the principles beneath the surface.",
+      "I think it also affects the way I approach problems in general. I try not to get too attached " +
+      "to my first explanation of why something isn't working. Whether I'm debugging code, discussing " +
+      "a technical decision or trying to understand a requirement, I'd rather ask another question " +
+      "than confidently solve the wrong problem."
+
     ],
   },
 };

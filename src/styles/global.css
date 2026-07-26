@@ -768,7 +768,8 @@ h3,
 .project-card,
 .background-panel,
 .timeline,
-.contact-links a {
+.contact-links a,
+.cv-page .glass-panel {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background:
@@ -1137,6 +1138,24 @@ h3,
   border: 1px solid rgba(198, 122, 84, 0.28);
   color: #d0a087;
   background: rgba(54, 43, 36, 0.58);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+/* Mild feedback on every tech pill (the plain Technical Stack chips had none).
+   Only border + soft glow + a small lift, so each tone keeps its own hue. */
+.tech-pill:hover:not(.tech-pill--plain),
+.tech-pill:focus-visible:not(.tech-pill--plain) {
+  border-color: rgba(211, 153, 116, 0.48);
+  box-shadow: 0 0 12px rgba(194, 111, 78, 0.14);
+  transform: translateY(-1px);
+}
+
+/* Process pills are informational only — no link, no interactive feedback. */
+.tech-pill--plain {
+  cursor: default;
 }
 
 .tech-pill--link {
@@ -1406,6 +1425,7 @@ h3,
   overflow-x: auto;
   scrollbar-width: none;
   scroll-snap-type: x proximity;
+  scroll-padding-left: 8px;
 }
 
 .semester-filter::-webkit-scrollbar {
@@ -3502,7 +3522,7 @@ h3,
   align-items: start;
   gap: 27px 38px;
   padding: 0;
-  transform: translateY(94px);
+  transform: translateY(107px);
 }
 
 .about-journey__line {
@@ -3941,20 +3961,20 @@ h3,
   position: relative;
   padding: 42px 0 84px;
   border-top: 1px solid rgba(211, 153, 116, 0.12);
-  background: #29252580;
-}
-
-.cv-journey-page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+  /* Warm dark scrim over the scenic backdrop so the panels stay readable:
+     vertical darkening + side vignette + a warm multiply tint over the image. */
   background:
-    linear-gradient(rgba(199, 116, 82, 0.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(199, 116, 82, 0.032) 1px, transparent 1px);
-  background-size: 42px 42px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.84), transparent 92%);
-  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.84), transparent 92%);
-  pointer-events: none;
+    linear-gradient(180deg, rgba(16, 12, 9, 0.9) 0%, rgba(20, 15, 11, 0.78) 42%, rgba(14, 11, 9, 0.92) 100%),
+    linear-gradient(
+      90deg,
+      rgb(25, 20, 16) calc(50% - 780px),
+      rgba(25, 20, 16, 0) calc(50% - 630px),
+      rgba(25, 20, 16, 0) calc(50% + 630px),
+      rgb(25, 20, 16) calc(50% + 780px)
+    ),
+    linear-gradient(0deg, rgba(58, 38, 22, 0.22), rgba(58, 38, 22, 0.22)),
+    var(--cv-bg, none) center 34% / min(100vw, 1500px) auto no-repeat fixed,
+    #191410;
 }
 
 .cv-journey-page__inner {
@@ -3966,13 +3986,12 @@ h3,
   align-items: start;
 }
 
-.cv-page .glass-panel,
 .cv-timeline-card {
   border: 1px solid rgba(222, 197, 174, 0.15);
   border-radius: 8px;
   background:
     radial-gradient(circle at 16% 0%, rgba(199, 116, 82, 0.13), transparent 13rem),
-    linear-gradient(145deg, rgba(31, 25, 21, 0.86), rgba(7, 11, 19, 0.88));
+    linear-gradient(145deg, rgba(31, 25, 21, 0.86), rgba(13, 11, 9, 0.9));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.045),
     0 22px 58px rgba(0, 0, 0, 0.28);
@@ -3993,7 +4012,7 @@ h3,
   border: 1px solid rgba(194, 111, 78, 0.58);
   border-radius: 999px;
   background: linear-gradient(135deg, rgba(199, 116, 82, 0.22), rgba(169, 88, 67, 0.14));
-  box-shadow: 0 0 42px rgba(199, 116, 82, 0.18);
+  box-shadow: 0 0 26px rgba(199, 116, 82, 0.1);
 }
 
 .cv-profile-panel__image img {
@@ -4032,7 +4051,7 @@ h3,
 .cv-profile-panel > p {
   margin: 10px auto 0;
   max-width: 220px;
-  color: rgba(204, 213, 229, 0.78);
+  color: rgba(212, 203, 194, 0.78);
   font-size: 0.92rem;
   line-height: 1.55;
   text-align: center;
@@ -4095,8 +4114,14 @@ h3,
 .cv-timeline {
   position: relative;
   display: grid;
-  gap: 26px;
+  gap: 8px;
   padding: 18px 0 18px;
+}
+
+/* Cards alternate sides, so pulling each one up interlocks the zigzag
+   vertically without any horizontal collision. Reset on mobile below. */
+.cv-timeline-card:not(:first-of-type) {
+  margin-top: -104px;
 }
 
 .cv-timeline__beam {
@@ -4136,49 +4161,58 @@ h3,
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 54px;
-  height: 54px;
+  width: 70px;
+  height: 70px;
+  padding: 4px;
   border: 1px solid rgba(211, 153, 116, 0.72);
   border-radius: 999px;
   color: #f5eee7;
   background:
     radial-gradient(circle at 50% 78%, rgba(210, 148, 109, 0.28), transparent 55%),
-    rgba(8, 14, 26, 0.96);
+    rgba(15, 12, 10, 0.96);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    0 0 22px rgba(199, 116, 82, 0.55);
+    0 0 15px rgba(199, 116, 82, 0.32);
+  font-size: 0.84rem;
   font-weight: 850;
+  line-height: 1.08;
+  letter-spacing: 0.2px;
+  text-align: center;
   transform: translateY(-50%);
 }
 
 .cv-timeline-card:nth-of-type(odd) .cv-timeline-card__node {
-  right: -64px;
+  right: -90px;
 }
 
 .cv-timeline-card:nth-of-type(even) .cv-timeline-card__node {
-  left: -64px;
+  left: -90px;
 }
 
 .cv-timeline-card__connector {
   position: absolute;
   top: 50%;
   width: 44px;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(199, 116, 82, 0.75), rgba(210, 148, 109, 0.2));
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #c77452 45%, #d2946d);
+  box-shadow:
+    0 0 10px rgba(199, 116, 82, 0.6),
+    0 0 22px rgba(210, 148, 109, 0.22);
   transform: translateY(-50%);
 }
 
 .cv-timeline-card:nth-of-type(odd) .cv-timeline-card__connector {
-  right: -44px;
+  right: -41px;
 }
 
 .cv-timeline-card:nth-of-type(even) .cv-timeline-card__connector {
-  left: -44px;
+  left: -41px;
   transform: translateY(-50%) scaleX(-1);
 }
 
 .cv-timeline-card__period {
-  color: #e1a949;
+  color: #818181;
   font-size: 0.82rem;
   font-weight: 780;
   text-transform: uppercase;
@@ -4246,7 +4280,7 @@ h3,
 
 .cv-timeline-card__outcome strong {
   display: block;
-  color: #c96e4d;
+  color: #d5d5d5;
   font-size: 0.75rem;
   font-weight: 820;
   text-transform: uppercase;
@@ -4505,7 +4539,8 @@ h3,
 
   .cv-timeline-card,
   .cv-timeline-card:nth-of-type(odd),
-  .cv-timeline-card:nth-of-type(even) {
+  .cv-timeline-card:nth-of-type(even),
+  .cv-timeline-card:not(:first-of-type) {
     width: 100%;
     justify-self: stretch;
     margin: 0;
@@ -4513,11 +4548,11 @@ h3,
 
   .cv-timeline-card:nth-of-type(odd) .cv-timeline-card__node,
   .cv-timeline-card:nth-of-type(even) .cv-timeline-card__node {
-    left: -44px;
+    left: -52px;
     right: auto;
-    width: 44px;
-    height: 44px;
-    font-size: 0.82rem;
+    width: 56px;
+    height: 56px;
+    font-size: 0.76rem;
   }
 
   .cv-timeline-card__connector {
