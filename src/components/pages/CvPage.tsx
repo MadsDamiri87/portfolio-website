@@ -1,16 +1,11 @@
 import {
-  ArrowRight,
   BookOpen,
-  BriefcaseBusiness,
-  Code2,
   FileText,
-  GitBranch,
   GraduationCap,
   HeartHandshake,
   Mail,
   MapPin,
   Rocket,
-  ShieldCheck,
   Sparkles,
   Target,
 } from "lucide-react";
@@ -21,7 +16,8 @@ import cvPdfUrl from "../../../docs/Mads_Damiri_CV_software_trainee_30-07-2026.p
 import cvHeroImage from "../../assets/images/cv-hero-me-working.webp";
 import cvBgImage from "../../assets/images/cv-bg.webp";
 import profileImage from "../../assets/images/mads-profile-nobg.webp";
-import { profile, socialProfiles } from "../../data/profile";
+import { cvOverlayHref } from "../../data/navigation";
+import { profile } from "../../data/profile";
 import { tagTone, techProjectHref } from "../projects/ProjectCard";
 import { PdfOverlay } from "../ui/PdfOverlay";
 import { TechPill } from "../ui/TechPill";
@@ -113,18 +109,6 @@ function cvTechTone(item: string) {
   return cvTechToneOverrides[item] ?? tagTone(item);
 }
 
-const maturity = [
-  { label: "Technical skills", level: 6 },
-  { label: "Problem solving", level: 7 },
-  { label: "Communication", level: 8 },
-  { label: "Responsibility", level: 8 },
-  { label: "Learning agility", level: 9 },
-];
-
-// Anything that should open the CV overlay links here; the query survives the
-// route match in App.tsx, which strips it before comparing paths.
-export const cvOverlayHref = "#/cv?view=cv";
-
 const documents = [
   { label: "Curriculum Vitae", detail: "Education, projects and experience", href: cvOverlayHref },
   {
@@ -142,16 +126,6 @@ const documents = [
 function hashRequestsCv() {
   const [, query = ""] = window.location.hash.split("?");
   return new URLSearchParams(query).get("view") === "cv";
-}
-
-function DotLevel({ level }: { level: number }) {
-  return (
-    <span className="cv-dot-level" aria-label={`${level} out of 10`}>
-      {Array.from({ length: 10 }, (_, index) => (
-        <span className={index < level ? "is-filled" : undefined} key={index} />
-      ))}
-    </span>
-  );
 }
 
 export function CvPage() {

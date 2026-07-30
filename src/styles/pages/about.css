@@ -1,0 +1,586 @@
+/* About page: hero, story board, journey */
+.about-page {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--text);
+  background: #11100e;
+  --about-reference-width: min(100% - 156px, 1516px);
+  --about-story-width: min(100% - 48px, 1390px);
+  --about-warm: #c98261;
+  --about-warm-soft: rgba(199, 116, 82, 0.18);
+  --about-warm-dim: rgba(169, 88, 67, 0.12);
+  --about-violet: #b16952;
+  --about-violet-soft: rgba(169, 88, 67, 0.09);
+}
+
+.about-page::before,
+.about-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.about-page::before {
+  background:
+    linear-gradient(rgba(194, 111, 78, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(169, 88, 67, 0.03) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.72) 66%, transparent 100%);
+}
+
+.about-page::after {
+  background:
+    linear-gradient(180deg, rgba(17, 16, 14, 0.02) 0%, rgba(17, 16, 14, 0.04) 38%, rgba(17, 16, 14, 0.66) 100%),
+    radial-gradient(circle at 78% 18%, rgba(210, 148, 109, 0.1), transparent 23rem),
+    radial-gradient(circle at 26% 36%, rgba(199, 116, 82, 0.13), transparent 28rem),
+    radial-gradient(circle at 58% 30%, rgba(169, 88, 67, 0.12), transparent 22rem);
+}
+
+.about-hero-page,
+.about-story-board {
+  position: relative;
+  z-index: 2;
+}
+
+.about-hero-page {
+  position: relative;
+  height: 575px;
+  min-height: 448px;
+  overflow: hidden;
+  background: #11100e;
+  border-bottom: 1px solid var(--line-faint);
+  /* The hero holds a photo of the desk (3:2), cropped towards the top so the
+     monitors and whiteboard stay in frame while the desk foreground falls away.
+     Same treatment as the background images on the projects, project detail and
+     CV pages: centred and capped at 1500px. Past that width the photo stops
+     growing instead of being zoomed further in and upscaled beyond its native
+     1536px, and it stays centred rather than drifting off the right edge. */
+  --about-hero-bg-width: min(100%, 1500px);
+  --about-hero-bg-shift: 350px;
+  --about-hero-bg-y: -220px;
+}
+
+.about-hero-page__image {
+  position: absolute;
+  left: calc(50% + var(--about-hero-bg-shift));
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  width: var(--about-hero-bg-width);
+  height: 100%;
+  object-fit: cover;
+  object-position: center var(--about-hero-bg-y);
+  /* The photo is a lit office shot; damp it down so it sits in the dark theme
+     instead of glaring against it. */
+  filter: brightness(0.72) contrast(1.02) saturate(0.86);
+  /* The box is as wide as the 1500px band but nudged right by the shift, so it
+     always overhangs the band's right edge by exactly that shift. Fading the
+     mask out at `100% - shift` lands the soft edge on the band edge instead of
+     letting the photo run on and get cut off by the viewport. Placement, scale
+     and object-position are untouched. */
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 10%,
+    #000 26%,
+    #000 calc(100% - var(--about-hero-bg-shift) - 190px),
+    rgba(0, 0, 0, 0.62) calc(100% - var(--about-hero-bg-shift) - 60px),
+    transparent calc(100% - var(--about-hero-bg-shift))
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 10%,
+    #000 26%,
+    #000 calc(100% - var(--about-hero-bg-shift) - 190px),
+    rgba(0, 0, 0, 0.62) calc(100% - var(--about-hero-bg-shift) - 60px),
+    transparent calc(100% - var(--about-hero-bg-shift))
+  );
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.about-hero-page::before {
+  content: "";
+  position: absolute;
+  left: calc(50% + var(--about-hero-bg-shift));
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: var(--about-hero-bg-width);
+  background: linear-gradient(90deg, rgba(17, 16, 14, 0.34), rgba(17, 16, 14, 0.05) 46%, rgba(17, 16, 14, 0.16));
+  /* Ends on the same band edge as the photo it tints. */
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.72) 8%,
+    #000 18%,
+    #000 calc(100% - var(--about-hero-bg-shift) - 190px),
+    rgba(0, 0, 0, 0.72) calc(100% - var(--about-hero-bg-shift) - 60px),
+    transparent calc(100% - var(--about-hero-bg-shift))
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.72) 8%,
+    #000 18%,
+    #000 calc(100% - var(--about-hero-bg-shift) - 190px),
+    rgba(0, 0, 0, 0.72) calc(100% - var(--about-hero-bg-shift) - 60px),
+    transparent calc(100% - var(--about-hero-bg-shift))
+  );
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.about-hero-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* Warm scrim: keeps the heading legible over the busy left side of the photo
+     and blends the bottom edge into the story board below. */
+  background:
+    linear-gradient(104deg, rgba(12, 11, 9, 0.93) 0%, rgba(14, 13, 11, 0.86) 28%, rgba(17, 16, 14, 0.46) 48%, transparent 70%),
+    radial-gradient(ellipse at 0% 0%, rgba(9, 8, 7, 0.76) 0%, rgba(12, 11, 9, 0.5) 36%, transparent 64%),
+    linear-gradient(180deg, rgba(12, 11, 9, 0.34), rgba(12, 11, 9, 0.05) 44%, rgba(17, 16, 14, 0.68));
+  pointer-events: none;
+}
+
+.about-hero-page__inner {
+  position: relative;
+  z-index: 3;
+  width: var(--about-story-width);
+  height: 100%;
+  min-height: 0;
+  display: block;
+  padding: 0;
+}
+
+.about-hero-page__content {
+  position: absolute;
+  top: var(--hero-heading-top);
+  left: 0;
+  z-index: 4;
+  width: 650px;
+}
+
+.about-hero-page__content .eyebrow {
+  margin-bottom: 18px;
+}
+
+.about-hero-page h1 {
+  max-width: 560px;
+  margin: 0;
+  font-size: var(--text-h1);
+  line-height: var(--leading-heading);
+  font-weight: var(--weight-heading);
+  letter-spacing: 0;
+}
+
+.about-hero-page h1 span {
+  color: #f5eee7;
+}
+
+.about-hero-page__content p:not(.eyebrow) {
+  max-width: 650px;
+  margin: 22px 0 0;
+  color: rgba(221, 211, 202, 0.84);
+  font-size: var(--text-intro);
+  line-height: var(--leading-body);
+}
+
+.about-hero-page__content p + p:not(.eyebrow) {
+  margin-top: 10px;
+}
+
+.about-story-board {
+  min-height: 510px;
+  padding: 14px 0 48px;
+  border-top: 1px solid var(--line-soft);
+  background:
+    radial-gradient(circle at 18% 4%, rgba(199, 116, 82, 0.16), transparent 30rem),
+    radial-gradient(circle at 34% 52%, rgba(210, 148, 109, 0.055), transparent 26rem),
+    radial-gradient(circle at 76% 20%, rgba(169, 88, 67, 0.055), transparent 26rem),
+    linear-gradient(90deg, rgba(28, 22, 19, 0.94) 0%, rgba(9, 15, 26, 0.9) 42%, rgba(17, 16, 14, 0.98) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    inset 0 18px 42px rgba(199, 116, 82, 0.035);
+}
+
+.about-story-board::before,
+.about-story-board::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.about-story-board::before {
+  inset: 0;
+  background:
+    linear-gradient(rgba(211, 153, 116, 0.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(194, 111, 78, 0.024) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(36, 28, 24, 0.56), rgba(8, 10, 16, 0.72) 62%, rgba(17, 16, 14, 0.92)),
+    linear-gradient(180deg, rgba(4, 7, 12, 0.16), rgba(8, 10, 16, 0.7) 68%, #13110f 100%);
+  background-size: 72px 72px, 72px 72px, auto, auto;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.78), #000 28%, #000 78%, transparent 100%);
+}
+
+.about-story-board::after {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: min(52vw, calc((100% - var(--about-story-width)) / 2 + 420px));
+  background:
+    radial-gradient(ellipse 520px 420px at -110px 170px, rgba(2, 5, 10, 0.82) 0%, rgba(4, 8, 15, 0.5) 38%, rgba(7, 12, 22, 0.18) 66%, transparent 100%),
+    linear-gradient(100deg, rgba(4, 7, 12, 0.46) 0%, rgba(7, 12, 22, 0.18) 56%, transparent 100%);
+  filter: blur(8px);
+  transform: translateX(-8px);
+}
+
+.about-story-board__inner {
+  position: relative;
+  z-index: 1;
+  width: var(--about-story-width);
+  display: grid;
+  grid-template-columns: 350px minmax(0, 1fr) 350px;
+  align-items: start;
+  gap: 48px;
+  transform: translateY(-100px);
+}
+
+.about-side-panel,
+.about-journey-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(199, 116, 82, 0.13), transparent 12rem),
+    radial-gradient(circle at 82% 18%, rgba(169, 88, 67, 0.055), transparent 11rem),
+    var(--home-glass),
+    rgba(9, 13, 21, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 20px 54px rgba(0, 0, 0, 0.28),
+    0 0 46px rgba(199, 116, 82, 0.07);
+  backdrop-filter: blur(14px);
+}
+
+.about-side-panel {
+  min-height: 324px;
+  margin-top: 16px;
+  padding: 24px;
+}
+
+.about-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #c98261;
+}
+
+.about-panel-heading h2 {
+  margin: 0;
+  /* White, in the body sans — matches the site's other small uppercase labels
+     (.eyebrow) instead of the amber serif these used to inherit. */
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: var(--weight-strong);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.about-text-box {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.about-text-box p {
+  margin: 0;
+  color: rgba(221, 211, 202, 0.8);
+  font-size: 0.94rem;
+  line-height: 1.62;
+}
+
+.about-journey {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 27px 38px;
+  padding: 0;
+  transform: translateY(107px);
+}
+
+.about-journey__line {
+  position: absolute;
+  top: -28px;
+  bottom: -42px;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(199, 116, 82, 0), rgba(194, 111, 78, 0.88) 10%, rgba(199, 116, 82, 0.92) 52%, rgba(169, 88, 67, 0.58), transparent);
+  box-shadow:
+    0 0 18px rgba(194, 111, 78, 0.46),
+    0 0 34px rgba(169, 88, 67, 0.12);
+  transform: translateX(-50%);
+}
+
+.about-journey-card {
+  position: relative;
+  min-height: 95px;
+  padding: 16px 22px 15px 58px;
+}
+
+.about-journey-card:nth-of-type(2n) {
+  margin: 0;
+  transform: translateY(38px);
+}
+
+.about-journey-card__node {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  color: transparent;
+  background: radial-gradient(circle at 50% 50%, #f0e5da, rgba(199, 116, 82, 0.9) 45%, rgba(17, 16, 14, 0.72) 70%);
+  box-shadow:
+    0 0 16px rgba(194, 111, 78, 0.8),
+    0 0 34px rgba(199, 116, 82, 0.34);
+  transform: translateY(-50%);
+}
+
+.about-journey-card__node svg {
+  display: none;
+}
+
+.about-journey-card:nth-of-type(odd) .about-journey-card__node {
+  right: -29px;
+}
+
+.about-journey-card:nth-of-type(even) .about-journey-card__node {
+  left: -29px;
+}
+
+.about-journey-card:nth-of-type(5) .about-journey-card__node {
+  background: radial-gradient(circle at 50% 50%, #ecd8c9, rgba(169, 88, 67, 0.92) 45%, rgba(17, 16, 14, 0.72) 70%);
+  box-shadow:
+    0 0 16px rgba(169, 88, 67, 0.7),
+    0 0 34px rgba(199, 116, 82, 0.22);
+}
+
+.about-journey-card > span {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: #c98261;
+  font-size: 0.96rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.about-journey-card h2 {
+  margin: 0;
+  color: #f0e5da;
+  font-size: var(--text-small);
+  font-weight: var(--weight-strong);
+}
+
+.about-journey-card p {
+  margin: 8px 0 0;
+  color: rgba(204, 213, 229, 0.78);
+  font-size: 0.88rem;
+  line-height: 1.48;
+}
+
+
+
+@media (max-width: 1300px) {
+  .about-page {
+    --about-reference-width: min(100% - 48px, 1390px);
+    --about-story-width: min(100% - 48px, 1390px);
+  }
+
+  .about-hero-page {
+    --about-hero-bg-width: 100%;
+    --about-hero-bg-shift: 290px;
+    --about-hero-bg-y: 60%;
+  }
+
+  .about-hero-page,
+  .about-hero-page__inner {
+    height: auto;
+    min-height: auto;
+  }
+
+  .about-hero-page__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-block: var(--hero-heading-top) 86px;
+  }
+
+  .about-hero-page__content {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+    max-width: min(440px, 48vw);
+  }
+
+  .about-hero-page h1 {
+    max-width: 440px;
+  }
+
+  .about-hero-page__content p:not(.eyebrow) {
+    max-width: 420px;
+    margin-top: 18px;
+  }
+
+  .about-story-board__inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "reading focus"
+      "journey journey";
+    align-items: stretch;
+    margin-top: 30px;
+  }
+
+  .about-side-panel--reading {
+    grid-area: reading;
+  }
+
+  .about-side-panel--focus {
+    grid-area: focus;
+  }
+
+  .about-side-panel {
+    min-height: 0;
+  }
+
+  .about-journey {
+    grid-area: journey;
+    width: min(100%, 840px);
+    margin: 0 auto;
+    transform: translateY(0px);
+  }}
+
+@media (max-width: 860px) {
+  /* Same rule as on desktop, just tighter on a phone. */
+  :root {
+    --hero-heading-top: 40px;
+  }
+
+  .about-page {
+    --about-reference-width: min(100% - 32px, 720px);
+    --about-story-width: min(100% - 32px, 720px);
+  }
+
+  .about-hero-page__inner {
+    padding-block: var(--hero-heading-top) 66px;
+  }
+
+  .about-hero-page__content {
+    max-width: min(100%, 560px);
+  }
+
+  /* The copy spans the full width here, so the scrim has to work top-down
+     instead of left-to-right. Heaviest behind the heading, then easing off so
+     the desk still reads instead of being crushed to a flat dark panel. */
+  .about-hero-page::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(12, 11, 9, 0.9) 0%,
+        rgba(12, 11, 9, 0.86) 50%,
+        rgba(17, 16, 14, 0.72) 100%
+      );
+  }
+
+  /* No room to offset the photo on a phone: a 290px shift on a ~375px hero
+     leaves a sliver of image against a mostly empty band. Full bleed instead,
+     and no edge mask — the vertical scrim above already carries the text. */
+  .about-hero-page {
+    --about-hero-bg-shift: 0px;
+  }
+
+  .about-hero-page__image {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .about-story-board {
+    padding-top: 36px;
+  }
+
+  .about-story-board__inner {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "reading"
+      "focus"
+      "journey";
+  }
+
+  .about-journey {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-left: 44px;
+  }
+
+  .about-journey__line {
+    left: 22px;
+  }
+
+  .about-journey-card,
+  .about-journey-card:nth-of-type(2n) {
+    margin: 0;
+    padding-left: 68px;
+    /* Reset the desktop zig-zag offset; stacked single-column it just pushed
+       even cards down onto the next one. */
+    transform: none;
+  }
+
+  .about-journey-card:nth-of-type(odd) .about-journey-card__node,
+  .about-journey-card:nth-of-type(even) .about-journey-card__node {
+    left: -51px;
+    right: auto;
+  }}
+
+@media (max-width: 620px) {
+  .about-hero-page h1 {
+    max-width: 100%;
+  }
+
+  .about-hero-page__content p:not(.eyebrow) {
+    max-width: 100%;
+  }
+
+  .about-side-panel {
+    padding: 18px;
+  }
+
+  .about-journey {
+    padding-left: 34px;
+  }
+
+  .about-journey__line {
+    left: 17px;
+  }
+
+  .about-journey-card,
+  .about-journey-card:nth-of-type(2n) {
+    min-height: 0;
+    padding: 18px 18px 20px 52px;
+  }
+
+  .about-journey-card:nth-of-type(odd) .about-journey-card__node,
+  .about-journey-card:nth-of-type(even) .about-journey-card__node {
+    left: -40px;
+  }}

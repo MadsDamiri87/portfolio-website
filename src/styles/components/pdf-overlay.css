@@ -1,0 +1,147 @@
+/* PDF overlay dialog */
+.pdf-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: var(--pdf-gutter);
+  padding-top: calc(var(--pdf-header-offset) + var(--pdf-gutter));
+
+  --pdf-gutter: 24px;
+  /* Sits below the sticky header, like the project lightbox. */
+  --pdf-header-offset: 56px;
+  --pdf-available: calc(100vh - var(--pdf-header-offset) - (var(--pdf-gutter) * 2));
+}
+
+@supports (height: 100dvh) {
+  .pdf-overlay {
+    --pdf-available: calc(100dvh - var(--pdf-header-offset) - (var(--pdf-gutter) * 2));
+  }}
+
+.pdf-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(9, 8, 7, 0.78);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+}
+
+.pdf-overlay__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 1000px);
+  height: min(960px, var(--pdf-available));
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(36, 32, 28, 0.96), rgba(16, 14, 12, 0.96)),
+    var(--bg);
+  box-shadow: 0 30px 120px rgba(0, 0, 0, 0.62);
+}
+
+.pdf-overlay__bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pdf-overlay__bar h2 {
+  margin: 0;
+  font-size: var(--text-h3);
+  line-height: 1.2;
+}
+
+.pdf-overlay__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdf-overlay__close {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(222, 197, 174, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  background: rgba(21, 19, 16, 0.74);
+  cursor: pointer;
+}
+
+.pdf-overlay__close:hover,
+.pdf-overlay__close:focus-visible {
+  border-color: rgba(211, 153, 116, 0.46);
+  background: rgba(32, 25, 21, 0.88);
+}
+
+.pdf-overlay__stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #1c1a17;
+}
+
+.pdf-overlay__stage iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.pdf-overlay__fallback {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 28px 24px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.pdf-overlay__fallback svg {
+  color: #c78b69;
+}
+
+.pdf-overlay__fallback p {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.pdf-overlay__fallback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+@media (max-width: 860px) {
+  .pdf-overlay {
+    --pdf-gutter: 12px;
+    --pdf-header-offset: 71px;
+  }
+
+  .pdf-overlay__bar {
+    flex-wrap: wrap;
+  }
+
+  .pdf-overlay__bar h2 {
+    font-size: var(--text-panel-title);
+  }
+
+  .pdf-overlay__actions {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }}

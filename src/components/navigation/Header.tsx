@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FileText, FolderKanban, GitBranch, Home, Mail, Menu, Network, UserRound, X } from "lucide-react";
 import mdLogo from "../../assets/images/md-logo.webp";
-import { navigation } from "../../data/navigation";
+import { cvOverlayHref, navigation } from "../../data/navigation";
 import { profile, socialProfiles } from "../../data/profile";
 
 const socialLinks = [
@@ -106,7 +106,7 @@ export function Header({ activePage }: HeaderProps) {
           </div>
 
           {/* Lands on the CV page and opens the CV overlay there. */}
-          <a className="button button--primary button--compact" href="#/cv?view=cv">
+          <a className="button button--primary button--compact" href={cvOverlayHref}>
             <span>View CV</span>
             <FileText size={16} strokeWidth={1.9} />
           </a>

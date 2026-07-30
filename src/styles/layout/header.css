@@ -1,0 +1,229 @@
+/* Header, brand, nav, socials, buttons, mobile nav */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--line-soft);
+  background: rgba(16, 14, 12, 0.82);
+  backdrop-filter: blur(18px);
+}
+
+.header__inner {
+  min-height: 55px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 13px;
+  width: fit-content;
+  min-width: 0;
+}
+
+.brand__mark {
+  display: block;
+  width: 52px;
+  height: 32px;
+  flex: 0 0 auto;
+}
+
+.brand__mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 1;
+}
+
+.brand__text {
+  display: grid;
+  gap: 2px;
+}
+
+.brand__text strong {
+  font-family: var(--font-heading);
+  font-size: 1.06rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.brand__text span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.2;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(30px, 4.5vw, 58px);
+}
+
+.nav a {
+  position: relative;
+  color: rgba(219, 208, 198, 0.72);
+  font-size: 0.98rem;
+  font-weight: 500;
+  line-height: 1;
+  transition: color 180ms ease;
+}
+
+.nav a:hover,
+.nav a:focus-visible {
+  color: #ffffff;
+}
+
+.nav a.is-active {
+  color: #c98261;
+  text-shadow: 0 0 18px rgba(194, 111, 78, 0.18);
+}
+
+.nav a.is-active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -21px;
+  width: 66px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(199, 116, 82, 0), #bd7456 34%, #a95843 68%, rgba(169, 88, 67, 0));
+  box-shadow:
+    0 0 12px rgba(194, 111, 78, 0.84),
+    0 0 26px rgba(169, 88, 67, 0.34);
+  transform: translateX(-50%);
+}
+
+.header__actions,
+.socials,
+.footer__links {
+  display: flex;
+  align-items: center;
+}
+
+.header__actions {
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.socials,
+.footer__links {
+  gap: 18px;
+}
+
+.socials a,
+.footer__links a {
+  color: #b9afa7;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.socials a:hover,
+.footer__links a:hover {
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.button,
+.icon-button {
+  min-height: 44px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.button {
+  padding: 0 22px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.icon-button {
+  border-color: rgba(222, 197, 174, 0.18);
+}
+
+.button:hover,
+.button:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(195, 119, 86, 0.72);
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.36);
+}
+
+.button--primary {
+  background: rgba(25, 21, 18, 0.62);
+  border-color: rgba(255, 255, 255, 0.36);
+  box-shadow: 0 14px 35px rgba(172, 91, 66, 0.1);
+}
+
+.button--secondary {
+  background: rgba(25, 21, 18, 0.62);
+  border-color: rgba(255, 255, 255, 0.36);
+  box-shadow: 0 14px 35px rgba(172, 91, 66, 0.1);
+}
+
+.button--github {
+  color: #f0e8df;
+  border-color: rgba(255, 255, 255, 0.36);
+  background:
+    linear-gradient(180deg, rgba(48, 54, 61, 0.9), rgba(13, 17, 23, 0.95)),
+    #171412;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 14px 34px rgba(0, 0, 0, 0.26);
+}
+
+.button--github:hover,
+.button--github:focus-visible {
+  border-color: rgba(195, 119, 86, 0.72);
+  background:
+    linear-gradient(180deg, rgba(62, 68, 76, 0.92), rgba(22, 27, 34, 0.96)),
+    #211d19;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 16px 38px rgba(0, 0, 0, 0.32);
+}
+
+.github-mark {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
+.button--compact {
+  min-height: 31px;
+  padding-inline: 20px;
+}
+
+.icon-button {
+  width: 44px;
+  padding: 0;
+  color: #ffffff;
+  background: rgba(27, 23, 20, 0.8);
+  cursor: pointer;
+}
+
+.header__menu {
+  display: none;
+}
+
+.mobile-nav {
+  display: none;
+}

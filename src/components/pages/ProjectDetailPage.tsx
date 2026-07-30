@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import projectDetailBackground from "../../assets/images/project-detail-system-map-bg.webp";
+import { useAutoScrollStrip } from "../../hooks/useAutoScrollStrip";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { Project } from "../../types";
 import { tagTone, techProjectHref } from "../projects/ProjectCard";
@@ -88,33 +89,13 @@ function GithubMark() {
 
 export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const documentationRef = useRef<HTMLDivElement>(null);
   const lightboxPanelRef = useRef<HTMLDivElement>(null);
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
-  const technicalChoiceRef = useRef<HTMLDivElement>(null);
-  const isPointerOverDocumentationRef = useRef(false);
-  const isPointerOverTechnicalChoiceRef = useRef(false);
-  const lastDocumentationFrameRef = useRef<number | null>(null);
-  const lastTechnicalChoiceRotationRef = useRef<number | null>(null);
-  const preciseDocumentationScrollLeftRef = useRef(0);
-  const preciseTechnicalChoiceScrollLeftRef = useRef(0);
-  const documentationPauseUntilRef = useRef(0);
-  const technicalChoicePauseUntilRef = useRef(0);
   const technicalChoiceTransitionTimeoutRef = useRef<number | null>(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [activeScreenshot, setActiveScreenshot] = useState<string | null>(null);
   const [activeDocument, setActiveDocument] = useState<{ image: string; title: string } | null>(null);
   const [isTechnicalChoiceTransitioning, setIsTechnicalChoiceTransitioning] = useState(false);
-  const [documentationScrollState, setDocumentationScrollState] = useState({
-    activeDot: 0,
-    canScrollLeft: false,
-    canScrollRight: false,
-  });
-  const [technicalChoiceScrollState, setTechnicalChoiceScrollState] = useState({
-    activeDot: 0,
-    canScrollLeft: false,
-    canScrollRight: false,
-  });
   const detail = project.detail;
   const title = detail?.displayTitle ?? project.title;
   const screenshots = useMemo(
@@ -136,197 +117,7 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     [technicalChoiceSlides],
   );
 
-  const getDocumentationLoopWidth = () => {
-    const strip = documentationRef.current;
-    const loopStartCard = strip?.children[documentationItems.length] as HTMLElement | undefined;
-
-    return loopStartCard?.offsetLeft ?? 0;
-  };
-
-  const updateDocumentationScrollState = () => {
-    const strip = documentationRef.current;
-    if (!strip) return;
-
-    const maxScroll = Math.max(0, strip.scrollWidth - strip.clientWidth);
-    const scrollLeft = Math.max(0, strip.scrollLeft);
-    const loopWidth = getDocumentationLoopWidth();
-    const loopScroll = loopWidth > 0 ? scrollLeft % loopWidth : scrollLeft;
-    const progress = loopWidth > 0 ? loopScroll / loopWidth : maxScroll > 0 ? scrollLeft / maxScroll : 0;
-
-    setDocumentationScrollState((current) => {
-      const next = {
-        activeDot: Math.min(documentationDotCount - 1, Math.floor(progress * documentationDotCount)),
-        canScrollLeft: loopScroll > documentationFadeThreshold,
-        canScrollRight: maxScroll - scrollLeft > documentationFadeThreshold,
-      };
-
-      if (
-        current.activeDot === next.activeDot &&
-        current.canScrollLeft === next.canScrollLeft &&
-        current.canScrollRight === next.canScrollRight
-      ) {
-        return current;
-      }
-
-      return next;
-    });
-  };
-
-  const pauseDocumentationAutoScroll = () => {
-    preciseDocumentationScrollLeftRef.current =
-      documentationRef.current?.scrollLeft ?? preciseDocumentationScrollLeftRef.current;
-    documentationRef.current?.classList.remove("is-auto-scrolling");
-    documentationPauseUntilRef.current = performance.now() + documentationAutoResumeDelay;
-  };
-
-  const handleDocumentationPointerEnter = () => {
-    isPointerOverDocumentationRef.current = true;
-    documentationRef.current?.classList.remove("is-auto-scrolling");
-  };
-
-  const handleDocumentationPointerLeave = () => {
-    isPointerOverDocumentationRef.current = false;
-    pauseDocumentationAutoScroll();
-  };
-
-  const handleDocumentationScroll = () => {
-    if (!documentationRef.current?.classList.contains("is-auto-scrolling")) {
-      preciseDocumentationScrollLeftRef.current =
-        documentationRef.current?.scrollLeft ?? preciseDocumentationScrollLeftRef.current;
-    }
-
-    updateDocumentationScrollState();
-  };
-
-  useEffect(() => {
-    updateDocumentationScrollState();
-    const frame = requestAnimationFrame(updateDocumentationScrollState);
-    const timeout = window.setTimeout(updateDocumentationScrollState, 250);
-
-    const handleResize = () => updateDocumentationScrollState();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.clearTimeout(timeout);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [documentationItems.length]);
-
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      documentationRef.current?.classList.remove("is-auto-scrolling");
-      return;
-    }
-
-    let frame = 0;
-
-    const tick = (time: number) => {
-      const strip = documentationRef.current;
-
-      if (strip) {
-        const maxScroll = Math.max(0, strip.scrollWidth - strip.clientWidth);
-
-        if (
-          documentationItems.length > 1 &&
-          maxScroll > documentationFadeThreshold &&
-          time >= documentationPauseUntilRef.current &&
-          !isPointerOverDocumentationRef.current &&
-          !document.hidden
-        ) {
-          strip.classList.add("is-auto-scrolling");
-
-          const lastFrame = lastDocumentationFrameRef.current ?? time;
-          const delta = Math.min(time - lastFrame, 48);
-          const loopWidth = getDocumentationLoopWidth();
-          let nextScroll = preciseDocumentationScrollLeftRef.current + delta * documentationAutoScrollSpeed;
-
-          if (loopWidth > 0 && nextScroll >= loopWidth) {
-            nextScroll %= loopWidth;
-          }
-
-          preciseDocumentationScrollLeftRef.current = Math.min(maxScroll, nextScroll);
-          strip.scrollLeft = preciseDocumentationScrollLeftRef.current;
-          updateDocumentationScrollState();
-        } else {
-          strip.classList.remove("is-auto-scrolling");
-        }
-      }
-
-      lastDocumentationFrameRef.current = time;
-      frame = requestAnimationFrame(tick);
-    };
-
-    frame = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(frame);
-  }, [documentationItems.length, prefersReducedMotion]);
-
-  const scrollDocumentationToDot = (dotIndex: number) => {
-    const strip = documentationRef.current;
-    if (!strip) return;
-
-    pauseDocumentationAutoScroll();
-
-    const loopWidth = getDocumentationLoopWidth();
-    const target = loopWidth * (dotIndex / documentationDotCount);
-
-    preciseDocumentationScrollLeftRef.current = target;
-    strip.scrollTo({ left: target, behavior: "smooth" });
-  };
-
-  const getTechnicalChoiceLoopWidth = () => {
-    const strip = technicalChoiceRef.current;
-    const loopStartSlide = strip?.children[technicalChoiceSlides.length] as HTMLElement | undefined;
-
-    return loopStartSlide?.offsetLeft ?? 0;
-  };
-
-  const getTechnicalChoiceSlideWidth = () => {
-    const strip = technicalChoiceRef.current;
-    const firstSlide = strip?.children[0] as HTMLElement | undefined;
-
-    return firstSlide?.offsetWidth ?? strip?.clientWidth ?? 0;
-  };
-
-  const updateTechnicalChoiceScrollState = () => {
-    const strip = technicalChoiceRef.current;
-    if (!strip) return;
-
-    const maxScroll = Math.max(0, strip.scrollWidth - strip.clientWidth);
-    const scrollLeft = Math.max(0, strip.scrollLeft);
-    const loopWidth = getTechnicalChoiceLoopWidth();
-    const loopScroll = loopWidth > 0 ? scrollLeft % loopWidth : scrollLeft;
-    const slideWidth = getTechnicalChoiceSlideWidth();
-    const activeDot = slideWidth > 0 ? Math.round(loopScroll / slideWidth) : 0;
-
-    setTechnicalChoiceScrollState((current) => {
-      const next = {
-        activeDot: Math.min(technicalChoiceSlides.length - 1, activeDot),
-        canScrollLeft: loopScroll > technicalChoiceFadeThreshold,
-        canScrollRight: maxScroll - scrollLeft > technicalChoiceFadeThreshold,
-      };
-
-      if (
-        current.activeDot === next.activeDot &&
-        current.canScrollLeft === next.canScrollLeft &&
-        current.canScrollRight === next.canScrollRight
-      ) {
-        return current;
-      }
-
-      return next;
-    });
-  };
-
-  const pauseTechnicalChoiceAutoScroll = () => {
-    preciseTechnicalChoiceScrollLeftRef.current =
-      technicalChoiceRef.current?.scrollLeft ?? preciseTechnicalChoiceScrollLeftRef.current;
-    technicalChoiceRef.current?.classList.remove("is-auto-scrolling");
-    technicalChoicePauseUntilRef.current = performance.now() + technicalChoiceAutoResumeDelay;
-    lastTechnicalChoiceRotationRef.current = null;
-  };
-
+  // The technical-choice strip dips its opacity while it jumps between slides.
   const showTechnicalChoiceTransitionFade = () => {
     setIsTechnicalChoiceTransitioning(true);
 
@@ -340,46 +131,6 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     }, 950);
   };
 
-  const handleTechnicalChoicePointerEnter = () => {
-    isPointerOverTechnicalChoiceRef.current = true;
-    technicalChoiceRef.current?.classList.remove("is-auto-scrolling");
-  };
-
-  const handleTechnicalChoicePointerLeave = () => {
-    isPointerOverTechnicalChoiceRef.current = false;
-    pauseTechnicalChoiceAutoScroll();
-  };
-
-  const handleTechnicalChoiceScroll = () => {
-    if (!technicalChoiceRef.current?.classList.contains("is-auto-scrolling")) {
-      preciseTechnicalChoiceScrollLeftRef.current =
-        technicalChoiceRef.current?.scrollLeft ?? preciseTechnicalChoiceScrollLeftRef.current;
-    }
-
-    updateTechnicalChoiceScrollState();
-  };
-
-  useEffect(() => {
-    preciseTechnicalChoiceScrollLeftRef.current = 0;
-    technicalChoiceRef.current?.scrollTo({ left: 0 });
-    updateTechnicalChoiceScrollState();
-  }, [project.slug, technicalChoiceSlides.length]);
-
-  useEffect(() => {
-    updateTechnicalChoiceScrollState();
-    const frame = requestAnimationFrame(updateTechnicalChoiceScrollState);
-    const timeout = window.setTimeout(updateTechnicalChoiceScrollState, 250);
-
-    const handleResize = () => updateTechnicalChoiceScrollState();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.clearTimeout(timeout);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [technicalChoiceSlides.length]);
-
   useEffect(() => {
     return () => {
       if (technicalChoiceTransitionTimeoutRef.current) {
@@ -388,96 +139,30 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     };
   }, []);
 
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      technicalChoiceRef.current?.classList.remove("is-auto-scrolling");
-      return;
-    }
+  const documentationStrip = useAutoScrollStrip({
+    itemCount: documentationItems.length,
+    enabled: !prefersReducedMotion,
+    resumeDelay: documentationAutoResumeDelay,
+    fadeThreshold: documentationFadeThreshold,
+    mode: {
+      kind: "continuous",
+      speed: documentationAutoScrollSpeed,
+      dotCount: documentationDotCount,
+    },
+  });
 
-    let frame = 0;
-    let loopResetTimeout = 0;
-
-    const resetTechnicalChoiceLoop = (strip: HTMLDivElement) => {
-      const previousScrollBehavior = strip.style.scrollBehavior;
-      strip.style.scrollBehavior = "auto";
-      strip.scrollLeft = 0;
-      strip.style.scrollBehavior = previousScrollBehavior;
-      preciseTechnicalChoiceScrollLeftRef.current = 0;
-      updateTechnicalChoiceScrollState();
-    };
-
-    const tick = (time: number) => {
-      const strip = technicalChoiceRef.current;
-
-      if (strip) {
-        const maxScroll = Math.max(0, strip.scrollWidth - strip.clientWidth);
-
-        if (
-          technicalChoiceSlides.length > 1 &&
-          maxScroll > technicalChoiceFadeThreshold &&
-          time >= technicalChoicePauseUntilRef.current &&
-          !isPointerOverTechnicalChoiceRef.current &&
-          !document.hidden
-        ) {
-          strip.classList.add("is-auto-scrolling");
-
-          if (lastTechnicalChoiceRotationRef.current === null) {
-            lastTechnicalChoiceRotationRef.current = time;
-          }
-
-          if (time - lastTechnicalChoiceRotationRef.current >= technicalChoiceAutoRotationInterval) {
-            const slideWidth = getTechnicalChoiceSlideWidth();
-            const loopWidth = getTechnicalChoiceLoopWidth();
-            const loopScroll = loopWidth > 0 ? strip.scrollLeft % loopWidth : strip.scrollLeft;
-            const currentSlide = slideWidth > 0 ? Math.round(loopScroll / slideWidth) : 0;
-            const nextSlide = currentSlide + 1;
-            const target = nextSlide * slideWidth;
-
-            preciseTechnicalChoiceScrollLeftRef.current = target;
-            showTechnicalChoiceTransitionFade();
-            strip.scrollTo({ left: target, behavior: "smooth" });
-
-            if (nextSlide >= technicalChoiceSlides.length) {
-              window.clearTimeout(loopResetTimeout);
-              loopResetTimeout = window.setTimeout(() => {
-                resetTechnicalChoiceLoop(strip);
-              }, 900);
-            }
-
-            lastTechnicalChoiceRotationRef.current = time;
-          }
-
-          updateTechnicalChoiceScrollState();
-        } else {
-          strip.classList.remove("is-auto-scrolling");
-          lastTechnicalChoiceRotationRef.current = null;
-        }
-      }
-
-      frame = requestAnimationFrame(tick);
-    };
-
-    frame = requestAnimationFrame(tick);
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.clearTimeout(loopResetTimeout);
-    };
-  }, [technicalChoiceSlides.length, prefersReducedMotion]);
-
-  const scrollTechnicalChoiceToDot = (dotIndex: number) => {
-    const strip = technicalChoiceRef.current;
-    if (!strip) return;
-
-    pauseTechnicalChoiceAutoScroll();
-
-    const slideWidth = getTechnicalChoiceSlideWidth();
-    const target = slideWidth * dotIndex;
-
-    preciseTechnicalChoiceScrollLeftRef.current = target;
-    showTechnicalChoiceTransitionFade();
-    strip.scrollTo({ left: target, behavior: "smooth" });
-  };
+  const technicalChoiceStrip = useAutoScrollStrip({
+    itemCount: technicalChoiceSlides.length,
+    enabled: !prefersReducedMotion,
+    resumeDelay: technicalChoiceAutoResumeDelay,
+    fadeThreshold: technicalChoiceFadeThreshold,
+    resetKey: project.slug,
+    mode: {
+      kind: "slide",
+      interval: technicalChoiceAutoRotationInterval,
+      onAdvance: showTechnicalChoiceTransitionFade,
+    },
+  });
 
   const openLightbox = (event: { currentTarget: HTMLElement }) => {
     lastFocusedElementRef.current = event.currentTarget;
@@ -641,8 +326,8 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
               <div
                 className={[
                   "technical-choice-strip-shell",
-                  technicalChoiceScrollState.canScrollLeft ? "has-left-fade" : "",
-                  technicalChoiceScrollState.canScrollRight ? "has-right-fade" : "",
+                  technicalChoiceStrip.state.canScrollLeft ? "has-left-fade" : "",
+                  technicalChoiceStrip.state.canScrollRight ? "has-right-fade" : "",
                   isTechnicalChoiceTransitioning ? "is-transitioning" : "",
                 ]
                   .filter(Boolean)
@@ -650,15 +335,8 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
               >
                 <div
                   className="technical-choice-slide-track"
-                  onFocus={pauseTechnicalChoiceAutoScroll}
-                  onKeyDown={pauseTechnicalChoiceAutoScroll}
-                  onPointerDown={pauseTechnicalChoiceAutoScroll}
-                  onPointerEnter={handleTechnicalChoicePointerEnter}
-                  onPointerLeave={handleTechnicalChoicePointerLeave}
-                  onScroll={handleTechnicalChoiceScroll}
-                  onTouchStart={pauseTechnicalChoiceAutoScroll}
-                  onWheel={pauseTechnicalChoiceAutoScroll}
-                  ref={technicalChoiceRef}
+                  {...technicalChoiceStrip.stripProps}
+                  ref={technicalChoiceStrip.ref}
                 >
                   {loopedTechnicalChoiceSlides.map((slide, slideIndex) => (
                     <div className="technical-choice-slide" key={`${slide.category}-${slideIndex}`}>
@@ -682,9 +360,9 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                   {technicalChoiceSlides.map((_, index) => (
                     <button
                       aria-label={`Go to technical choices group ${index + 1}`}
-                      className={technicalChoiceScrollState.activeDot === index ? "is-active" : ""}
+                      className={technicalChoiceStrip.state.activeDot === index ? "is-active" : ""}
                       key={index}
-                      onClick={() => scrollTechnicalChoiceToDot(index)}
+                      onClick={() => technicalChoiceStrip.scrollToDot(index)}
                       type="button"
                     />
                   ))}
@@ -722,23 +400,16 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
             <div
               className={[
                 "documentation-strip-shell",
-                documentationScrollState.canScrollLeft ? "has-left-fade" : "",
-                documentationScrollState.canScrollRight ? "has-right-fade" : "",
+                documentationStrip.state.canScrollLeft ? "has-left-fade" : "",
+                documentationStrip.state.canScrollRight ? "has-right-fade" : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
             >
               <div
                 className="documentation-grid"
-                onFocus={pauseDocumentationAutoScroll}
-                onKeyDown={pauseDocumentationAutoScroll}
-                onPointerDown={pauseDocumentationAutoScroll}
-                onPointerEnter={handleDocumentationPointerEnter}
-                onPointerLeave={handleDocumentationPointerLeave}
-                onScroll={handleDocumentationScroll}
-                onTouchStart={pauseDocumentationAutoScroll}
-                onWheel={pauseDocumentationAutoScroll}
-                ref={documentationRef}
+                {...documentationStrip.stripProps}
+                ref={documentationStrip.ref}
               >
                 {loopedDocumentationItems.map((item, index) => (
                   <button
@@ -766,9 +437,9 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
                 {Array.from({ length: documentationDotCount }).map((_, index) => (
                   <button
                     aria-label={`Go to documentation group ${index + 1}`}
-                    className={documentationScrollState.activeDot === index ? "is-active" : ""}
+                    className={documentationStrip.state.activeDot === index ? "is-active" : ""}
                     key={index}
-                    onClick={() => scrollDocumentationToDot(index)}
+                    onClick={() => documentationStrip.scrollToDot(index)}
                     type="button"
                   />
                 ))}

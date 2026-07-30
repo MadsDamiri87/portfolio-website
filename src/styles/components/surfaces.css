@@ -1,0 +1,97 @@
+/* Shared card/panel surface, feature strip, section rhythm */
+.feature-strip {
+  position: relative;
+  isolation: isolate;
+  z-index: 6;
+  margin-top: -55px;
+  margin-bottom: -55px;
+}
+
+.feature-strip::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  z-index: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(216, 161, 110, 0.08) 7%,
+    rgba(216, 161, 110, 0.32) 18%,
+    rgba(216, 161, 110, 0.2) 50%,
+    rgba(216, 161, 110, 0.32) 82%,
+    rgba(216, 161, 110, 0.08) 93%,
+    transparent 100%
+  );
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.feature-strip__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.feature-card,
+.project-card,
+.background-panel,
+.timeline,
+.contact-links a,
+.cv-page .glass-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(145deg, rgba(34, 30, 26, 0.84), rgba(18, 16, 14, 0.82)),
+    rgba(11, 17, 28, 0.8);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+}
+
+.feature-card {
+  position: relative;
+  min-height: 119px;
+  padding: 13px 28px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.feature-card h2,
+.project-card h3,
+.background-panel h3,
+.timeline h3 {
+  margin: 0;
+}
+
+/* These two had no size of their own and fell back to the browser default
+   1.17em, which is the one heading size left outside the scale. */
+.background-panel h3,
+.timeline h3 {
+  font-size: var(--text-h3);
+}
+
+.feature-card h2 {
+  font-size: var(--text-panel-title);
+}
+
+.feature-card p,
+.project-card span,
+.background-panel p,
+.timeline p,
+.contact-section p {
+  color: var(--muted);
+  line-height: 1.58;
+}
+
+.feature-card p {
+  margin: 9px 0 0;
+  font-size: 0.96rem;
+}
+
+.section {
+  padding-block: 37px;
+}
