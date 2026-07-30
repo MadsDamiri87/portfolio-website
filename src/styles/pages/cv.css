@@ -105,7 +105,6 @@
 .cv-journey-page {
   position: relative;
   padding: 42px 0 84px;
-  border-top: 1px solid rgba(211, 153, 116, 0.12);
   /* Warm dark scrim over the scenic backdrop so the panels stay readable:
      vertical darkening + side vignette + a warm multiply tint over the image. */
   background:
@@ -129,6 +128,14 @@
   grid-template-columns: 280px minmax(0, 1fr) 360px;
   gap: 22px;
   align-items: start;
+}
+
+/* Line the divider's flare up with the timeline beam below it, so the glow
+   reads as the head of that line instead of a separate ornament. The beam sits
+   at the centre of the middle grid column: 280 + 22 + (100% - 280 - 360 - 44)/2
+   from the left edge, which lands 40px left of the container centre. */
+.cv-page .section-divider::after {
+  left: calc(50% - 40px);
 }
 
 .cv-timeline-card {
@@ -570,6 +577,11 @@
     grid-template-columns: 240px minmax(0, 1fr);
   }
 
+  /* Two columns now: the beam centre moves right of the container centre. */
+  .cv-page .section-divider::after {
+    left: calc(50% + 131px);
+  }
+
   .cv-side-stack {
     grid-column: 1 / -1;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -590,6 +602,11 @@
 
   .cv-journey-page__inner {
     grid-template-columns: 1fr;
+  }
+
+  /* Single column: the timeline is centred again, so is the flare. */
+  .cv-page .section-divider::after {
+    left: 50%;
   }
 
   .cv-profile-panel,

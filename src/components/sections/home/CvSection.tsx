@@ -1,7 +1,7 @@
 import { Download } from "lucide-react";
-import { experience } from "../../data/profile";
-import { ButtonLink } from "../ui/ButtonLink";
-import { SectionHeading } from "../ui/SectionHeading";
+import { experience } from "../../../data/profile";
+import { ButtonLink } from "../../ui/ButtonLink";
+import { SectionHeading } from "../../ui/SectionHeading";
 
 export function CvSection() {
   return (

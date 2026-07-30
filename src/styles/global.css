@@ -6,6 +6,7 @@
 @import "./layout/header.css";
 @import "./sections/hero.css";
 @import "./components/surfaces.css";
+@import "./components/section-divider.css";
 @import "./sections/projects-strip.css";
 @import "./components/tech-pill.css";
 @import "./pages/projects.css";

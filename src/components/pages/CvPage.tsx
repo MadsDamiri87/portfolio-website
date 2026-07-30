@@ -185,6 +185,8 @@ export function CvPage() {
         </div>
       </section>
 
+      <div className="container section-divider" aria-hidden="true" />
+
       <section
         className="cv-journey-page"
         id="cv-journey"

@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
-import { skills } from "../../data/projects";
-import { techProjectHref } from "../projects/ProjectCard";
-import { TechPill } from "../ui/TechPill";
+import { skills } from "../../../data/projects";
+import { techProjectHref } from "../../projects/ProjectCard";
+import { TechPill } from "../../ui/TechPill";
 
 export function AboutSection() {
   return (

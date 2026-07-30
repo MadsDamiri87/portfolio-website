@@ -1,8 +1,8 @@
 import { ArrowRight } from "lucide-react";
-import profileImage from "../../assets/images/mads-profile-nobg.webp";
-import { profile } from "../../data/profile";
-import { ButtonLink } from "../ui/ButtonLink";
-import { LaptopScene } from "../ui/LaptopScene";
+import profileImage from "../../../assets/images/mads-profile-nobg.webp";
+import { profile } from "../../../data/profile";
+import { ButtonLink } from "../../ui/ButtonLink";
+import { LaptopScene } from "../../ui/LaptopScene";
 
 export function HeroSection() {
   return (

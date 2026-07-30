@@ -1,0 +1,31 @@
+/* Section divider: thin rule with a warm copper flare in the middle */
+
+/* Closes off a section without drawing a hard edge across the full width.
+   Sits inside a .container, or carries .container itself where there is no
+   wrapper to inherit the width from. */
+.section-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(226, 203, 181, 0.3) 10%,
+    rgba(226, 203, 181, 0.3) 90%,
+    transparent
+  );
+}
+
+.section-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(430px, 44%);
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #c77452 30%, #dda878 50%, #c77452 70%, transparent);
+  box-shadow:
+    0 0 18px rgba(199, 116, 82, 0.6),
+    0 0 46px rgba(210, 148, 109, 0.26);
+  transform: translate(-50%, -50%);
+}

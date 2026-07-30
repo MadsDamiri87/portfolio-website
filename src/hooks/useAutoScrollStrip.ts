@@ -39,6 +39,12 @@ type AutoScrollStripOptions = {
   resumeDelay: number;
   /** Slop before the edge fades and auto-scroll kick in. */
   fadeThreshold?: number;
+  /**
+   * How the edge fades behave. "position" turns each side on only when there
+   * is something to scroll to on that side; "scrollable" turns both on as soon
+   * as the strip overflows, which reads better on a strip that loops forever.
+   */
+  edgeFades?: "position" | "scrollable";
   /** Changing this scrolls the strip back to the start. */
   resetKey?: string | number;
   mode: ContinuousMode | SlideMode;
@@ -57,6 +63,7 @@ export function useAutoScrollStrip({
   enabled,
   resumeDelay,
   fadeThreshold = 12,
+  edgeFades = "position",
   resetKey,
   mode,
 }: AutoScrollStripOptions) {
@@ -108,11 +115,13 @@ export function useAutoScrollStrip({
       activeDot = Math.min(itemCount - 1, slideWidth > 0 ? Math.round(loopScroll / slideWidth) : 0);
     }
 
+    const overflows = maxScroll > fadeThreshold;
+
     setState((current) => {
       const next = {
         activeDot,
-        canScrollLeft: loopScroll > fadeThreshold,
-        canScrollRight: maxScroll - scrollLeft > fadeThreshold,
+        canScrollLeft: edgeFades === "scrollable" ? overflows : loopScroll > fadeThreshold,
+        canScrollRight: edgeFades === "scrollable" ? overflows : maxScroll - scrollLeft > fadeThreshold,
       };
 
       if (

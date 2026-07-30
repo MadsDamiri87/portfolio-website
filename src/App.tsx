@@ -1,11 +1,7 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import { SiteShell } from "./components/layout/SiteShell";
+import { HomePage } from "./components/pages/HomePage";
 import { NotFoundPage } from "./components/pages/NotFoundPage";
-import { AboutSection } from "./components/sections/AboutSection";
-import { CvSection } from "./components/sections/CvSection";
-import { FeatureStrip } from "./components/sections/FeatureStrip";
-import { HeroSection } from "./components/sections/HeroSection";
-import { ProjectsSection } from "./components/sections/ProjectsSection";
 import { projects } from "./data/projects";
 
 // The home page ships in the main bundle; the sub-pages are fetched on first visit.
@@ -119,15 +115,7 @@ export default function App() {
       case "not-found":
         return <NotFoundPage variant="page" />;
       default:
-        return (
-          <>
-            <HeroSection />
-            <FeatureStrip />
-            <ProjectsSection />
-            <AboutSection />
-            <CvSection />
-          </>
-        );
+        return <HomePage />;
     }
   };
 

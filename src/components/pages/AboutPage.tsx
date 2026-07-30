@@ -84,6 +84,8 @@ export function AboutPage() {
         </div>
       </section>
 
+      <div className="container section-divider" aria-hidden="true" />
+
       <section className="about-story-board" aria-label="About Mads Damiri">
         <div className="container about-story-board__inner">
           <aside className="about-side-panel about-side-panel--reading">

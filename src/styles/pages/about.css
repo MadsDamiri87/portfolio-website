@@ -200,7 +200,6 @@
 .about-story-board {
   min-height: 510px;
   padding: 14px 0 48px;
-  border-top: 1px solid var(--line-soft);
   background:
     radial-gradient(circle at 18% 4%, rgba(199, 116, 82, 0.16), transparent 30rem),
     radial-gradient(circle at 34% 52%, rgba(210, 148, 109, 0.055), transparent 26rem),
