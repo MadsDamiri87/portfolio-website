@@ -142,8 +142,11 @@
   inset: 0;
   z-index: 1;
   /* Warm scrim: keeps the heading legible over the busy left side of the photo
-     and blends the bottom edge into the story board below. */
+     and blends the bottom edge into the story board below. The amber glow on
+     top is the same one the home hero carries, so both photos sit in the same
+     light. */
   background:
+    radial-gradient(ellipse 940px 420px at 80% 12%, rgba(216, 161, 110, 0.12), transparent 62%),
     linear-gradient(104deg, rgba(12, 11, 9, 0.93) 0%, rgba(14, 13, 11, 0.86) 28%, rgba(17, 16, 14, 0.46) 48%, transparent 70%),
     radial-gradient(ellipse at 0% 0%, rgba(9, 8, 7, 0.76) 0%, rgba(12, 11, 9, 0.5) 36%, transparent 64%),
     linear-gradient(180deg, rgba(12, 11, 9, 0.34), rgba(12, 11, 9, 0.05) 44%, rgba(17, 16, 14, 0.68));

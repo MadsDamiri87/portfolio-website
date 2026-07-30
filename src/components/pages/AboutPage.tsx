@@ -3,7 +3,7 @@ import aboutHeroImage from "../../assets/images/about-hero-desk.webp";
 const journeyItems = [
   {
     title: "Curiosity",
-    description: "I try to ask good questions to uncover hidden problems and constraints.",
+    description: "I try to ask questions that can uncover hidden problems and constraints.",
   },
   {
     title: "People",
