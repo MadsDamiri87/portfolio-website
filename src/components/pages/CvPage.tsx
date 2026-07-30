@@ -17,7 +17,7 @@ import {
 import { useEffect, useState } from "react";
 // The PDF lives in docs/, which is not served as-is — importing it lets Vite
 // emit it as a build asset and hand back the URL it ends up on.
-import cvPdfUrl from "../../../docs/Mads Damiri - CV - software trainee 01-07-2026.pdf";
+import cvPdfUrl from "../../../docs/Mads_Damiri_CV_software_trainee_30-07-2026.pdf";
 import cvHeroImage from "../../assets/images/cv-hero-me-working.webp";
 import cvBgImage from "../../assets/images/cv-bg.webp";
 import profileImage from "../../assets/images/mads-profile-nobg.webp";
@@ -28,17 +28,17 @@ import { TechPill } from "../ui/TechPill";
 
 const journeySteps = [
   {
-    number: "2024",
-    period: "Before software",
-    title: "People, responsibility and structure",
+    number: "2026",
+    period: "Now",
+    title: "Building software without leaving the human side behind",
     icon: HeartHandshake,
     tone: "cyan",
     points: [
-      "Years of practical work with people, trust and responsibility.",
-      "A calm way of collaborating, listening and following through.",
-      "A strong sense for clear communication before technical decisions.",
+      "Studying Software Engineering while working in residential care and running my own psychotherapy practice.",
+      "Used to balancing responsibility, deadlines and different kinds of problems.",
+      "Bringing curiosity, structure and a strong habit of asking questions before jumping to solutions.",
     ],
-    outcome: "Human perspective, ownership and patience under pressure.",
+    outcome: "A growing technical foundation shaped by real world responsibility, communication and perspective",
   },
   {
     number: "2025 - 2026",

@@ -95,7 +95,17 @@ export function ProjectsPage() {
         <header className="projects-page__header">
           <div>
             <h1>Projects</h1>
-            <span>Systems, school projects and experiments collected in one searchable overview.</span>
+            <span>Systems, school projects and experiments collected in one searchable overview.
+            </span>
+            <span>This page collects my school projects,
+              experiments and my overall work in one place. It is meant to showcase my projects,
+              and documentation of each project.</span>
+            <h3>How to navigate</h3>
+            <span>
+              Filter and/or use the technology tags to find related projects.
+              Open a project card to see the details, screenshots,
+              technical decisions and documentation.
+            </span>
           </div>
           <div className="projects-page__meta">
             <strong>{projects.length}</strong>
@@ -103,24 +113,7 @@ export function ProjectsPage() {
           </div>
         </header>
 
-        <section className="projects-intro-card" aria-label="How to use the project archive">
-          <div>
-            <h2>A practical overview of what I have built</h2>
-            <p>
-              This page collects my school projects, experiments and my overall work in one place.
-              It is meant to showcase my projects, and documentation of each project to the degree that
-              was required for each assignment.
-            </p>
-          </div>
-          <div>
-            <h2>How to navigate</h2>
-            <p>
-              Filter and/or use the technology tags to find related projects.
-              Open a project card to see the details,
-              screenshots, technical decisions and documentation.
-            </p>
-          </div>
-        </section>
+        <div className="section-divider" aria-hidden="true" />
 
         <div className="projects-page__layout">
           <div className="projects-page__main" id="project-results">

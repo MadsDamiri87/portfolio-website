@@ -1310,12 +1310,46 @@ h3,
   gap: 24px;
 }
 
+/* Thin rule with a warm copper flare in the middle, used to close off a
+   section without adding a hard edge across the full width. */
+.section-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(226, 203, 181, 0.3) 10%,
+    rgba(226, 203, 181, 0.3) 90%,
+    transparent
+  );
+}
+
+.section-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(430px, 44%);
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #c77452 30%, #dda878 50%, #c77452 70%, transparent);
+  box-shadow:
+    0 0 18px rgba(199, 116, 82, 0.6),
+    0 0 46px rgba(210, 148, 109, 0.26);
+  transform: translate(-50%, -50%);
+}
+
 .projects-page__header {
   display: flex;
-  align-items: end;
+  align-items: start;
   justify-content: space-between;
   gap: 24px;
-  padding:6px 0px 167px;
+  padding:6px 0px 89px;
+}
+
+.projects-page__header h3 {
+  margin-bottom: -7px;
+  color: #c98261;
 }
 
 .projects-page__header p {
@@ -1339,7 +1373,7 @@ h3,
   max-width: 466px;
   margin-top: 12px;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: var(--text-intro);
 }
 
 .projects-page__meta {
@@ -1504,10 +1538,32 @@ h3,
 }
 
 .projects-page__layout {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 292px;
   gap: 24px;
   align-items: start;
+}
+
+/* Everything below the divider settles onto a darker backdrop, so the filter
+   and result area reads as its own zone. Full-bleed, and painted behind the
+   content but over the hero image. */
+.projects-page__layout::before {
+  content: "";
+  position: absolute;
+  top: -24px;
+  right: calc(50% - 50vw);
+  bottom: -68px;
+  left: calc(50% - 50vw);
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(9, 7, 6, 0.42) 0,
+    rgba(9, 7, 6, 0.84) 60px,
+    rgba(9, 7, 6, 0.94) 200px,
+    rgba(9, 7, 6, 0.97) 100%
+  );
+  pointer-events: none;
 }
 
 .projects-page__main {
