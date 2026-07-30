@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import projectsHeroImage from "../../assets/images/project-hero-background.webp";
 import { projects } from "../../data/projects";
 import type { Project } from "../../types";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import { useScrollEdges } from "../../hooks/useScrollEdges";
 import { ProjectCard, tagTone } from "../projects/ProjectCard";
 import { TechPill } from "../ui/TechPill";
@@ -44,6 +45,20 @@ export function ProjectsPage() {
   const [selectedStatus, setSelectedStatus] = useState<(typeof statusFilters)[number]>("All");
   const [selectedSemester, setSelectedSemester] = useState<SemesterFilter>("All");
   const semesterEdges = useScrollEdges<HTMLDivElement>();
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  /** Moves the semester row one card at a time, measured from the layout. */
+  const scrollSemesters = (direction: -1 | 1) => {
+    const row = semesterEdges.ref.current;
+    const card = row?.children[0] as HTMLElement | undefined;
+    if (!row || !card) return;
+
+    const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+    row.scrollBy({
+      left: (card.offsetWidth + gap) * direction,
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+  };
 
   const technologies = useMemo(
     () => ["All", ...Array.from(new Set(projects.flatMap((project) => project.tags))).sort()],
@@ -156,19 +171,26 @@ export function ProjectsPage() {
                 .filter(Boolean)
                 .join(" ")}
             >
-              <span className="semester-filter__hint semester-filter__hint--left" aria-hidden="true">
-                <ChevronLeft size={20} strokeWidth={2.1} />
-              </span>
-              <span className="semester-filter__hint semester-filter__hint--right" aria-hidden="true">
-                <ChevronRight size={20} strokeWidth={2.1} />
-              </span>
-
-              <div
-                className="semester-filter"
-                aria-label="Semester filters"
-                onScroll={semesterEdges.onScroll}
-                ref={semesterEdges.ref}
+              <button
+                aria-label="Show earlier semesters"
+                className="semester-filter__hint semester-filter__hint--left"
+                disabled={!semesterEdges.canScrollLeft}
+                onClick={() => scrollSemesters(-1)}
+                type="button"
               >
+                <ChevronLeft size={20} strokeWidth={2.1} />
+              </button>
+              <button
+                aria-label="Show later semesters"
+                className="semester-filter__hint semester-filter__hint--right"
+                disabled={!semesterEdges.canScrollRight}
+                onClick={() => scrollSemesters(1)}
+                type="button"
+              >
+                <ChevronRight size={20} strokeWidth={2.1} />
+              </button>
+
+              <div className="semester-filter" aria-label="Semester filters" ref={semesterEdges.ref}>
                 <button
                   className={selectedSemester === "All" ? "is-active" : ""}
                   onClick={() => setSelectedSemester("All")}

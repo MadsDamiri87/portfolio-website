@@ -31,20 +31,33 @@ export function useScrollEdges<T extends HTMLElement>() {
     );
   };
 
-  // Measure on mount, once painted, and whenever the box changes width.
+  // Measure on mount, once painted, and whenever it scrolls or changes size.
+  // The scroll listener is attached here rather than through an onScroll prop:
+  // scroll events do not bubble, so React's synthetic version is easy to miss.
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
     update();
     const frame = requestAnimationFrame(update);
     const timeout = window.setTimeout(update, 250);
+
+    el.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
+
+    // Catches the row growing or shrinking, e.g. when filters change.
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
 
     return () => {
       cancelAnimationFrame(frame);
       window.clearTimeout(timeout);
+      el.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
+      observer.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { ref, ...edges, onScroll: update };
+  return { ref, ...edges };
 }

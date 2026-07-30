@@ -139,8 +139,9 @@
   min-width: 0;
 }
 
-/* Scroll hints. Purely a signal that the row continues, so they never take the
-   pointer; they fade in on hover and only on a side with somewhere to go. */
+/* Scroll controls. They fade in on hover, and only on a side with somewhere to
+   go; while invisible they also stay out of the way of the pointer, so a click
+   near the edge still reaches the semester button underneath. */
 .semester-filter__hint {
   position: absolute;
   top: 1px;
@@ -149,8 +150,11 @@
   display: flex;
   align-items: center;
   width: 52px;
+  padding: 0;
+  border: 0;
   color: #e2c8b1;
   opacity: 0;
+  cursor: pointer;
   pointer-events: none;
   transition: opacity 420ms ease;
 }
@@ -176,6 +180,17 @@
 .semester-filter-shell.can-scroll-right:hover .semester-filter__hint--right,
 .semester-filter-shell.can-scroll-right:focus-within .semester-filter__hint--right {
   opacity: 1;
+  pointer-events: auto;
+}
+
+.semester-filter__hint:hover {
+  color: #ffffff;
+}
+
+/* Keyboard users get to them before any hover happens. */
+.semester-filter__hint:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
