@@ -132,6 +132,58 @@
   font-size: 0.86rem;
 }
 
+.semester-filter-shell {
+  position: relative;
+  /* The row inside scrolls, but this wrapper does not, so without this it
+     reports the full row width as its minimum and stretches the grid column. */
+  min-width: 0;
+}
+
+/* Scroll hints. Purely a signal that the row continues, so they never take the
+   pointer; they fade in on hover and only on a side with somewhere to go. */
+.semester-filter__hint {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  width: 52px;
+  color: #e2c8b1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 420ms ease;
+}
+
+.semester-filter__hint--left {
+  left: 1px;
+  justify-content: flex-start;
+  padding-left: 6px;
+  border-radius: 7px 0 0 7px;
+  background: linear-gradient(90deg, rgba(11, 9, 8, 0.92) 34%, transparent);
+}
+
+.semester-filter__hint--right {
+  right: 1px;
+  justify-content: flex-end;
+  padding-right: 6px;
+  border-radius: 0 7px 7px 0;
+  background: linear-gradient(270deg, rgba(11, 9, 8, 0.92) 34%, transparent);
+}
+
+.semester-filter-shell.can-scroll-left:hover .semester-filter__hint--left,
+.semester-filter-shell.can-scroll-left:focus-within .semester-filter__hint--left,
+.semester-filter-shell.can-scroll-right:hover .semester-filter__hint--right,
+.semester-filter-shell.can-scroll-right:focus-within .semester-filter__hint--right {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .semester-filter__hint {
+    transition-duration: 0ms;
+  }
+}
+
 .semester-filter {
   display: flex;
   gap: 10px;

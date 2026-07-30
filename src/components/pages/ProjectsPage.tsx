@@ -1,8 +1,9 @@
-import { Filter, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Filter, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import projectsHeroImage from "../../assets/images/project-hero-background.webp";
 import { projects } from "../../data/projects";
 import type { Project } from "../../types";
+import { useScrollEdges } from "../../hooks/useScrollEdges";
 import { ProjectCard, tagTone } from "../projects/ProjectCard";
 import { TechPill } from "../ui/TechPill";
 
@@ -42,6 +43,7 @@ export function ProjectsPage() {
   const [selectedTech, setSelectedTech] = useState(getTechFromHash);
   const [selectedStatus, setSelectedStatus] = useState<(typeof statusFilters)[number]>("All");
   const [selectedSemester, setSelectedSemester] = useState<SemesterFilter>("All");
+  const semesterEdges = useScrollEdges<HTMLDivElement>();
 
   const technologies = useMemo(
     () => ["All", ...Array.from(new Set(projects.flatMap((project) => project.tags))).sort()],
@@ -143,26 +145,50 @@ export function ProjectsPage() {
               </div>
             </div>
 
-            <div className="semester-filter" aria-label="Semester filters">
-              <button
-                className={selectedSemester === "All" ? "is-active" : ""}
-                onClick={() => setSelectedSemester("All")}
-                type="button"
+            {/* The hints only appear on hover, and only on a side that has
+                something left to scroll to. */}
+            <div
+              className={[
+                "semester-filter-shell",
+                semesterEdges.canScrollLeft ? "can-scroll-left" : "",
+                semesterEdges.canScrollRight ? "can-scroll-right" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              <span className="semester-filter__hint semester-filter__hint--left" aria-hidden="true">
+                <ChevronLeft size={20} strokeWidth={2.1} />
+              </span>
+              <span className="semester-filter__hint semester-filter__hint--right" aria-hidden="true">
+                <ChevronRight size={20} strokeWidth={2.1} />
+              </span>
+
+              <div
+                className="semester-filter"
+                aria-label="Semester filters"
+                onScroll={semesterEdges.onScroll}
+                ref={semesterEdges.ref}
               >
-                <strong>All</strong>
-                <span>{projects.length} projects</span>
-              </button>
-              {semesterGroups.map(({ semester, items }) => (
                 <button
-                  className={selectedSemester === semester ? "is-active" : ""}
-                  key={semester}
-                  onClick={() => setSelectedSemester(semester)}
+                  className={selectedSemester === "All" ? "is-active" : ""}
+                  onClick={() => setSelectedSemester("All")}
                   type="button"
                 >
-                  <strong>{semester}. semester</strong>
-                  <span>{items.length ? `${items.length} projects` : "Coming soon"}</span>
+                  <strong>All</strong>
+                  <span>{projects.length} projects</span>
                 </button>
-              ))}
+                {semesterGroups.map(({ semester, items }) => (
+                  <button
+                    className={selectedSemester === semester ? "is-active" : ""}
+                    key={semester}
+                    onClick={() => setSelectedSemester(semester)}
+                    type="button"
+                  >
+                    <strong>{semester}. semester</strong>
+                    <span>{items.length ? `${items.length} projects` : "Coming soon"}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="projects-tech-filter" aria-label="Technology filters">
