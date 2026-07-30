@@ -454,33 +454,6 @@
   line-height: 1.5;
 }
 
-.technical-choice-dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 2px;
-}
-
-.technical-choice-dots button {
-  width: 7px;
-  height: 7px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: var(--line-strong);
-  cursor: pointer;
-  transition:
-    width 180ms ease,
-    background 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.technical-choice-dots button.is-active {
-  width: 20px;
-  background: linear-gradient(90deg, var(--blue), var(--violet));
-  box-shadow: 0 0 14px rgba(194, 111, 78, 0.58);
-}
-
 .project-gallery-panel {
   min-height: 330px;
   display: grid;
@@ -611,33 +584,6 @@
 
 .documentation-grid.is-auto-scrolling {
   scroll-snap-type: none;
-}
-
-.documentation-strip-dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 2px;
-}
-
-.documentation-strip-dots button {
-  width: 7px;
-  height: 7px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: var(--line-strong);
-  cursor: pointer;
-  transition:
-    width 180ms ease,
-    background 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.documentation-strip-dots button.is-active {
-  width: 20px;
-  background: linear-gradient(90deg, var(--blue), var(--violet));
-  box-shadow: 0 0 14px rgba(194, 111, 78, 0.58);
 }
 
 .documentation-card {

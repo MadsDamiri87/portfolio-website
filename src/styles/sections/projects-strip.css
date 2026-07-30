@@ -122,33 +122,6 @@
   scroll-snap-align: start;
 }
 
-.projects-strip-dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 2px;
-}
-
-.projects-strip-dots button {
-  width: 7px;
-  height: 7px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: var(--line-strong);
-  cursor: pointer;
-  transition:
-    width 180ms ease,
-    background 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.projects-strip-dots button.is-active {
-  width: 20px;
-  background: linear-gradient(90deg, var(--blue), var(--violet));
-  box-shadow: 0 0 14px rgba(194, 111, 78, 0.58);
-}
-
 .project-card {
   position: relative;
   min-height: 372px;
