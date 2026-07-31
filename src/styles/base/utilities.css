@@ -104,6 +104,8 @@ main:focus {
     scroll-behavior: auto !important;
   }}
 
+/* Full viewport, so the footer waits below the fold while a lazy page loads
+   instead of being shoved down it once the page arrives. */
 .route-fallback {
-  min-height: 70vh;
+  min-height: 100vh;
 }

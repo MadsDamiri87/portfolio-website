@@ -1,5 +1,6 @@
 import { BookOpen, FileText, GraduationCap, Mail, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
+import { preload } from "react-dom";
 import cvPdfUrl from "../../../docs/Mads_Damiri_CV_software_trainee_31-07-2026.pdf";
 import cvHeroImage from "../../assets/images/cv-hero-me-working.webp";
 import cvBgImage from "../../assets/images/cv-bg.webp";
@@ -9,6 +10,10 @@ import { profile } from "../../data/profile";
 import { tagTone, techProjectHref } from "../projects/ProjectCard";
 import { PdfOverlay } from "../ui/PdfOverlay";
 import { TechPill } from "../ui/TechPill";
+
+// The journey background is a CSS background, so the browser only finds it once
+// it styles that section. Asking for it here starts it as the chunk loads.
+preload(cvBgImage, { as: "image", fetchPriority: "high" });
 
 const journeySteps = [
   {
