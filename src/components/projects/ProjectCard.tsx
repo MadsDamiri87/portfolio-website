@@ -33,9 +33,6 @@ export function projectDetailHref(project: Project) {
 export function ProjectCard({ project }: ProjectCardProps) {
   const detailHref = projectDetailHref(project);
 
-  // Mouse-only convenience: clicking the card padding opens the project.
-  // Keyboard and screen-reader users are served by the real links below, so the
-  // card itself is deliberately not focusable.
   const handleCardClick = (event: MouseEvent<HTMLElement>) => {
     if ((event.target as HTMLElement).closest("a, button")) return;
 

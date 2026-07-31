@@ -8,13 +8,8 @@ function getInitialValue() {
   return window.matchMedia(QUERY).matches;
 }
 
-/**
- * Tracks the user's reduced-motion preference so JS-driven animations can opt out,
- * the same way the CSS `@media (prefers-reduced-motion: reduce)` blocks already do.
- */
 export function usePrefersReducedMotion() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(getInitialValue);
-
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
 

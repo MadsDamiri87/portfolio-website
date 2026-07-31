@@ -12,9 +12,6 @@ export function PdfOverlay({ src, title, downloadName, onClose }: PdfOverlayProp
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
 
-  // Touch devices (phones/tablets) cannot scroll a PDF embedded in an iframe:
-  // iOS Safari renders only the first page, Android usually shows nothing. On
-  // those we skip the embed and send people to the native viewer instead.
   const [canEmbed, setCanEmbed] = useState(true);
 
   useEffect(() => {

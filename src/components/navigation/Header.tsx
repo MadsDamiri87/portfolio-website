@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { FileText, FolderKanban, GitBranch, Home, Mail, Menu, Network, UserRound, X } from "lucide-react";
-// Rendered at 52x32, so a 156px-wide copy is crisp even on a 3x display and
-// costs 5 KB instead of 77. The full-size md-logo.webp stays in the repo as the
-// master the favicons are generated from.
 import mdLogo from "../../assets/images/md-logo-header.webp";
 import { cvOverlayHref, navigation } from "../../data/navigation";
 import { profile, socialProfiles } from "../../data/profile";
@@ -108,7 +105,6 @@ export function Header({ activePage }: HeaderProps) {
             })}
           </div>
 
-          {/* Lands on the CV page and opens the CV overlay there. */}
           <a className="button button--primary button--compact" href={cvOverlayHref}>
             <span>View CV</span>
             <FileText size={16} strokeWidth={1.9} />

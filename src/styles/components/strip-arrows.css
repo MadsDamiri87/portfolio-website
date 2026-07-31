@@ -1,17 +1,9 @@
-/* Chevrons that step a horizontal strip one item at a time */
-
-/* The shell only needs to be a positioning context. --strip-arrow-fade-out is
-   how long the chevrons take to disappear again; strips that resume scrolling
-   on their own set it to their own resume delay so the two line up. */
-/* Each strip pads its scroller differently, so the inset is set per shell to
-   line the chevrons up with the cards rather than the scroll box. */
 .strip-arrows-shell {
   --strip-arrow-fade-out: 420ms;
   --strip-arrow-top: 1px;
   --strip-arrow-bottom: 1px;
   --strip-arrow-inset: 1px;
 }
-
 .strip-arrow {
   position: absolute;
   top: var(--strip-arrow-top);
@@ -25,12 +17,9 @@
   color: #e2c8b1;
   opacity: 0;
   cursor: pointer;
-  /* Invisible means out of the way, so a click near the edge still reaches
-     whatever sits under the chevron. */
   pointer-events: none;
   transition: opacity var(--strip-arrow-fade-out) ease;
 }
-
 .strip-arrow--back {
   left: var(--strip-arrow-inset);
   justify-content: flex-start;
@@ -38,7 +27,6 @@
   border-radius: 7px 0 0 7px;
   background: linear-gradient(90deg, rgba(11, 9, 8, 0.92) 34%, transparent);
 }
-
 .strip-arrow--forward {
   right: var(--strip-arrow-inset);
   justify-content: flex-end;
@@ -46,15 +34,12 @@
   border-radius: 0 7px 7px 0;
   background: linear-gradient(270deg, rgba(11, 9, 8, 0.92) 34%, transparent);
 }
-
-/* Coming in is quick; going away takes as long as the strip stays still. */
 .strip-arrows-shell:hover .strip-arrow:not(:disabled),
 .strip-arrow:focus-visible {
   opacity: 1;
   pointer-events: auto;
   transition-duration: 420ms;
 }
-
 .strip-arrow:hover {
   color: #ffffff;
 }

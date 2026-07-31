@@ -63,7 +63,6 @@ function buildTechnicalChoiceSlides(choices: TechnicalChoice[]) {
   return slides;
 }
 
-/** 1 -> "1st semester", 2 -> "2nd semester", and so on. */
 function formatSemester(semester?: number) {
   if (!semester) return "Not listed";
 
@@ -246,7 +245,13 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
 
   return (
     <section className="project-detail-page">
-      <img className="project-detail-page__background" src={projectDetailBackground} alt="" aria-hidden="true" />
+      <img
+        className="project-detail-page__background"
+        src={projectDetailBackground}
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+      />
       <div className="container project-detail-page__inner">
         <div className="project-detail-hero">
           <div className="project-detail-hero__copy">

@@ -1,4 +1,3 @@
-/* Skip link, main, not-found, route fallback */
 .skip-link {
   position: absolute;
   left: 50%;
@@ -108,7 +107,3 @@ main:focus {
 .route-fallback {
   min-height: 70vh;
 }
-
-/* ==========================================================================
-   PDF overlay (CV)
-   ========================================================================== */

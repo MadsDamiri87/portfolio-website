@@ -1,4 +1,3 @@
-/* Technology pills in every tone */
 .tech-pill {
   display: inline-flex;
   align-items: center;
@@ -16,8 +15,6 @@
     transform 180ms ease;
 }
 
-/* Mild feedback on every tech pill (the plain Technical Stack chips had none).
-   Only border + soft glow + a small lift, so each tone keeps its own hue. */
 .tech-pill:hover:not(.tech-pill--plain),
 .tech-pill:focus-visible:not(.tech-pill--plain) {
   border-color: rgba(211, 153, 116, 0.48);
@@ -25,11 +22,9 @@
   transform: translateY(-1px);
 }
 
-/* Process pills are informational only — no link, no interactive feedback. */
 .tech-pill--plain {
   cursor: default;
 }
-
 .tech-pill--link {
   cursor: pointer;
   transition:
@@ -37,74 +32,62 @@
     box-shadow 180ms ease,
     transform 180ms ease;
 }
-
 .tech-pill--link:hover,
 .tech-pill--link:focus-visible {
   border-color: rgba(211, 153, 116, 0.52);
   box-shadow: 0 0 16px rgba(194, 111, 78, 0.18);
   transform: translateY(-1px);
 }
-
 .tech-pill--violet {
   color: #d49a80;
   border-color: rgba(190, 105, 78, 0.28);
   background: rgba(71, 42, 34, 0.54);
 }
-
 .tech-pill--green {
   color: #c9a779;
   border-color: rgba(177, 132, 83, 0.28);
   background: rgba(63, 49, 35, 0.54);
 }
-
 .tech-pill--amber {
   color: #d8a16e;
   border-color: rgba(216, 142, 82, 0.3);
   background: rgba(75, 49, 35, 0.54);
 }
-
 .tech-pill--react {
   color: #ddb28d;
   border-color: rgba(214, 151, 105, 0.3);
   background: rgba(63, 47, 38, 0.54);
 }
-
 .tech-pill--js {
   color: #d6ad74;
   border-color: rgba(210, 155, 84, 0.28);
   background: rgba(70, 51, 34, 0.52);
 }
-
 .tech-pill--java {
   color: #d99975;
   border-color: rgba(202, 107, 70, 0.3);
   background: rgba(76, 42, 32, 0.54);
 }
-
 .tech-pill--postgres {
   color: #d4a484;
   border-color: rgba(190, 121, 83, 0.3);
   background: rgba(59, 45, 38, 0.56);
 }
-
 .tech-pill--html {
   color: #d8946d;
   border-color: rgba(202, 99, 63, 0.32);
   background: rgba(77, 41, 30, 0.54);
 }
-
 .tech-pill--css {
   color: #ce9875;
   border-color: rgba(174, 95, 69, 0.32);
   background: rgba(66, 43, 34, 0.54);
 }
-
 .tech-pill--test {
   color: #d6b184;
   border-color: rgba(168, 112, 70, 0.3);
   background: rgba(60, 47, 36, 0.54);
 }
-
 .tech-pill--network {
   color: #d0aa84;
   border-color: rgba(194, 137, 91, 0.3);

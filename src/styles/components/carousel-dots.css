@@ -1,19 +1,11 @@
-/* Position dots under the self-scrolling strips */
-
-/* Three strips use these: the home projects strip, and the documentation and
-   technical-choice strips on a project page. The button is a 24x24 tap target
-   (WCAG 2.2 minimum) while the dot itself is drawn by the pseudo-element, so
-   the visible mark keeps its 7px size and its 20px active pill. */
 .projects-strip-dots,
 .documentation-strip-dots,
 .technical-choice-dots {
   display: flex;
   justify-content: center;
   gap: 0;
-  /* Pulled up so the dots sit where they did before the buttons grew. */
   margin-top: -6px;
 }
-
 .projects-strip-dots button,
 .documentation-strip-dots button,
 .technical-choice-dots button {
@@ -25,7 +17,6 @@
   background: none;
   cursor: pointer;
 }
-
 .projects-strip-dots button::before,
 .documentation-strip-dots button::before,
 .technical-choice-dots button::before {
@@ -43,7 +34,6 @@
     background 180ms ease,
     box-shadow 180ms ease;
 }
-
 .projects-strip-dots button.is-active::before,
 .documentation-strip-dots button.is-active::before,
 .technical-choice-dots button.is-active::before {

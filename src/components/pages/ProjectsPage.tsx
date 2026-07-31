@@ -48,7 +48,6 @@ export function ProjectsPage() {
   const semesterEdges = useScrollEdges<HTMLDivElement>();
   const prefersReducedMotion = usePrefersReducedMotion();
 
-
   const technologies = useMemo(
     () => ["All", ...Array.from(new Set(projects.flatMap((project) => project.tags))).sort()],
     [],
@@ -96,7 +95,15 @@ export function ProjectsPage() {
 
   return (
     <section className="projects-page">
-      <img className="projects-page__background" src={projectsHeroImage} alt="" aria-hidden="true" />
+      {/* Largest element on the page, so it is asked for ahead of everything
+          else the page starts loading at the same time. */}
+      <img
+        className="projects-page__background"
+        src={projectsHeroImage}
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+      />
       <div className="container projects-page__inner">
         <header className="projects-page__header">
           <div>
@@ -106,7 +113,7 @@ export function ProjectsPage() {
             <span>This page collects my school projects,
               experiments and my overall work in one place. It is meant to showcase my projects,
               and documentation of each project.</span>
-            <h3>How to navigate</h3>
+            <h2>How to navigate</h2>
             <span>
               Filter and/or use the technology tags to find related projects.
               Open a project card to see the details, screenshots,
@@ -149,8 +156,6 @@ export function ProjectsPage() {
               </div>
             </div>
 
-            {/* The hints only appear on hover, and only on a side that has
-                something left to scroll to. */}
             <div
               className={[
                 "semester-filter-shell",
@@ -169,7 +174,6 @@ export function ProjectsPage() {
                 onBack={() => semesterEdges.scrollByItem(-1, !prefersReducedMotion)}
                 onForward={() => semesterEdges.scrollByItem(1, !prefersReducedMotion)}
               />
-
               <div className="semester-filter" aria-label="Semester filters" ref={semesterEdges.ref}>
                 <button
                   className={selectedSemester === "All" ? "is-active" : ""}
@@ -192,7 +196,6 @@ export function ProjectsPage() {
                 ))}
               </div>
             </div>
-
             <div className="projects-tech-filter" aria-label="Technology filters">
               {technologies.map((tech) => (
                 <button
@@ -205,7 +208,6 @@ export function ProjectsPage() {
                 </button>
               ))}
             </div>
-
             {selectedTech !== "All" ? (
               <div className="projects-filter-notice">
                 <span>
@@ -216,7 +218,6 @@ export function ProjectsPage() {
                 </button>
               </div>
             ) : null}
-
             <div className="projects-result-bar">
               <span>
                 Showing <strong>{filteredProjects.length}</strong> of <strong>{projects.length}</strong> projects
@@ -226,7 +227,6 @@ export function ProjectsPage() {
                 {selectedTech === "All" ? "All technologies" : selectedTech}
               </span>
             </div>
-
             {filteredProjects.length ? (
               <div className="projects-page-grid">
                 {filteredProjects.map((project) => (
@@ -244,7 +244,6 @@ export function ProjectsPage() {
               </div>
             )}
           </div>
-
           <aside className="projects-overview" aria-label="Project overview">
             <div className="projects-overview__block">
               <h2>
@@ -275,7 +274,6 @@ export function ProjectsPage() {
                 </span>
               </div>
             </div>
-
             <div className="projects-overview__block">
               <h2>Most Used</h2>
               <div className="overview-tech-list">

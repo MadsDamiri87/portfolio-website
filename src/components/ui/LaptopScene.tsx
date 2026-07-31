@@ -221,7 +221,7 @@ export function LaptopScene() {
   return (
     <div className="laptop-scene-frame" aria-hidden="true">
       <div className="laptop-scene" aria-hidden="true">
-        <img className="laptop-scene__image" src={heroSceneImage} alt="" />
+        <img className="laptop-scene__image" src={heroSceneImage} alt="" fetchPriority="high" />
       </div>
       <div className="laptop-screen-code">
         <div className="laptop-screen-code__bar">

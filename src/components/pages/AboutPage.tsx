@@ -65,6 +65,7 @@ export function AboutPage() {
           src={aboutHeroImage}
           alt="My desk: two monitors running code and this portfolio, a laptop, and a whiteboard of system sketches behind it"
           decoding="async"
+          fetchPriority="high"
         />
         <div className="container about-hero-page__inner">
           <div className="about-hero-page__content">

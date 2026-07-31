@@ -1,18 +1,6 @@
-import {
-  BookOpen,
-  FileText,
-  GraduationCap,
-  HeartHandshake,
-  Mail,
-  MapPin,
-  Rocket,
-  Sparkles,
-  Target,
-} from "lucide-react";
+import { BookOpen, FileText, GraduationCap, Mail, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
-// The PDF lives in docs/, which is not served as-is — importing it lets Vite
-// emit it as a build asset and hand back the URL it ends up on.
-import cvPdfUrl from "../../../docs/Mads_Damiri_CV_software_trainee_30-07-2026.pdf";
+import cvPdfUrl from "../../../docs/Mads_Damiri_CV_software_trainee_31-07-2026.pdf";
 import cvHeroImage from "../../assets/images/cv-hero-me-working.webp";
 import cvBgImage from "../../assets/images/cv-bg.webp";
 import profileImage from "../../assets/images/mads-profile-nobg.webp";
@@ -27,8 +15,6 @@ const journeySteps = [
     number: "2026",
     period: "Now",
     title: "Building software without leaving the human side behind",
-    icon: HeartHandshake,
-    tone: "cyan",
     points: [
       "Studying Software Engineering while working in residential care and running my own psychotherapy practice.",
       "Used to balancing responsibility, deadlines and different kinds of problems.",
@@ -37,26 +23,22 @@ const journeySteps = [
     outcome: "A growing technical foundation shaped by real world responsibility, communication and perspective",
   },
   {
-    number: "2025 - 2026",
+    number: "2026 - 2025",
     period: "2025 - 2026",
-    title: "Software foundation",
-    icon: GraduationCap,
-    tone: "blue",
+    title: "From theory to practice",
     points: [
-      "Diploma engineering studies in software technology at VIA.",
+      "Building upon last year. Fullstack learning platform with React, Spring Boot, MongoDB, PostgreSQL and more.",
       "Programming, web development, databases, software design and testing.",
-      "Working with OOP, Git, UML, ER models, SCRUM and Unified Process.",
+      "Continuing working with OOP, Git, UML, ER models, SCRUM and Unified Process.",
     ],
     outcome: "A solid technical base and a growing design vocabulary.",
   },
   {
-    number: "2026",
-    period: "Projects",
-    title: "From theory to practice",
-    icon: Rocket,
-    tone: "violet",
+    number: "2025",
+    period: "2025",
+    title: "Software foundation",
     points: [
-      "Fullstack learning platform with React, Spring Boot and PostgreSQL.",
+      "Starting engineering studies in software technology at VIA.",
       "JavaFX desktop application with file persistence and structured UI flows.",
       "Documentation, requirements, domain models and team-based delivery.",
     ],
@@ -66,8 +48,6 @@ const journeySteps = [
     number: "Now",
     period: "Now",
     title: "Trainee direction",
-    icon: Target,
-    tone: "blue",
     points: [
       "Looking for a trainee or student developer role next to the study.",
       "Interested in backend, data modelling, fullstack systems and quality.",
@@ -79,8 +59,6 @@ const journeySteps = [
     number: "Next",
     period: "Next step",
     title: "Impact as a software engineer",
-    icon: Sparkles,
-    tone: "amber",
     points: [
       "Build maintainable software that solves concrete problems.",
       "Keep strengthening fundamentals across architecture, tests and delivery.",
@@ -129,8 +107,6 @@ function hashRequestsCv() {
 }
 
 export function CvPage() {
-  // Opens on mount when the header sent us here with ?view=cv, and on later
-  // hash changes so the header button works while already on this page.
   const [isCvOpen, setIsCvOpen] = useState(hashRequestsCv);
 
   useEffect(() => {
@@ -145,8 +121,6 @@ export function CvPage() {
   const closeCv = () => {
     setIsCvOpen(false);
 
-    // Drop the query so a reload does not reopen it. replaceState does not fire
-    // hashchange, so the route stays put.
     if (hashRequestsCv()) {
       window.history.replaceState(null, "", "#/cv");
     }
@@ -160,14 +134,20 @@ export function CvPage() {
   return (
     <div className="cv-page">
       <section className="cv-hero-page" id="cv">
-        <img className="cv-hero-page__image" src={cvHeroImage} alt="" aria-hidden="true" />
+        <img
+          className="cv-hero-page__image"
+          src={cvHeroImage}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+        />
         <div className="container cv-hero-page__inner">
           <div className="cv-hero-page__content">
             <h1>Software trainee</h1>
             <p>
-              I connect people, ideas and technology. My path into software is driven by
-              curiosity, responsibility and a strong interest in building systems that are clear,
-              useful and maintainable.
+              I enjoy working where people, ideas and technology meet. My path into software is
+              driven by curiosity, responsibility and a strong interest in building systems
+              that are clear, useful and maintainable.
             </p>
 
             <div className="cv-hero-page__tags" aria-label="CV highlights">
@@ -232,10 +212,8 @@ export function CvPage() {
             <div className="cv-timeline">
               <span className="cv-timeline__beam" aria-hidden="true" />
               {journeySteps.map((step) => {
-                const Icon = step.icon;
-
                 return (
-                  <article className={`cv-timeline-card cv-timeline-card--${step.tone}`} key={step.title}>
+                  <article className="cv-timeline-card" key={step.title}>
                     <div className="cv-timeline-card__node" aria-hidden="true">
                       {step.number.split(/\s*[-–]\s*/).map((line, lineIndex) => (
                         <span key={lineIndex}>{line}</span>

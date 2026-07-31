@@ -1,8 +1,3 @@
-/* Section divider: thin rule with a warm copper flare in the middle */
-
-/* Closes off a section without drawing a hard edge across the full width.
-   Sits inside a .container, or carries .container itself where there is no
-   wrapper to inherit the width from. */
 .section-divider {
   position: relative;
   height: 1px;
@@ -14,7 +9,6 @@
     transparent
   );
 }
-
 .section-divider::after {
   content: "";
   position: absolute;

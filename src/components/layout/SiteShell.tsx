@@ -10,8 +10,6 @@ type SiteShellProps = {
 export function SiteShell({ activePage, children }: SiteShellProps) {
   const mainRef = useRef<HTMLElement>(null);
 
-  // The site routes on the hash, so the skip link moves focus directly
-  // instead of navigating to "#main-content" and resetting the route.
   const skipToContent = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     mainRef.current?.focus();

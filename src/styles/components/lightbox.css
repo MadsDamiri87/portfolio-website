@@ -1,4 +1,3 @@
-/* Diagram preview and the project lightbox */
 .detail-diagram-preview {
   position: relative;
   height: 96px;
@@ -82,17 +81,12 @@
   padding-top: calc(var(--lightbox-header-offset) + var(--lightbox-gutter));
 
   --lightbox-gutter: 28px;
-  /* The site header is sticky, so the panel starts below it instead of behind it.
-     Matches .header__inner min-height (55px) plus its 1px bottom border. */
   --lightbox-header-offset: 56px;
   --lightbox-available: calc(
     100vh - var(--lightbox-header-offset) - (var(--lightbox-gutter) * 2)
   );
 }
 
-/* Mobile browsers report 100vh as the height with the URL bar hidden, so a panel
-   sized against it hangs below the visible area while the bar is showing.
-   dvh is the actually visible height. */
 @supports (height: 100dvh) {
   .project-lightbox {
     --lightbox-available: calc(
@@ -100,7 +94,6 @@
     );
   }
 }
-
 .project-lightbox__backdrop {
   position: absolute;
   inset: 0;
@@ -109,7 +102,6 @@
   backdrop-filter: blur(16px);
   cursor: pointer;
 }
-
 .project-lightbox__panel {
   position: relative;
   z-index: 1;
@@ -119,13 +111,11 @@
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
-  /* Warm charcoal, same hue family as --home-glass / --surface-strong. */
   background:
     linear-gradient(180deg, rgba(36, 32, 28, 0.96), rgba(16, 14, 12, 0.96)),
     var(--bg);
   box-shadow: 0 30px 120px rgba(0, 0, 0, 0.62);
 }
-
 .project-lightbox__panel.is-viewing-image {
   width: min(100%, 1280px);
   height: min(860px, var(--lightbox-available));
@@ -136,7 +126,6 @@
   gap: 14px;
   overflow: hidden;
 }
-
 .project-lightbox__close {
   position: absolute;
   top: 16px;
@@ -152,34 +141,28 @@
   background: rgba(21, 19, 16, 0.74);
   cursor: pointer;
 }
-
 .project-lightbox__header {
   margin-bottom: 18px;
 }
-
 .project-lightbox__panel.is-viewing-image .project-lightbox__header {
   width: 100%;
   flex: 0 0 auto;
   padding-right: 54px;
   margin-bottom: 0;
 }
-
 .project-lightbox__header h2 {
   margin: 0;
 }
-
 .project-lightbox__header span {
   display: block;
   margin-top: 6px;
   color: var(--muted);
 }
-
 .project-lightbox__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
-
 .project-lightbox__grid button {
   aspect-ratio: 16 / 9;
   padding: 0;
@@ -189,7 +172,6 @@
   overflow: hidden;
   cursor: pointer;
 }
-
 .project-lightbox__grid img {
   width: 100%;
   height: 100%;
@@ -197,7 +179,6 @@
   object-position: center;
   background: #0d0c0b;
 }
-
 .project-lightbox__image-stage {
   position: relative;
   width: 100%;
@@ -205,17 +186,12 @@
   min-height: 0;
   flex: 1 1 0;
   overflow: hidden;
-
   --lightbox-nav-size: 42px;
   --lightbox-nav-gutter: 0px;
 }
-
-/* Only reserve room for the arrows when they are actually on screen, so a
-   document image is not needlessly narrowed. */
 .project-lightbox__image-stage--has-nav {
   --lightbox-nav-gutter: calc((var(--lightbox-nav-size) + 10px) * 2);
 }
-
 .project-lightbox__image-stage--has-nav .project-lightbox__image {
   max-width: calc(100% - var(--lightbox-nav-gutter));
 }
@@ -236,7 +212,6 @@
   object-position: center;
   background: transparent;
 }
-
 .project-lightbox__nav {
   position: absolute;
   top: 50%;
@@ -256,7 +231,6 @@
     border-color 180ms ease,
     background 180ms ease;
 }
-
 .project-lightbox__nav--previous {
   left: 0;
 }
@@ -270,12 +244,10 @@
   border-color: rgba(211, 153, 116, 0.46);
   background: rgba(32, 25, 21, 0.88);
 }
-
 .project-lightbox__nav:disabled {
   opacity: 0.26;
   cursor: default;
 }
-
 .project-lightbox__actions {
   flex: 0 0 auto;
   display: flex;

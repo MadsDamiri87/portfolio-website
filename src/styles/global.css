@@ -1,7 +1,4 @@
-/* Entry point. The partials below are split purely by area; they are
-   imported in the exact order they had inside the original single file, so
-   the cascade is unchanged. Keep it that way when adding new ones. */
-
+@import "./base/fonts.css";
 @import "./base/tokens.css";
 @import "./layout/header.css";
 @import "./sections/hero.css";

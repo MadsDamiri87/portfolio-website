@@ -1,4 +1,3 @@
-/* PDF overlay dialog */
 .pdf-overlay {
   position: fixed;
   inset: 0;
@@ -9,7 +8,6 @@
   padding-top: calc(var(--pdf-header-offset) + var(--pdf-gutter));
 
   --pdf-gutter: 24px;
-  /* Sits below the sticky header, like the project lightbox. */
   --pdf-header-offset: 56px;
   --pdf-available: calc(100vh - var(--pdf-header-offset) - (var(--pdf-gutter) * 2));
 }

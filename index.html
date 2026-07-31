@@ -13,6 +13,31 @@
     <meta name="author" content="Mads Damiri" />
     <link rel="canonical" href="https://software.madsdamiri.dk/" />
 
+    <!-- Started here rather than left for the stylesheet to discover, so the
+         real fonts are in place for the first paint and the page does not
+         reflow once they arrive. Only the latin subsets are preloaded. -->
+    <link
+      rel="preload"
+      href="/fonts/source-serif-4-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-sans-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-mono-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />

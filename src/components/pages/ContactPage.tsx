@@ -41,9 +41,6 @@ export function ContactPage() {
       .filter(Boolean)
       .join("\n");
 
-    // There is no backend behind this site, so the form hands the message to the
-    // visitor's own mail client. The notice below explains that, since a mailto:
-    // handoff fails silently when no client is configured.
     window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setIsSubmitted(true);
   };

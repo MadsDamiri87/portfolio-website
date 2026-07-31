@@ -25,7 +25,6 @@ export function ProjectsSection() {
     enabled: !prefersReducedMotion,
     resumeDelay: stripAutoResumeDelay,
     fadeThreshold: stripFadeThreshold,
-    // The strip loops, so both edges stay soft for as long as it overflows.
     edgeFades: "scrollable",
     mode: { kind: "continuous", speed: stripAutoScrollSpeed, dotCount: stripDotCount },
   });

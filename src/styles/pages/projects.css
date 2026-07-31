@@ -1,8 +1,6 @@
-/* Projects overview: filters, results, sidebar */
 .projects-page {
   position: relative;
   min-height: calc(100vh - 80px);
-  /* 38 + the header's own 6px top padding == --hero-heading-top */
   padding: calc(var(--hero-heading-top) - 6px) 0 68px;
   overflow: hidden;
   isolation: isolate;
@@ -49,10 +47,6 @@
   top: 0;
   left: 0;
   right: 0;
-  /* Fixed height with pixel-anchored stops. Previously this used inset: 0 with
-     percentage positions, so filtering (which changes the page height) moved
-     the glows and the fade. Anchoring to a fixed band keeps them still; the
-     values match what the percentages resolved to in the default full view. */
   height: 1200px;
   z-index: 1;
   background:
@@ -62,15 +56,12 @@
     linear-gradient(180deg, rgba(17, 16, 14, 0) 0%, #11100e 1600px);
   pointer-events: none;
 }
-
 .projects-page__inner {
   position: relative;
   z-index: 2;
   display: grid;
   gap: 24px;
 }
-
-
 .projects-page__header {
   display: flex;
   align-items: start;
@@ -78,12 +69,14 @@
   gap: 24px;
   padding:6px 0px 89px;
 }
-
-.projects-page__header h3 {
-  margin-bottom: -7px;
+/* A level-2 heading so the page does not jump from h1 to h3, but sized and
+   spaced the way the h3 was - the browser default for h2 is far too loud
+   next to the intro copy. */
+.projects-page__header h2 {
+  margin: 1.17rem 0 -7px;
   color: #c98261;
+  font-size: 1.17rem;
 }
-
 .projects-page__header p {
   margin: 0 0 10px;
   color: #c78b69;
@@ -92,14 +85,12 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
 .projects-page__header h1 {
   margin: 0;
   color: var(--text);
   font-size: var(--text-h1);
   line-height: var(--leading-heading);
 }
-
 .projects-page__header span {
   display: block;
   max-width: 466px;
@@ -107,7 +98,6 @@
   color: var(--muted);
   font-size: var(--text-intro);
 }
-
 .projects-page__meta {
   min-width: 148px;
   padding: 18px;
@@ -119,32 +109,21 @@
     rgba(11, 17, 28, 0.82);
   box-shadow: var(--home-glow);
 }
-
 .projects-page__meta strong {
   display: block;
   font-size: 2.2rem;
   line-height: 1;
 }
-
 .projects-page__meta span {
   margin-top: 6px;
   color: var(--soft);
   font-size: 0.86rem;
 }
-
 .semester-filter-shell {
   position: relative;
-  /* The row inside scrolls, but this wrapper does not, so without this it
-     reports the full row width as its minimum and stretches the grid column. */
+
   min-width: 0;
 }
-
-
-
-
-
-
-
 
 .semester-filter {
   display: flex;
@@ -158,7 +137,6 @@
   scroll-snap-type: x proximity;
   scroll-padding-left: 8px;
 }
-
 .semester-filter::-webkit-scrollbar {
   display: none;
 }
@@ -184,7 +162,6 @@
     transform 180ms ease;
   scroll-snap-align: start;
 }
-
 .semester-filter button::after {
   content: "";
   position: absolute;
@@ -195,13 +172,11 @@
   border-radius: 999px;
   background: rgba(222, 197, 174, 0.13);
 }
-
 .semester-filter button:hover,
 .semester-filter button:focus-visible {
   color: #ffffff;
   border-color: rgba(194, 111, 78, 0.28);
 }
-
 .semester-filter button.is-active {
   color: #ffffff;
   border-color: rgba(194, 111, 78, 0.46);
@@ -212,28 +187,23 @@
     0 14px 34px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
-
 .semester-filter button.is-active::after {
   background: linear-gradient(90deg, var(--blue), var(--violet));
   box-shadow: 0 0 14px rgba(194, 111, 78, 0.58);
 }
-
 .semester-filter strong,
 .semester-filter span {
   display: block;
 }
-
 .semester-filter strong {
   font-size: 0.8rem;
   line-height: 1.15;
 }
-
 .semester-filter span {
   margin-top: 3px;
   color: var(--soft);
   font-size: 0.7rem;
 }
-
 .projects-page__layout {
   position: relative;
   display: grid;
@@ -241,10 +211,6 @@
   gap: 24px;
   align-items: start;
 }
-
-/* Everything below the divider settles onto a darker backdrop, so the filter
-   and result area reads as its own zone. Full-bleed, and painted behind the
-   content but over the hero image. */
 .projects-page__layout::before {
   content: "";
   position: absolute;
@@ -262,7 +228,6 @@
   );
   pointer-events: none;
 }
-
 .projects-page__main {
   min-width: 0;
   display: grid;
@@ -280,7 +245,6 @@
     radial-gradient(circle at 16% 0%, rgba(169, 88, 67, 0.1), transparent 16rem),
     rgba(11, 16, 25, 0.76);
 }
-
 .projects-search {
   min-height: 48px;
   display: flex;
@@ -292,7 +256,6 @@
   color: var(--soft);
   background: rgba(6, 10, 17, 0.7);
 }
-
 .projects-search input {
   width: 100%;
   border: 0;
@@ -301,22 +264,12 @@
   background: transparent;
   font: inherit;
 }
-
 .projects-search input::placeholder {
   color: #80746c;
 }
-
-/*
-   Search + status-filter toolbar — hidden until there are enough projects to
-   warrant it. This hides the whole box (search field and the status filters
-   inside it); everything below moves up to take its place.
-   TO SHOW IT AGAIN: delete (or comment out) this one rule. The search and
-   filter logic in ProjectsPage.tsx is untouched, so it works again at once.
-============================================================================= */
 .projects-toolbar {
   display: none;
 }
-/* ========================================================================== */
 
 .projects-filter-group {
   display: flex;
@@ -324,7 +277,6 @@
   gap: 8px;
   color: var(--soft);
 }
-
 .projects-filter-group button,
 .projects-tech-filter button,
 .overview-tech-list button {
@@ -333,7 +285,6 @@
   background: transparent;
   cursor: pointer;
 }
-
 .projects-filter-group button {
   height: 38px;
   padding: 0 12px;
@@ -342,13 +293,11 @@
   color: #c9bdb4;
   background: rgba(29, 27, 24, 0.58);
 }
-
 .projects-filter-group button.is-active {
   color: #ffffff;
   border-color: rgba(194, 111, 78, 0.4);
   background: rgba(199, 116, 82, 0.16);
 }
-
 .projects-tech-filter {
   display: flex;
   flex-wrap: wrap;
@@ -358,13 +307,11 @@
   border-radius: 8px;
   background: rgba(11, 16, 25, 0.58);
 }
-
 .projects-tech-filter button {
   min-height: 29px;
   padding: 0;
   border-radius: 6px;
 }
-
 .projects-tech-filter button > span:not(.tech-pill) {
   display: inline-flex;
   align-items: center;
@@ -377,12 +324,10 @@
   font-weight: 750;
   background: rgba(23, 31, 45, 0.7);
 }
-
 .projects-tech-filter button.is-active {
   outline: 2px solid rgba(194, 111, 78, 0.48);
   outline-offset: 2px;
 }
-
 .projects-filter-notice {
   display: flex;
   align-items: center;
@@ -397,16 +342,13 @@
     radial-gradient(circle at 0% 0%, rgba(199, 116, 82, 0.14), transparent 18rem),
     rgba(11, 16, 25, 0.68);
 }
-
 .projects-filter-notice span {
   color: var(--muted);
   font-size: 0.9rem;
 }
-
 .projects-filter-notice strong {
   color: #f5eee7;
 }
-
 .projects-filter-notice button {
   height: 28px;
   padding: 0 10px;
@@ -416,13 +358,11 @@
   background: rgba(199, 116, 82, 0.1);
   cursor: pointer;
 }
-
 .projects-filter-notice button:hover,
 .projects-filter-notice button:focus-visible {
   color: #ffffff;
   border-color: rgba(211, 153, 116, 0.44);
 }
-
 .projects-result-bar {
   display: flex;
   justify-content: space-between;
@@ -431,13 +371,10 @@
   font-size: 0.88rem;
   margin-top: 40px;
   padding: 0px 15px 0px 15px;
-
 }
-
 .projects-result-bar strong {
   color: var(--text);
 }
-
 .projects-page-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -447,7 +384,6 @@
 .projects-page-grid .project-card {
   min-height: 386px;
 }
-
 .projects-empty-state {
   min-height: 250px;
   display: grid;
@@ -462,25 +398,21 @@
     radial-gradient(circle at 50% 0%, rgba(194, 111, 78, 0.1), transparent 16rem),
     rgba(11, 16, 25, 0.48);
 }
-
 .projects-empty-state strong {
   color: var(--text);
   font-size: 1rem;
 }
-
 .projects-empty-state span {
   max-width: 420px;
   color: var(--soft);
   font-size: 0.92rem;
 }
-
 .projects-overview {
   position: sticky;
   top: 104px;
   display: grid;
   gap: 16px;
 }
-
 .projects-overview__block {
   padding: 18px;
   border: 1px solid rgba(222, 197, 174, 0.13);
@@ -491,7 +423,6 @@
     rgba(11, 16, 25, 0.8);
   box-shadow: var(--home-glow);
 }
-
 .projects-overview__block h2 {
   display: flex;
   align-items: center;
@@ -499,7 +430,6 @@
   margin: 0 0 16px;
   font-size: var(--text-panel-title);
 }
-
 .overview-stat {
   display: flex;
   align-items: center;
@@ -508,22 +438,18 @@
   border-top: 1px solid var(--line-faint);
   padding-left: 25px ;
 }
-
 .overview-stat:first-of-type {
   border-top: 0;
   padding-top: 0;
 }
-
 .overview-stat svg {
   color: #c78b69;
 }
-
 .overview-stat span {
   display: grid;
   color: var(--soft);
   font-size: 0.86rem;
 }
-
 .overview-stat strong {
   color: var(--text);
   font-size: 1.38rem;

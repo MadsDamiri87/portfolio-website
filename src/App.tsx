@@ -4,7 +4,6 @@ import { HomePage } from "./components/pages/HomePage";
 import { NotFoundPage } from "./components/pages/NotFoundPage";
 import { projects } from "./data/projects";
 
-// The home page ships in the main bundle; the sub-pages are fetched on first visit.
 const AboutPage = lazy(() =>
   import("./components/pages/AboutPage").then((m) => ({ default: m.AboutPage })),
 );
@@ -31,12 +30,10 @@ type Route =
 function getRoute(): Route {
   const hash = window.location.hash;
 
-  // Anything that is not "#/..." is a plain anchor on the home page (#home, #projects, ...).
   if (!hash.startsWith("#/")) {
     return { page: "home" };
   }
 
-  // Drop any query string ("?tech=React") and trailing slashes before matching.
   const path = hash.split("?")[0].replace(/\/+$/, "");
 
   if (path === "#") return { page: "home" };
@@ -73,7 +70,6 @@ export default function App() {
       ? projects.find((project) => project.slug.toLowerCase() === route.projectSlug.toLowerCase())
       : undefined;
 
-  // Changing project without leaving the detail page still has to reset the scroll position.
   const routeKey = route.page === "project-detail" ? `project-detail/${route.projectSlug}` : route.page;
 
   useEffect(() => {
