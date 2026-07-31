@@ -139,65 +139,12 @@
   min-width: 0;
 }
 
-/* Scroll controls. They fade in on hover, and only on a side with somewhere to
-   go; while invisible they also stay out of the way of the pointer, so a click
-   near the edge still reaches the semester button underneath. */
-.semester-filter__hint {
-  position: absolute;
-  top: 1px;
-  bottom: 1px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  width: 52px;
-  padding: 0;
-  border: 0;
-  color: #e2c8b1;
-  opacity: 0;
-  cursor: pointer;
-  pointer-events: none;
-  transition: opacity 420ms ease;
-}
 
-.semester-filter__hint--left {
-  left: 1px;
-  justify-content: flex-start;
-  padding-left: 6px;
-  border-radius: 7px 0 0 7px;
-  background: linear-gradient(90deg, rgba(11, 9, 8, 0.92) 34%, transparent);
-}
 
-.semester-filter__hint--right {
-  right: 1px;
-  justify-content: flex-end;
-  padding-right: 6px;
-  border-radius: 0 7px 7px 0;
-  background: linear-gradient(270deg, rgba(11, 9, 8, 0.92) 34%, transparent);
-}
 
-.semester-filter-shell.can-scroll-left:hover .semester-filter__hint--left,
-.semester-filter-shell.can-scroll-left:focus-within .semester-filter__hint--left,
-.semester-filter-shell.can-scroll-right:hover .semester-filter__hint--right,
-.semester-filter-shell.can-scroll-right:focus-within .semester-filter__hint--right {
-  opacity: 1;
-  pointer-events: auto;
-}
 
-.semester-filter__hint:hover {
-  color: #ffffff;
-}
 
-/* Keyboard users get to them before any hover happens. */
-.semester-filter__hint:focus-visible {
-  opacity: 1;
-  pointer-events: auto;
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .semester-filter__hint {
-    transition-duration: 0ms;
-  }
-}
 
 .semester-filter {
   display: flex;

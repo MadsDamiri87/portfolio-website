@@ -33,6 +33,8 @@ The website includes:
 - searchable project archive
 - project filtering by technology, status and semester
 - project detail pages with screenshots and technical documentation
+- horizontal strips that scroll on their own and can be stepped one card at a
+  time with chevron buttons
 - About page with custom hero artwork and animated visual overlay
 - CV page with journey timeline, technical stack and work maturity overview
 - Contact page with direct contact options
@@ -58,7 +60,7 @@ The site does not use a large UI framework. Most layout, interaction styling and
 ```text
 software-madsdamiri-dk/
 |-- .github/workflows/              # CI: typecheck and build on every push
-|-- docs/
+|-- docs/                           # CV PDF
 |   `-- diagrams/                   # Original SVG source diagrams (not bundled)
 |-- public/                         # Static files served as-is: icons, brochures, robots, sitemap
 |-- src/
@@ -75,7 +77,12 @@ software-madsdamiri-dk/
 |   |-- data/                       # Navigation, profile and project content
 |   |-- hooks/                      # Shared React hooks
 |   |-- styles/
-|   |   `-- global.css              # Global styling for the full site
+|   |   |-- global.css              # Entry point: imports every partial below
+|   |   |-- base/                   # Design tokens, breakpoints, utilities
+|   |   |-- layout/                 # Header
+|   |   |-- sections/               # Hero and homepage sections
+|   |   |-- components/             # Reusable component styling
+|   |   `-- pages/                  # One file per page
 |   |-- types/                      # Shared TypeScript types
 |   |-- utils/                      # Small helper functions
 |   |-- App.tsx                     # Route handling and page rendering
@@ -122,7 +129,8 @@ The CV page presents a more structured overview of my current software direction
 - journey timeline
 - technical stack
 - work maturity overview
-- document area for future CV and trainee material
+- a document area holding my CV and the VIA trainee brochures, which open in an
+  in-page PDF viewer and can be downloaded
 
 ### Contact
 
@@ -153,24 +161,45 @@ The project separates components by responsibility:
 - `navigation` for the header and menu
 - `projects` for project-specific UI
 
+### Behaviour Layer
+
+The moving parts that more than one page needs are kept in `src/hooks` and
+`src/utils` instead of in the components:
+
+- `useAutoScrollStrip` drives all three self-scrolling strips - the project
+  strip on the homepage and the documentation and technical-choice strips on a
+  project detail page. It handles the seamless loop, pausing on hover or
+  interaction, resuming after a delay, dot state and edge fades.
+- `useScrollEdges` reports whether a scroller has more content to either side,
+  which is what enables or disables the chevrons.
+- `scrollStrip.ts` measures one card plus the gap from the layout, so a step
+  lands on a card boundary at any screen width.
+
 ### Styling Layer
 
-The visual design is currently handled in one global stylesheet:
+The styling started as one large `global.css` and is now split by area:
 
 ```text
-src/styles/global.css
+src/styles/
+|-- global.css                      # Entry point, imports only
+|-- base/
+|   |-- tokens.css                  # Design tokens, resets, page shell
+|   |-- responsive.css              # Shared breakpoints
+|   `-- utilities.css
+|-- layout/header.css
+|-- sections/                       # hero, projects-strip, home-sections
+|-- components/                     # surfaces, lightbox, pdf-overlay, tech-pill,
+|                                   # carousel-dots, section-divider, strip-arrows
+`-- pages/                          # about, projects, project-detail, cv, contact
 ```
 
-This keeps the project simple, but the file has grown past 5,000 lines. A future improvement would be to split the CSS into smaller files, for example:
+`global.css` holds nothing but `@import` lines. They are listed in the same
+order the rules had inside the original single file, so the cascade is
+unchanged - new partials have to be added with that in mind.
 
-```text
-styles/
-|-- base.css
-|-- layout.css
-|-- components/
-|-- pages/
-`-- utilities.css
-```
+Typography, spacing, colours and the shared measurements live in
+`base/tokens.css`. Page files are expected to use those tokens rather than
+introduce their own values.
 
 ### Routing
 
@@ -246,6 +275,9 @@ Current status:
   arrow-key navigation and locks background scrolling while open
 - all JavaScript-driven carousels stop when the visitor has reduced motion
   enabled, and pause while the browser tab is hidden
+- every horizontal strip can be moved with buttons as well as by dragging or
+  swiping; the chevrons appear on hover and on keyboard focus, and are disabled
+  at the ends
 - below-the-fold images are lazy-loaded and decoded asynchronously
 - React is split into its own chunk so app changes do not invalidate it
 
@@ -253,11 +285,10 @@ Current status:
 
 Possible future improvements include:
 
-- splitting `global.css` into page-specific and component-specific styles, on a
-  shared breakpoint scale rather than the current ad-hoc widths
-- extracting the three auto-scrolling carousels into one shared hook
-- moving larger page-specific text/data into dedicated files under `src/data`
-- unit tests for the pure functions (`getRoute`, `projectMatches`, `tagTone`)
-- adding a real downloadable CV and trainee material
-- replacing the generated hero artwork with photos of my own setup and work
+- moving larger page-specific text/data into dedicated files under `src/data`,
+  the way project and profile content already works
+- unit tests for the pure functions (`getRoute`, `projectMatches`, `tagTone`,
+  `loopCopies`)
+- replacing the last of the generated artwork on the homepage with photos of my
+  own setup, as already done on the About and CV pages
 - adding more project detail pages as new projects are completed

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { scrollStripByItem } from "../utils/scrollStrip";
 
 /** Ignore a pixel or two of rounding before calling an edge reachable. */
 const edgeSlop = 8;
@@ -59,5 +60,8 @@ export function useScrollEdges<T extends HTMLElement>() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { ref, ...edges };
+  const scrollByItem = (direction: -1 | 1, smooth = true) =>
+    scrollStripByItem(ref.current, direction, smooth);
+
+  return { ref, ...edges, scrollByItem };
 }

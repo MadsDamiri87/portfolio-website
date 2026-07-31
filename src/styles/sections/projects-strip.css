@@ -80,6 +80,9 @@
 }
 
 .projects-strip-shell {
+  --strip-arrow-top: 4px;
+  --strip-arrow-bottom: 16px;
+  --strip-arrow-inset: 0px;
   position: relative;
   isolation: isolate;
 }

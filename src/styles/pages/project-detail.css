@@ -325,6 +325,9 @@
 }
 
 .technical-choice-strip-shell {
+  --strip-arrow-top: 4px;
+  --strip-arrow-bottom: 14px;
+  --strip-arrow-inset: 0px;
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -533,6 +536,11 @@
 }
 
 .documentation-strip-shell {
+  /* Measured: the cards sit 4px below the shell top, 14px above its bottom and
+     flush with its sides, so the chevrons track the cards, not the scroll box. */
+  --strip-arrow-top: 4px;
+  --strip-arrow-bottom: 14px;
+  --strip-arrow-inset: 0px;
   position: relative;
   isolation: isolate;
   margin-top: 18px;

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { scrollStripByItem } from "../utils/scrollStrip";
 
 /**
  * Drives the looping, self-scrolling strips on the project detail page.
@@ -54,6 +55,9 @@ export type StripScrollState = {
   activeDot: number;
   canScrollLeft: boolean;
   canScrollRight: boolean;
+  /** Position-based, unlike the two above, which follow the edgeFades option. */
+  atStart: boolean;
+  atEnd: boolean;
 };
 
 const AUTO_SCROLLING_CLASS = "is-auto-scrolling";
@@ -78,6 +82,8 @@ export function useAutoScrollStrip({
     activeDot: 0,
     canScrollLeft: false,
     canScrollRight: false,
+    atStart: true,
+    atEnd: false,
   });
 
   // Read through a ref so the animation effect below can stay mounted while
@@ -122,12 +128,16 @@ export function useAutoScrollStrip({
         activeDot,
         canScrollLeft: edgeFades === "scrollable" ? overflows : loopScroll > fadeThreshold,
         canScrollRight: edgeFades === "scrollable" ? overflows : maxScroll - scrollLeft > fadeThreshold,
+        atStart: scrollLeft <= fadeThreshold,
+        atEnd: maxScroll - scrollLeft <= fadeThreshold,
       };
 
       if (
         current.activeDot === next.activeDot &&
         current.canScrollLeft === next.canScrollLeft &&
-        current.canScrollRight === next.canScrollRight
+        current.canScrollRight === next.canScrollRight &&
+        current.atStart === next.atStart &&
+        current.atEnd === next.atEnd
       ) {
         return current;
       }
@@ -296,17 +306,31 @@ export function useAutoScrollStrip({
     strip.scrollTo({ left: target, behavior: "smooth" });
   };
 
+  /** Steps one item along and holds the auto-scroll off while reading. */
+  const scrollByItem = (direction: -1 | 1) => {
+    pause();
+    scrollStripByItem(ref.current, direction, enabled);
+  };
+
   /** Spread onto the scrolling element; covers every way to interrupt it. */
   const stripProps = {
     onFocus: pause,
     onKeyDown: pause,
     onPointerDown: pause,
-    onPointerEnter: handlePointerEnter,
-    onPointerLeave: handlePointerLeave,
     onScroll: handleScroll,
     onTouchStart: pause,
     onWheel: pause,
   };
 
-  return { ref, state, pause, scrollToDot, stripProps };
+  /**
+   * Spread onto the wrapper, not the scroller. The arrows sit over the strip as
+   * siblings, so tracking the pointer on the scroller alone would count moving
+   * onto an arrow as leaving — and it would start moving again under the cursor.
+   */
+  const hoverProps = {
+    onPointerEnter: handlePointerEnter,
+    onPointerLeave: handlePointerLeave,
+  };
+
+  return { ref, state, pause, scrollToDot, scrollByItem, stripProps, hoverProps };
 }

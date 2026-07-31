@@ -3,12 +3,12 @@ import {
   Calendar,
   ChevronLeft,
   ChevronRight,
-  CircleCheck,
   ExternalLink,
+  GraduationCap,
   Layers,
   Monitor,
-  Network,
   UserRound,
+  Users,
   X,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -16,7 +16,9 @@ import projectDetailBackground from "../../assets/images/project-detail-system-m
 import { useAutoScrollStrip } from "../../hooks/useAutoScrollStrip";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { Project } from "../../types";
+import { loopCopies } from "../../utils/scrollStrip";
 import { tagTone, techProjectHref } from "../projects/ProjectCard";
+import { StripArrows } from "../ui/StripArrows";
 import { TechPill } from "../ui/TechPill";
 
 type ProjectDetailPageProps = {
@@ -59,6 +61,15 @@ function buildTechnicalChoiceSlides(choices: TechnicalChoice[]) {
   });
 
   return slides;
+}
+
+/** 1 -> "1st semester", 2 -> "2nd semester", and so on. */
+function formatSemester(semester?: number) {
+  if (!semester) return "Not listed";
+
+  const suffix = semester === 1 ? "st" : semester === 2 ? "nd" : semester === 3 ? "rd" : "th";
+
+  return `${semester}${suffix} semester`;
 }
 
 function DiagramPreview({ image }: { image?: string }) {
@@ -106,10 +117,12 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
   const heroScreenshots = screenshots.slice(0, 3);
   const documentationItems = useMemo(() => detail?.documentation ?? [], [detail?.documentation]);
   const documentationDotCount = Math.min(maxDocumentationDotCount, Math.max(1, documentationItems.length));
-  const loopedDocumentationItems = useMemo(
-    () => (documentationItems.length > 1 ? [...documentationItems, ...documentationItems] : documentationItems),
-    [documentationItems],
-  );
+
+  const loopedDocumentationItems = useMemo(() => {
+    if (documentationItems.length < 2) return documentationItems;
+
+    return Array.from({ length: loopCopies(documentationItems.length) }, () => documentationItems).flat();
+  }, [documentationItems]);
   const technicalChoices = useMemo(() => detail?.technicalChoices ?? [], [detail?.technicalChoices]);
   const technicalChoiceSlides = useMemo(() => buildTechnicalChoiceSlides(technicalChoices), [technicalChoices]);
   const loopedTechnicalChoiceSlides = useMemo(
@@ -117,7 +130,6 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     [technicalChoiceSlides],
   );
 
-  // The technical-choice strip dips its opacity while it jumps between slides.
   const showTechnicalChoiceTransitionFade = () => {
     setIsTechnicalChoiceTransitioning(true);
 
@@ -187,13 +199,11 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     setActiveScreenshot(screenshots[activeScreenshotIndex + 1]);
   };
 
-  // Read through refs so the keyboard listener below is attached once per open, not once per render.
   const showPreviousScreenshotRef = useRef(showPreviousScreenshot);
   const showNextScreenshotRef = useRef(showNextScreenshot);
   showPreviousScreenshotRef.current = showPreviousScreenshot;
   showNextScreenshotRef.current = showNextScreenshot;
 
-  // Escape closes the lightbox, the page behind it stays put, and focus returns where it came from.
   useEffect(() => {
     if (!isGalleryOpen) return;
 
@@ -225,14 +235,13 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
     };
   }, [isGalleryOpen, closeLightbox]);
 
-  // Keep this at six entries — `.project-facts-strip` is a fixed six-column grid.
   const facts = [
     { label: "Completed", value: detail?.timeline ?? project.year ?? "In progress", icon: Calendar },
     { label: "Development Time", value: detail?.duration ?? "Project period", icon: Monitor },
+    { label: "Semester", value: formatSemester(project.semester), icon: GraduationCap },
     { label: "Role", value: detail?.role ?? "Developer", icon: UserRound },
     { label: "Type", value: project.type ?? project.category, icon: Layers },
-    { label: "Team Size", value: detail?.teamSize ?? "Project team", icon: Network },
-    { label: "Status", value: project.status ?? "Completed", icon: CircleCheck },
+    { label: "Team Size", value: detail?.teamSize ?? "Project team", icon: Users },
   ];
 
   return (
@@ -326,13 +335,24 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
               <div
                 className={[
                   "technical-choice-strip-shell",
+                  "strip-arrows-shell",
                   technicalChoiceStrip.state.canScrollLeft ? "has-left-fade" : "",
                   technicalChoiceStrip.state.canScrollRight ? "has-right-fade" : "",
                   isTechnicalChoiceTransitioning ? "is-transitioning" : "",
                 ]
                   .filter(Boolean)
                   .join(" ")}
+                style={{ "--strip-arrow-fade-out": `${technicalChoiceAutoResumeDelay}ms` } as React.CSSProperties}
+                {...technicalChoiceStrip.hoverProps}
               >
+                <StripArrows
+                  backLabel="Show previous technical choices"
+                  canGoBack={!technicalChoiceStrip.state.atStart}
+                  canGoForward={!technicalChoiceStrip.state.atEnd}
+                  forwardLabel="Show next technical choices"
+                  onBack={() => technicalChoiceStrip.scrollByItem(-1)}
+                  onForward={() => technicalChoiceStrip.scrollByItem(1)}
+                />
                 <div
                   className="technical-choice-slide-track"
                   {...technicalChoiceStrip.stripProps}
@@ -400,12 +420,23 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
             <div
               className={[
                 "documentation-strip-shell",
+                "strip-arrows-shell",
                 documentationStrip.state.canScrollLeft ? "has-left-fade" : "",
                 documentationStrip.state.canScrollRight ? "has-right-fade" : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
+              style={{ "--strip-arrow-fade-out": `${documentationAutoResumeDelay}ms` } as React.CSSProperties}
+              {...documentationStrip.hoverProps}
             >
+              <StripArrows
+                backLabel="Show previous documents"
+                canGoBack={!documentationStrip.state.atStart}
+                canGoForward={!documentationStrip.state.atEnd}
+                forwardLabel="Show next documents"
+                onBack={() => documentationStrip.scrollByItem(-1)}
+                onForward={() => documentationStrip.scrollByItem(1)}
+              />
               <div
                 className="documentation-grid"
                 {...documentationStrip.stripProps}

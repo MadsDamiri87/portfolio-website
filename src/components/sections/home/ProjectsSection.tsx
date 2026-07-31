@@ -5,6 +5,7 @@ import { useAutoScrollStrip } from "../../../hooks/useAutoScrollStrip";
 import { usePrefersReducedMotion } from "../../../hooks/usePrefersReducedMotion";
 import { ProjectCard } from "../../projects/ProjectCard";
 import { SectionHeading } from "../../ui/SectionHeading";
+import { StripArrows } from "../../ui/StripArrows";
 
 const stripDotCount = 4;
 const stripFadeThreshold = 12;
@@ -44,12 +45,23 @@ export function ProjectsSection() {
         <div
           className={[
             "projects-strip-shell",
+            "strip-arrows-shell",
             strip.state.canScrollLeft ? "has-left-fade" : "",
             strip.state.canScrollRight ? "has-right-fade" : "",
           ]
             .filter(Boolean)
             .join(" ")}
+          style={{ "--strip-arrow-fade-out": `${stripAutoResumeDelay}ms` } as React.CSSProperties}
+          {...strip.hoverProps}
         >
+          <StripArrows
+            backLabel="Show previous projects"
+            canGoBack={!strip.state.atStart}
+            canGoForward={!strip.state.atEnd}
+            forwardLabel="Show next projects"
+            onBack={() => strip.scrollByItem(-1)}
+            onForward={() => strip.scrollByItem(1)}
+          />
           <div className="projects-grid projects-grid--home-strip" {...strip.stripProps} ref={strip.ref}>
             {loopedProjects.map((project, index) => (
               <ProjectCard key={`${project.title}-${index}`} project={project} />
