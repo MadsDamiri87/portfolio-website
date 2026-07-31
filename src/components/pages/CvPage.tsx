@@ -45,26 +45,28 @@ const journeySteps = [
     outcome: "Projects that connect architecture, implementation and user value.",
   },
   {
-    number: "Now",
-    period: "Now",
-    title: "Trainee direction",
+    number: "2025 - 2021",
+    period: "2021 - 2025",
+    title: "Understanding people before systems",
     points: [
-      "Looking for a trainee or student developer role next to the study.",
-      "Interested in backend, data modelling, fullstack systems and quality.",
-      "Motivated by feedback, domain knowledge and real business constraints.",
+      "Practising psychotherapy and coaching while working in residential-care.",
+      "Learning communication, conflict resolution, ethics and how " +
+      "to work with all kinds of people.",
+      "Developing reflection, discipline and responsibility through everyday practice.",
     ],
-    outcome: "Ready to contribute, learn fast and become useful in a team.",
+    outcome: "A reflective mindset that turns feedback and challenges into opportunities for growth.",
   },
   {
-    number: "Next",
-    period: "Next step",
-    title: "Impact as a software engineer",
+    number: "2021 - 2019",
+    period: "2019 - 2021",
+    title: "Growing through responsibility",
     points: [
-      "Build maintainable software that solves concrete problems.",
-      "Keep strengthening fundamentals across architecture, tests and delivery.",
-      "Grow into a developer who creates value for users and the business.",
+      "Taking responsibility as a Senior Consultant and Team-Leader.",
+      "Coaching colleagues while balancing performance, teamwork and accountability.",
+      "Learning how to lead, guide and motivate others",
     ],
-    outcome: "A long-term path toward thoughtful, reliable software engineering.",
+    outcome: "Learning that trust is built by welcoming difficult" +
+        " conversations with curiosity, reflection and gratitude.",
   },
 ];
 
