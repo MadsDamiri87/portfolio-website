@@ -1,6 +1,17 @@
+import type { LucideIcon } from "lucide-react";
+
 export type NavItem = {
   label: string;
   href: string;
+};
+
+export type SocialLink = {
+  /** The accessible name - what a screen reader announces. */
+  label: string;
+  /** The tooltip - where the icon actually leads, which the icon alone cannot say. */
+  hint: string;
+  href: string;
+  icon: LucideIcon;
 };
 
 export type Feature = {
@@ -35,6 +46,10 @@ export type ProjectDetail = {
   role?: string;
   teamSize?: string;
   about: string[];
+  projectScope?: Array<{
+    title: string;
+    paragraphs: string[];
+  }>;
   technicalChoices?: Array<{
     category?: string;
     slide?: number;

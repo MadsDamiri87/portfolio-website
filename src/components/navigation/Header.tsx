@@ -1,14 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { FileText, FolderKanban, GitBranch, Home, Mail, Menu, Network, UserRound, X } from "lucide-react";
+import { FileText, FolderKanban, Home, Mail, Menu, UserRound, X } from "lucide-react";
 import mdLogo from "../../assets/images/md-logo-header.webp";
 import { cvOverlayHref, navigation } from "../../data/navigation";
-import { profile, socialProfiles } from "../../data/profile";
-
-const socialLinks = [
-  { label: "GitHub", href: socialProfiles.github, icon: GitBranch },
-  { label: "LinkedIn", href: socialProfiles.linkedin, icon: Network },
-  { label: "Email", href: `mailto:${profile.email}`, icon: Mail },
-];
+import { profile, socialLinks } from "../../data/profile";
 
 const mobileNavIcons = {
   Home,
@@ -68,7 +62,7 @@ export function Header({ activePage }: HeaderProps) {
   return (
     <header className="header" ref={headerRef}>
       <div className="container header__inner">
-        <a className="brand" href="#home" aria-label="Mads Damiri home">
+        <a className="brand" href="#home" aria-label="Mads Damiri home" title="Mads Damiri - home">
           <span className="brand__mark" aria-hidden="true">
             <img src={mdLogo} alt="" />
           </span>
@@ -88,7 +82,7 @@ export function Header({ activePage }: HeaderProps) {
 
         <div className="header__actions">
           <div className="socials" aria-label="Social links">
-            {socialLinks.map(({ label, href, icon: Icon }) => {
+            {socialLinks.map(({ label, hint, href, icon: Icon }) => {
               const isExternal = href.startsWith("http");
 
               return (
@@ -96,6 +90,7 @@ export function Header({ activePage }: HeaderProps) {
                   key={label}
                   href={href}
                   aria-label={label}
+                  title={hint}
                   rel={isExternal ? "noreferrer" : undefined}
                   target={isExternal ? "_blank" : undefined}
                 >

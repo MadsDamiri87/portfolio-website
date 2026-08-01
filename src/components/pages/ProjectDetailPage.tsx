@@ -14,6 +14,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import projectDetailBackground from "../../assets/images/project-detail-system-map-bg.webp";
 import { useAutoScrollStrip } from "../../hooks/useAutoScrollStrip";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { Project } from "../../types";
 import { loopCopies } from "../../utils/scrollStrip";
@@ -24,6 +25,11 @@ import { TechPill } from "../ui/TechPill";
 type ProjectDetailPageProps = {
   project: Project;
 };
+
+/* A mouse can hit the sliver of a covered hero card; a finger cannot, unless the
+   fan is wide enough to leave one a real edge. Measured: at 560px the two back
+   cards expose 40px and 28px, at 412px the third is down to 12px. */
+const heroCardsClickableQuery = "(hover: hover) and (pointer: fine), (min-width: 560px)";
 
 const documentationFadeThreshold = 12;
 const documentationAutoResumeDelay = 1500;
@@ -99,6 +105,7 @@ function GithubMark() {
 
 export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const heroCardsAreClickable = useMediaQuery(heroCardsClickableQuery);
   const lightboxPanelRef = useRef<HTMLDivElement>(null);
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
   const technicalChoiceTransitionTimeoutRef = useRef<number | null>(null);
@@ -287,26 +294,41 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
             </div>
           </div>
 
+          {/* The cards behind the front one are mostly covered: on a 412px phone
+              the third one shows 12px, which is nothing to aim a finger at. Where
+              the visitor has a precise pointer, or the fan is wide enough to leave
+              a real edge, they stay buttons that open the gallery on their own
+              screenshot. Everywhere else they are just the fan. */}
           <div className="project-detail-hero__screens" aria-label={`${title} screenshots`}>
-            {heroScreenshots.map((screenshot, index) => (
-              <button
-                className={`project-detail-hero__screen project-detail-hero__screen--${index + 1}`}
-                key={screenshot}
-                onClick={(event) => {
-                  setActiveDocument(null);
-                  setActiveScreenshot(screenshot);
-                  openLightbox(event);
-                }}
-                type="button"
-              >
-                <img
-                  src={screenshot}
-                  alt={`${title} screenshot ${index + 1}`}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  decoding="async"
-                />
-              </button>
-            ))}
+            {heroScreenshots.map((screenshot, index) =>
+              index === 0 || heroCardsAreClickable ? (
+                <button
+                  className={`project-detail-hero__screen project-detail-hero__screen--${index + 1}`}
+                  key={screenshot}
+                  onClick={(event) => {
+                    setActiveDocument(null);
+                    setActiveScreenshot(screenshot);
+                    openLightbox(event);
+                  }}
+                  type="button"
+                >
+                  <img
+                    src={screenshot}
+                    alt={`${title} screenshot ${index + 1}`}
+                    loading={index === 0 ? undefined : "lazy"}
+                    decoding="async"
+                  />
+                </button>
+              ) : (
+                <div
+                  aria-hidden="true"
+                  className={`project-detail-hero__screen project-detail-hero__screen--${index + 1}`}
+                  key={screenshot}
+                >
+                  <img src={screenshot} alt="" loading="lazy" decoding="async" />
+                </div>
+              ),
+            )}
           </div>
         </div>
 
@@ -324,6 +346,19 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
           <section className="project-detail-section project-detail-about">
             <h2>About the project</h2>
             <div>
+              {detail.projectScope?.length ? (
+                <div className="project-scope">
+                  <h3>Project Scope</h3>
+                  {detail.projectScope.map((section) => (
+                    <section className="project-scope__section" key={section.title}>
+                      <h4>{section.title}</h4>
+                      {section.paragraphs.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </section>
+                  ))}
+                </div>
+              ) : null}
               {detail.about.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -398,21 +433,35 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
 
           <section className="project-detail-section project-gallery-panel">
             <div className="project-screenshot-stack">
-              {screenshots.slice(0, 5).map((screenshot, index) => (
-                <button
-                  aria-label={`Open ${title} gallery`}
-                  className={`project-screenshot-stack__item project-screenshot-stack__item--${index + 1}`}
-                  key={screenshot}
-                  onClick={(event) => {
-                    setActiveScreenshot(null);
-                    setActiveDocument(null);
-                    openLightbox(event);
-                  }}
-                  type="button"
-                >
-                  <img src={screenshot} alt="" loading="lazy" decoding="async" />
-                </button>
-              ))}
+              {/* Every card used to be its own button with the same label and the
+                  same action, so the stack read as five identical controls and the
+                  buried ones were too small to hit. The front card carries the
+                  click now; the ones behind it are the fan it sits on. */}
+              {screenshots.slice(0, 5).map((screenshot, index) =>
+                index === 0 ? (
+                  <button
+                    aria-label={`Open ${title} gallery`}
+                    className="project-screenshot-stack__item project-screenshot-stack__item--1"
+                    key={screenshot}
+                    onClick={(event) => {
+                      setActiveScreenshot(null);
+                      setActiveDocument(null);
+                      openLightbox(event);
+                    }}
+                    type="button"
+                  >
+                    <img src={screenshot} alt="" loading="lazy" decoding="async" />
+                  </button>
+                ) : (
+                  <div
+                    aria-hidden="true"
+                    className={`project-screenshot-stack__item project-screenshot-stack__item--${index + 1}`}
+                    key={screenshot}
+                  >
+                    <img src={screenshot} alt="" loading="lazy" decoding="async" />
+                  </div>
+                ),
+              )}
             </div>
           </section>
         </div>

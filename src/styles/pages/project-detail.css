@@ -270,6 +270,29 @@
   color: var(--muted);
   line-height: 1.68;
 }
+.project-scope {
+  margin-bottom: 22px;
+}
+.project-scope h3 {
+  margin: 0 0 16px;
+  color: #c98261;
+  font-size: 0.95rem;
+  font-weight: 760;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.project-scope__section + .project-scope__section {
+  margin-top: 18px;
+}
+.project-scope__section h4 {
+  margin: 0 0 7px;
+  color: rgba(245, 238, 231, 0.9);
+  font-size: 0.98rem;
+  font-weight: 720;
+}
+.project-scope__section p + p {
+  margin-top: 10px;
+}
 .project-detail-about p + p {
   margin-top: 14px;
 }

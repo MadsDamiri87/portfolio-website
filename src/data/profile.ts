@@ -1,4 +1,5 @@
-import type { ExperienceItem, Feature } from "../types";
+import { GitBranch, Mail, Network } from "lucide-react";
+import type { ExperienceItem, Feature, SocialLink } from "../types";
 
 export const profile = {
   name: "Mads Damiri",
@@ -17,6 +18,29 @@ export const socialProfiles = {
   github: "https://github.com/MadsDamiri87",
   linkedin: "https://www.linkedin.com/in/mads-damiri-1a2a94123/",
 };
+
+// The header and the footer render the same three icons, so the list lives here
+// rather than in both of them.
+export const socialLinks: SocialLink[] = [
+  {
+    label: "GitHub",
+    hint: `GitHub - ${socialProfiles.github.split("/").pop()}`,
+    href: socialProfiles.github,
+    icon: GitBranch,
+  },
+  {
+    label: "LinkedIn",
+    hint: `LinkedIn - ${profile.name}`,
+    href: socialProfiles.linkedin,
+    icon: Network,
+  },
+  {
+    label: "Email",
+    hint: profile.email,
+    href: `mailto:${profile.email}`,
+    icon: Mail,
+  },
+];
 
 export const features: Feature[] = [
   {

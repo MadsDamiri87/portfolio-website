@@ -73,6 +73,18 @@ const journeySteps = [
     outcome: "Learning that trust is built by welcoming difficult" +
         " conversations with curiosity, reflection and gratitude.",
   },
+  {
+    number: "2019 - 2014",
+    period: "2014 - 2019",
+    title: "Learning what moves people",
+    points: [
+      "Working in retail, hospitality and customer-facing roles while balancing education, sports and everyday responsibilities.",
+      "Coaching colleagues while balancing performance, teamwork and accountability.",
+      "Learning how to lead, guide and motivate others",
+    ],
+    outcome: "Learning that trust is built by welcoming difficult" +
+        " conversations with curiosity, reflection and gratitude.",
+  },
 ];
 
 const techGroups = [

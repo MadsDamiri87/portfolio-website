@@ -1,11 +1,4 @@
-import { GitBranch, Mail, Network } from "lucide-react";
-import { profile, socialProfiles } from "../../data/profile";
-
-const links = [
-  { label: "GitHub", href: socialProfiles.github, icon: GitBranch },
-  { label: "LinkedIn", href: socialProfiles.linkedin, icon: Network },
-  { label: "Email", href: `mailto:${profile.email}`, icon: Mail },
-];
+import { profile, socialLinks } from "../../data/profile";
 
 export function Footer() {
   return (
@@ -19,7 +12,7 @@ export function Footer() {
           <a href={`tel:${profile.phone.replace(/\s/g, "")}`}>Phone: {profile.phone}</a>
         </div>
         <div className="footer__links">
-          {links.map(({ label, href, icon: Icon }) => {
+          {socialLinks.map(({ label, hint, href, icon: Icon }) => {
             const isExternal = href.startsWith("http");
 
             return (
@@ -27,6 +20,7 @@ export function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
+                title={hint}
                 rel={isExternal ? "noreferrer" : undefined}
                 target={isExternal ? "_blank" : undefined}
               >

@@ -61,6 +61,44 @@ export const projects: Project[] = [
       duration: "5 months",
       role: "Full Stack Developer",
       teamSize: "Group project",
+      projectScope: [
+        {
+          title: "Purpose and learning frame",
+          paragraphs: [
+            "This project was built as a second-semester semester project, so the goal was not to create a polished, production-ready LMS platform, but to design, document, implement, test and present a larger client/server system with a clear connection between process and product.",
+          ],
+        },
+        {
+          title: "Process, risk and prioritisation",
+          paragraphs: [
+            "The project followed Unified Process as the overall frame, with Inception, Elaboration, Construction and Transition used to move from problem field and scope into analysis, design, implementation, testing and final stabilization. Scrum was used inside the construction work through product backlog, sprint backlog, MoSCoW prioritisation, sprint planning, daily check-ins, reviews, retrospectives, acceptance criteria and Definition of Done. That means the project was not only about writing code, but also about learning how to control risk, prioritize an MVP and keep the implementation connected to documented requirements.",
+          ],
+        },
+        {
+          title: "Core LearnHub workflows",
+          paragraphs: [
+            "The system itself is a Learning Management System called LearnHub. It supports different user roles and central course workflows such as user registration/login, course creation, publishing, browsing published courses, viewing course details, simulated purchase/enrollment, a personal course library, course modules, lessons and uploaded learning content. Some features were intentionally treated as future work or out of scope, such as real payment transactions, e-mail systems and full production-level security/legal handling.",
+          ],
+        },
+        {
+          title: "Analysis, design and architecture",
+          paragraphs: [
+            "The analysis and design work included problem formulation, project scope, functional and non-functional requirements, user stories, use case model, use case descriptions, activity diagrams, system sequence diagrams, domain modelling, EER/database design, relational schema, class diagrams, sequence diagrams and UI mockups. The implementation then connected these artifacts to a full-stack technical solution with a React/Vite frontend, Java/Spring Boot backend, REST controllers, DTOs, mappers, service layer, repository layer, JPA/Hibernate entities and PostgreSQL database. A major architectural focus was the use of a three-layer structure, where the frontend/presentation layer handled user workflows and interaction, the backend business layer handled application rules and coordination through services and DTOs, and the data layer handled persistence through repositories, entities and the database. This made separation of responsibility explicit and helped keep UI behaviour, business decisions and database access from being tangled together.",
+          ],
+        },
+        {
+          title: "Testing and validation",
+          paragraphs: [
+            "Testing was also a major part of the project. The backend contains unit tests and integration tests, including tests of service logic and the interaction between controllers, services, repositories and a PostgreSQL test database. Scenario tests were used to validate important user flows from the user's perspective, such as creating course drafts, publishing courses, editing profile information, viewing course details, purchasing/enrolling and adding content to lessons. Testing strategy also drew on ideas such as TDD, boundary thinking, ZOMBIES, and separating verification of small units from validation of larger user flows. The frontend and user experience were also evaluated through responsiveness testing and Lighthouse/accessibility-oriented checks.",
+          ],
+        },
+        {
+          title: "How the project should be read",
+          paragraphs: [
+            "The project should therefore be read as a broad software engineering project rather than only as an LMS prototype. The most important part is the traceability between requirements, analysis, design, implementation, testing and reflection. The finished system demonstrates the main flows, but the real learning value is in how the group used methods, documentation, architecture, testing and prioritisation to move from an idea to a working, explainable system.",
+          ],
+        },
+      ],
       about: [
         "The LMS Platform was built to support course management, assignments and student progress in one coherent system. The focus was to create a practical school platform with a clear separation between user-facing workflows, backend services and persistent data.",
         "The project gave me room to work with full-stack development from both sides of the application. I worked with React on the frontend, Spring Boot on the backend and PostgreSQL for the relational data model, while keeping the implementation structured around maintainable layers.",
@@ -200,6 +238,38 @@ export const projects: Project[] = [
       duration: "One semester",
       role: "Java Developer",
       teamSize: "Solo Project",
+      projectScope: [
+        {
+          title: "Simulation used as a learning frame",
+          paragraphs: [
+            "This project was built for Software Design and Test, and should be understood as a learning-focused simulation rather than a complete trading product. The trading domain was mainly used as a concrete frame for working with maintainable application structure, testability and design patterns.",
+          ],
+        },
+        {
+          title: "Layered application structure",
+          paragraphs: [
+            "The project includes a JavaFX desktop application with buy/sell flows, portfolio handling, transaction history, local PSV-based persistence, stock price simulation, alerts and market state changes. Around those flows, the project explores a three-layer architecture with a clear separation between presentation, business logic and persistence. The presentation layer is responsible for JavaFX views, controllers, view models and user interaction, the business layer contains trading rules, portfolio logic, fee calculation and market behaviour, while the persistence layer handles storage through DAO interfaces and file-based implementations. This separation of responsibility was a central focus of the course, because it makes the code easier to test, change and reason about without mixing UI concerns with domain logic or data access. The application uses an ApplicationContext, ControllerFactory and ViewManager to keep object creation, dependency wiring and navigation more controlled instead of spreading that responsibility across the UI.",
+          ],
+        },
+        {
+          title: "Design principles and patterns",
+          paragraphs: [
+            "A large part of the project is about applying design principles and patterns in practice. The implementation includes MVVM to reduce controller responsibility, DAO interfaces to separate business logic from file storage, Unit of Work to handle commit/rollback-like behavior, Adapter pattern for logging and UI notifications, Observer pattern for stock market updates and listeners, State pattern for stock price behaviour, and Strategy pattern for interchangeable fee calculation. These choices were not added to make the project look bigger, but to practise SOLID principles such as Single Responsibility, Open/Closed, Dependency Inversion and Dependency Injection in a concrete codebase.",
+          ],
+        },
+        {
+          title: "Testing strategy",
+          paragraphs: [
+            "Testing was also a central part of the project. The project includes unit tests, integration tests and scenario-based test documentation. The tests cover important trading behaviour such as buying, selling, invalid quantities, insufficient funds, transaction handling, rollback/commit behaviour and file logger integration. Test design ideas such as boundary value analysis, equivalence partitioning, AAA/FIRST principles, ZOMBIES and scenario testing were used to connect the code to the theory from the course.",
+          ],
+        },
+        {
+          title: "What the project is not",
+          paragraphs: [
+            "The project is therefore not meant to behave like a real trading platform with live markets, users or financial security. Its value is mainly that it shows how a non-trivial Java application can be structured, tested, documented and explained through architecture, patterns and design decisions.",
+          ],
+        },
+      ],
       about: [
         "StockTrading-Game is a desktop simulation where users can follow market movement, manage a portfolio and execute buy and sell actions. The project focus was not only the user interface, but also the underlying state changes that happen when trades affect balance, holdings and portfolio value.",
         "The application was built with JavaFX and FXML, which made it a good exercise in separating view structure from application logic. I used the project to strengthen my understanding of event-driven desktop applications, validation and user flows with clear feedback.",
@@ -351,6 +421,26 @@ export const projects: Project[] = [
       duration: "Network project",
       role: "Java Developer",
       teamSize: "Group project",
+      projectScope: [
+        {
+          title: "Focused network assignment",
+          paragraphs: [
+            "This project was built as a focused network and control-system assignment for the NEC course. Compared to some of my other study projects, it is closer to a complete small system because the goal was clearly defined: simulate sensor input, communicate between components and control outside blinds through a JavaFX interface.",
+          ],
+        },
+        {
+          title: "Communication, concurrency and safety logic",
+          paragraphs: [
+            "The project demonstrates a distributed client/server setup using UDP for sensor data and TCP for control updates. It also includes concurrency-related structure, a producer-consumer flow, a blocking queue, service-layer decision logic, manual override rules and safety handling for wind conditions. The point was not just to make blinds move in a UI, but to demonstrate and explain sockets, protocol thinking, communication flow, threading/concurrency and separation between network, service and presentation layers.",
+          ],
+        },
+        {
+          title: "Educational but close to end-to-end",
+          paragraphs: [
+            "The project is still educational rather than production-ready, but the narrower scope made it possible to bring the main flow close to a working end-to-end solution.",
+          ],
+        },
+      ],
       about: [
         "This project explored how a client-server system can control automatic outdoor blinds based on simulated sensor data. The technical focus was communication between components, UI feedback and keeping the system behavior predictable.",
         "The implementation used Java and JavaFX for the user interface, while TCP and UDP communication were used to exchange data between the different parts of the system.",
@@ -402,6 +492,32 @@ export const projects: Project[] = [
       duration: "First semester",
       role: "Frontend Developer",
       teamSize: "Solo project",
+      projectScope: [
+        {
+          title: "First portfolio and learning goal",
+          paragraphs: [
+            "This was my first portfolio website and should be seen as a learning project rather than the final version of my personal site. The project was intentionally limited to static frontend work, mainly HTML and CSS, so the focus stayed on structure, styling, layout, responsiveness and accessibility instead of application logic.",
+          ],
+        },
+        {
+          title: "HTML, CSS, layout and accessibility",
+          paragraphs: [
+            "The website includes a home page, about page, CV page and portfolio page. The work focused on semantic HTML, navigation structure, visual hierarchy, CSS styling, the box model, Flexbox, Grid, media queries and responsive layout across screen sizes. Accessibility was also part of the learning goal, including meaningful page structure, alt text, readable contrast, keyboard-friendly navigation, labels/ARIA where relevant and awareness of WCAG-oriented checks such as Lighthouse.",
+          ],
+        },
+        {
+          title: "Intentional static-site limitation",
+          paragraphs: [
+            "A key part of the project is that it was not meant to be a JavaScript application. JavaScript, canvas and similar dynamic/browser-API features were outside the intended scope for this specific portfolio project, even though they were part of the broader web course. That constraint made the project more about understanding the foundation of the web: how content, layout, styling and accessibility work before adding interactivity.",
+          ],
+        },
+        {
+          title: "Why the project still matters",
+          paragraphs: [
+            "The value of the project is therefore not that it is an advanced personal website, but that it documents an early step in learning frontend development and shows how a simple static site can still be structured, responsive and understandable.",
+          ],
+        },
+      ],
       about: [
         "This was my first portfolio website and an early exercise in turning HTML and CSS into a complete multi-page presentation. The focus was structure, layout, navigation and creating a simple visual identity.",
         "Even though the implementation was intentionally simple, it became an important foundation for understanding responsive layout, semantic HTML and how design decisions affect readability.",
@@ -439,6 +555,38 @@ export const projects: Project[] = [
       duration: "Semester project",
       role: "Java Developer",
       teamSize: "Group project",
+      projectScope: [
+        {
+          title: "From JavaFX prototype to software project",
+          paragraphs: [
+            "Kloeverly was created as a first-semester semester project, and the main goal was not simply to build a JavaFX application. JavaFX was the practical form the prototype took, but the deeper purpose was to learn how to approach a software engineering project from problem to documented solution.",
+          ],
+        },
+        {
+          title: "Problem field and requirements work",
+          paragraphs: [
+            "The project started with a real-world-inspired problem field around an ecological village that wanted a better way to register, structure and make visible green activities, community tasks and trade tasks. Before implementation, the group worked with project description, problem formulation, scope, method choice, risk assessment, requirements, user stories, use cases, use case diagram, activity diagrams and a domain model. These artifacts were used to understand the problem and shape the system before moving into design and code.",
+          ],
+        },
+        {
+          title: "Design and prototype structure",
+          paragraphs: [
+            "The design work included a layered, MVC-inspired structure, class diagrams, sequence diagrams and decisions about how data, screens and user flows should connect. The implemented prototype then used Java, JavaFX, FXML, controllers, domain classes, local file storage and a simple navigation structure to support residents, tasks, task categories, points and saving/loading data.",
+          ],
+        },
+        {
+          title: "Testing, documentation and reflection",
+          paragraphs: [
+            "Testing and documentation were also part of the project. The system was evaluated mainly through manual, scenario-based black-box testing of the implemented use cases, including expected flows and alternative flows. The project also included user/installation documentation and reflection on limitations, process and possible future improvements.",
+          ],
+        },
+        {
+          title: "How to read the project",
+          paragraphs: [
+            "Kloeverly should therefore be read as an early but broad software engineering project. It is not a finished management system for a real community, but it shows the first serious attempt at connecting analysis, design, documentation, implementation and testing into one coherent project.",
+          ],
+        },
+      ],
       about: [
         "Kloeverly was built as an early JavaFX application with a focus on basic application structure, user flows and local data handling. The project introduced practical object-oriented programming in a larger context than small exercises.",
         "The application helped me work with screens, controllers, FXML and serialization while learning how to keep data and interface behavior connected in a maintainable way.",

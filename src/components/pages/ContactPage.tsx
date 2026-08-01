@@ -167,7 +167,12 @@ export function ContactPage() {
 
           <aside className="contact-profile-panel" aria-label="Profile and phone">
             <div className="contact-profile-panel__image">
-              <img src={profileImage} alt="Profile picture of Mads Damiri" />
+              <img
+                src={profileImage}
+                alt="Profile picture of Mads Damiri"
+                width={423}
+                height={590}
+              />
             </div>
             <a className="contact-profile-panel__phone" href={`tel:${profile.phone.replace(/\s/g, "")}`}>
               <span>Phone</span>
