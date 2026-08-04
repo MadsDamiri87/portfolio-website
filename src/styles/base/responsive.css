@@ -411,24 +411,8 @@
   .hero__role {
     max-width: 100%;
   }
-  /* This is where the hero drops to a single column, so the portrait stops
-     having its own side of the page and lands on top of the copy instead. Even
-     behind the text it was a problem: sampling the picture through its own
-     greyscale filter, a bright patch across the middle of it dragged the
-     paragraph down to 1.08:1 against its background, where 4.5:1 is the floor.
-     A scrim cannot rescue that - it takes about 78% black to lift the worst
-     spot over the line, and by then there is no photograph left. So below this
-     width the portrait steps out of the overlap, sits under the copy and
-     centres itself. Its cut and downward nudge went with it; both existed to
-     blend the overlap that is no longer there. */
   .profile-card {
-    position: static;
-    justify-self: center;
-    align-self: auto;
     width: min(100%, 230px);
-    margin: 8px auto 0;
-    clip-path: none;
-    transform: none;
   }
   .laptop-scene-frame {
     inset: 0;
