@@ -74,16 +74,15 @@ const journeySteps = [
         " conversations with curiosity, reflection and gratitude.",
   },
   {
-    number: "2019 - 2014",
-    period: "2014 - 2019",
-    title: "Learning what moves people",
+    number: "2019 - 2009",
+    period: "2009 - 2019",
+    title: "Becoming comfortable with discomfort",
     points: [
-      "Working in retail, hospitality and customer-facing roles while balancing education, sports and everyday responsibilities.",
-      "Coaching colleagues while balancing performance, teamwork and accountability.",
-      "Learning how to lead, guide and motivate others",
+      "Choosing environments that challenged me socially, personally and professionally.",
+      "Balancing education, work, sports and customer orientated roles while pushing myself into a new comfort zone.",
+      "Taking action to create competence, which created confidence which created more action",
     ],
-    outcome: "Learning that trust is built by welcoming difficult" +
-        " conversations with curiosity, reflection and gratitude.",
+    outcome: "Learning who I want to be instead of what I want to do.",
   },
 ];
 

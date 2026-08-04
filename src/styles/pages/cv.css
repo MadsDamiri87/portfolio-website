@@ -497,6 +497,15 @@
     --cv-hero-bg-width: 1120px;
     --cv-hero-bg-shift-x: 96px;
   }
+  /* The width above is deliberately wider than the screen so the hero crops the
+     photo. The global img { max-width: 100% } was clamping it back to the
+     viewport, which left the shift pushing the photo off the right edge and a
+     bare strip of background down the left - 184px of it on a phone. Above this
+     width the declared width is smaller than the screen anyway, so the desktop
+     composition never went through this and is not touched. */
+  .cv-hero-page__image {
+    max-width: none;
+  }
   .cv-hero-page::after {
     background:
       linear-gradient(90deg, rgba(17, 16, 14, 0.94) 0%, rgba(17, 16, 14, 0.72) 44%, rgba(17, 16, 14, 0.22) 100%),
@@ -558,9 +567,14 @@
     --cv-hero-bg-width: 920px;
     --cv-hero-bg-shift-x: 184px;
   }
-  .cv-hero-page__actions,
-  .cv-hero-page__tags {
+  .cv-hero-page__actions {
     display: grid;
+  }
+  /* The three chips - school, availability, location - all repeat further down
+     the page in the profile panel, and stacked on a phone they pushed the
+     Contact button below the fold. */
+  .cv-hero-page__tags {
+    display: none;
   }
   .cv-profile-panel,
   .cv-side-panel,

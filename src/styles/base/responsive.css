@@ -105,15 +105,27 @@
     gap: clamp(28px, 5vw, 64px);
   }
 
+  /* From here down the portrait stops sitting beside the text and starts
+     overlapping it. That is the intended look, but it has to layer the way the
+     CV hero does: the picture is decoration, so the copy paints over it and it
+     never takes a click. Without this the portrait covered two thirds of the
+     Explore Projects button and swallowed taps meant for it. */
+  .hero__content {
+    position: relative;
+    z-index: 2;
+  }
+
   .profile-card {
     position: absolute;
     right: 6px;
     bottom: 87px;
+    z-index: 1;
     width: min(100%, 250px);
     margin-right: 0;
     overflow: hidden;
     clip-path: inset(0 0 33% 0);
     transform: translateY(41%);
+    pointer-events: none;
   }
 
   .feature-strip__grid {
