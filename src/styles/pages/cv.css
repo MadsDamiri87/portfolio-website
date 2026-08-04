@@ -563,9 +563,14 @@
     display: none;
   }}
 @media (max-width: 560px) {
+  /* No sideways shift down here. It exists to seat the subject to the right of
+     the copy, and on a phone the copy runs across the whole hero anyway - all
+     the shift did was push the photo off the edge, which then needed an even
+     wider image to cover the gap it left. Straightening it means 640px covers
+     what 920px used to, and the hero paints in about a third less time. */
   .cv-hero-page {
-    --cv-hero-bg-width: 920px;
-    --cv-hero-bg-shift-x: 184px;
+    --cv-hero-bg-width: 640px;
+    --cv-hero-bg-shift-x: 0px;
   }
   .cv-hero-page__actions {
     display: grid;
