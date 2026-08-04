@@ -124,7 +124,7 @@
     margin-right: 0;
     overflow: hidden;
     clip-path: inset(0 0 33% 0);
-    transform: translateY(41%);
+    transform: translateY(43%);
     pointer-events: none;
   }
 
@@ -200,6 +200,7 @@
 
   .profile-card {
     bottom: 76px;
+    transform: translateY(35%);
   }
 
   .feature-card {
@@ -452,7 +453,7 @@
     display: grid;
   }
   .button {
-    width: 100%;
+    width: 50%;
   }
   .projects-grid:not(.projects-grid--home-strip) .project-card,
   .projects-page-grid .project-card {
