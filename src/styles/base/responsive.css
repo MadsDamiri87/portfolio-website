@@ -411,6 +411,14 @@
   .hero__role {
     max-width: 100%;
   }
+  /* Stop the copy before the portrait. Sampling the picture through its own
+     greyscale filter, the bright band across the face drags this paragraph to
+     1.08:1 against its backdrop where 4.5:1 is the floor, and no scrim fixes
+     that without erasing the photograph. Ending the line short of the face
+     leaves the layering intact and the text readable. */
+  .hero__intro {
+    max-width: 210px;
+  }
   .profile-card {
     width: min(100%, 230px);
   }
@@ -550,3 +558,15 @@
   .contact-form-panel__submit {
     width: 100%;
   }}
+
+/* Under this the portrait takes 72% of the screen, so there is no width left
+   for a column of text beside it - the copy runs straight into the face. The
+   picture steps aside here; it still appears on About, CV and Contact. */
+@media (max-width: 360px) {
+  .profile-card {
+    display: none;
+  }
+  .hero__intro {
+    max-width: none;
+  }
+}
