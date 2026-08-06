@@ -1,8 +1,7 @@
 # Mads Damiri – Portfolio Website
 
-A personal portfolio built with **React**, **TypeScript** and **Vite**.
-
-### [View the live website →](https://software.madsdamiri.dk)
+A personal portfolio built with **React** and **TypeScript**.
+### [View live website →](https://software.madsdamiri.dk)
 
 ![frontpage.webp](src/assets/images/frontpage.webp)
 
