@@ -4,6 +4,8 @@ A personal portfolio built with **React**, **TypeScript** and **Vite**.
 
 ### [View the live website →](https://software.madsdamiri.dk)
 
+![frontpage.webp](src/assets/images/frontpage.webp)
+
 The purpose of this project is to present who I am as a software engineering student, showcase the projects I have worked on, and support applications for trainee and student developer opportunities.
 
 ---
