@@ -1,4 +1,4 @@
-import { BookOpen, FileText, GraduationCap, Mail, MapPin } from "lucide-react";
+import { BookOpen, FileText, GraduationCap, Mail, MapPin, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import { preload } from "react-dom";
 import cvPdfUrl from "../../../docs/Mads_Damiri_CV_software_trainee_31-07-2026.pdf";
@@ -116,6 +116,32 @@ const documents = [
     label: "MD's Brochure",
     detail: "MD's explanation of a trainee",
     href: "/brochurer/softwareingenioertrainee-brochure-done.pdf",
+  },
+];
+
+// The Praice reports. They sit in public/ rather than being imported, the same
+// way the brochures do - nothing links to them from code, so there is no build
+// asset to hash.
+const behavioralProfile = [
+  {
+    label: "My Soft Skills",
+    detail: "How I work with people and tasks",
+    href: "/praice/1-my-soft-skills.pdf",
+  },
+  {
+    label: "Strengths & Challenges",
+    detail: "What I bring, and what I watch for",
+    href: "/praice/2-strengths-and-challenges.pdf",
+  },
+  {
+    label: "My Behavioral Profile",
+    detail: "The full Praice report",
+    href: "/praice/3-my-behavioral-profile.pdf",
+  },
+  {
+    label: "Behavioral Profile Guide",
+    detail: "Praice's guide to the report",
+    href: "/praice/4-behavioral-profile-guide.pdf",
   },
 ];
 
@@ -300,6 +326,25 @@ export function CvPage() {
                   <a href={document.href} key={document.label}>
                     <span>
                       <BookOpen size={18} strokeWidth={1.8} />
+                    </span>
+                    <span>
+                      <strong>{document.label}</strong>
+                      <small>{document.detail}</small>
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="cv-side-panel glass-panel">
+              <div className="cv-side-panel__heading">
+                <h2>Behavioral Profile</h2>
+              </div>
+              <div className="cv-document-list">
+                {behavioralProfile.map((document) => (
+                  <a href={document.href} key={document.label} target="_blank" rel="noreferrer">
+                    <span>
+                      <UserRound size={18} strokeWidth={1.8} />
                     </span>
                     <span>
                       <strong>{document.label}</strong>
