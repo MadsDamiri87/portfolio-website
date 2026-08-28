@@ -1,7 +1,7 @@
 import { BookOpen, FileText, GraduationCap, Mail, MapPin, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import { preload } from "react-dom";
-import cvPdfUrl from "../../../docs/Mads_Damiri_CV_software_trainee_31-07-2026.pdf";
+import cvPdfUrl from "../../../docs/Mads Damiriv - CV - Software Engineer - 28-8-2026 .pdf";
 import cvHeroImage from "../../assets/images/cv-hero-me-working.webp";
 import cvBgImage from "../../assets/images/cv-bg.webp";
 import profileImage from "../../assets/images/mads-profile-nobg.webp";
